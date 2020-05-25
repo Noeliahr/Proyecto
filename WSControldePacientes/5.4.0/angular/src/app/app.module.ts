@@ -44,7 +44,8 @@ import { PacientesComponent } from '@app/pacientes/pacientes.component';
 import { PacienteMedicoCabeceraServiceProxy } from '@shared/service-proxies/service-proxies';
 import { CreatePacienteDialogComponent } from './pacientes/create-paciente/create-paciente-dialog.component';
 import {MoreDetailsDialogComponent} from './pacientes/moredetails/moredetails-paciente-dialog.component';
-import {ResponsablesDialogComponent} from './pacientes/responsables-paciente/responsables-paciente-dialog.component'; 
+import {ResponsablesDialogComponent} from './pacientes/responsables-paciente/responsables-paciente-dialog.component';
+import { EditPacienteDialogComponent } from './pacientes/edit-paciente/edit-paciente-dialog.component'; 
 
 @NgModule({
   declarations: [
@@ -76,7 +77,8 @@ import {ResponsablesDialogComponent} from './pacientes/responsables-paciente/res
     PacientesComponent,
     CreatePacienteDialogComponent,
     MoreDetailsDialogComponent,
-    ResponsablesDialogComponent
+    ResponsablesDialogComponent,
+    EditPacienteDialogComponent
   ],
   imports: [
     CommonModule,
@@ -107,7 +109,8 @@ import {ResponsablesDialogComponent} from './pacientes/responsables-paciente/res
     //Pacientes
     CreatePacienteDialogComponent,
     MoreDetailsDialogComponent,
-    ResponsablesDialogComponent
+    ResponsablesDialogComponent,
+    EditPacienteDialogComponent
   ]
 })
 export class AppModule {}

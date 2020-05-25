@@ -1,0 +1,250 @@
+<form autocomplete="off" #editPacienteForm="ngForm" (ngSubmit)="save()">
+    <h1 mat-dialog-title>{{ "Editar Paciente" | localize }}</h1>
+    <mat-dialog-content style="width:900px;height:400px;">
+        <mat-tab-group>
+            <mat-tab [label]="'Datos de Usuario' | localize">
+                <br />
+                <div class="row-fluid">
+                    <div class="col-md-6">
+                      <mat-form-field>
+                        <input
+                          matInput
+                          name="UserName"
+                          [placeholder]="'UserName' | localize"
+                          [(ngModel)]="paciente.datosPersonalesUserName"
+                          minlength="2"
+                          maxlength="32"
+                          readonly
+                        />
+                      </mat-form-field>
+                      <mat-form-field>
+                        <input
+                          matInput
+                          name="Name"
+                          [placeholder]="'Name' | localize"
+                          [(ngModel)]="paciente.datosPersonalesName"
+                          maxlength="32"
+                        />
+                      </mat-form-field>
+                      <mat-form-field>
+                        <input
+                          matInput
+                          name="Surname"
+                          [placeholder]="'Surname' | localize"
+                          [(ngModel)]="paciente.datosPersonalesSurname"
+                          maxlength="32"
+                        />
+                      </mat-form-field>
+                    </div>
+                    <div class="col-md-6">
+                      <mat-form-field>
+                        <input
+                          matInput
+                          name="EmailAddress"
+                          [placeholder]="'EmailAddress' | localize"
+                          [(ngModel)]="paciente.datosPersonalesEmailAddress"
+                          type="email"
+                          maxlength="256"
+                          pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{1,})+$"
+                        />
+                      </mat-form-field>
+                      <mat-form-field>
+                        <input
+                          matInput
+                          name="Telefono"
+                          [placeholder]="'Telefono' | localize"
+                          [(ngModel)]="paciente.datosPersonalesTelefono"
+                          maxlength="15"
+                          
+                        />
+                      </mat-form-field>
+                    </div>
+                  </div>                  
+            </mat-tab>
+            <mat-tab [label]="'Datos Paciente' | localize">
+                <br />
+                <div class="row-fluid">
+                    <div class="col-md-12">
+                        <mat-form-field>
+                          <mat-label>Fecha de Nacimiento</mat-label>
+                          <input matInput [matDatepicker]="picker" [(ngModel)]="paciente.numSeguridadSocial">
+                          <mat-datepicker-toggle matSuffix [for]="picker" [(ngModel)]="paciente.numSeguridadSocial"></mat-datepicker-toggle>
+                          <mat-datepicker #picker [(ngModel)]="paciente.numSeguridadSocial"></mat-datepicker>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input matInput
+                                   name="Numero de Seguridad Social"
+                                   [placeholder]="'Numero de Seguridad Social' | localize"
+                                   [(ngModel)]="paciente.numSeguridadSocial"
+                                   minlength="12"
+                                   maxlength="12" />
+                        </mat-form-field>
+                    </div>
+                </div>
+            </mat-tab>
+
+            <mat-tab [label]="'Datos de la Direccion' | localize">
+                <br />
+                <div class="row-fluid">
+                    <div class="col-sm-3">
+                        <mat-form-field>
+                          <mat-label>Tipo</mat-label>
+                          <mat-select matNativeControl [(value)]="selectedTipo" >
+                            <mat-option value="Calle">Calle</mat-option>
+                            <mat-option value="Avenida">Avenida</mat-option>
+                            <mat-option value="Plaza">Plaza</mat-option>
+                            <mat-option value="Callejon">Callejon</mat-option>
+                            <mat-option value="Urbanizacion">Urbanizacion</mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input matInput
+                                name="Letra"
+                                [placeholder]="'Letra' | localize"
+                                [(ngModel)]="paciente.dondeViveLetra"/>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input matInput
+                                name="Portal"
+                                [placeholder]="'Portal' | localize"
+                                [(ngModel)]="paciente.dondeVivePortal" />
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input matInput
+                                name="Puerta"
+                                [placeholder]="'Puerta' | localize"
+                                [(ngModel)]="paciente.dondeVivePuerta" />
+                        </mat-form-field>
+
+                        <mat-form-field>
+                            <input matInput
+                                name="Municipio"
+                                [placeholder]="'Municipio' | localize"
+                                [(ngModel)]="paciente.dondeViveMunicipio" 
+                                />
+                        </mat-form-field>
+                        
+                    </div>
+                    <div class="col-sm-3">
+                        <mat-form-field>
+                            <input matInput
+                                name="Nombre"
+                                [placeholder]="'Nombre' | localize"
+                                [(ngModel)]="paciente.dondeViveNombre"
+                                 />
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input matInput
+                                name="Km en la Via"
+                                [placeholder]="'Km en la Via' | localize"
+                                [(ngModel)]="paciente.dondeViveKm_en_la_via" />
+                        </mat-form-field>  
+                        <mat-form-field>
+                            <input matInput
+                                name="Escalera"
+                                [placeholder]="'Escalera' | localize"
+                                [(ngModel)]="paciente.dondeViveEscalera" />
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input matInput
+                                name="Codigo Postal"
+                                [placeholder]="'Codigo Postal' | localize"
+                                [(ngModel)]="paciente.dondeViveCodigoPostal" 
+                                minlength="5"
+                                maxlength="5"/>
+                        </mat-form-field>
+                        
+                        <mat-form-field>
+                            <input matInput
+                                name="Provincia"
+                                [placeholder]="'Provincia' | localize"
+                                [(ngModel)]="paciente.dondeViveProvincia"
+                                 />
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-3">
+                        <mat-form-field>
+                            <input matInput
+                                name="Numero"
+                                [placeholder]="'Numero' | localize"
+                                [(ngModel)]="paciente.dondeViveNumero"
+                                 />
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input matInput
+                                name="Bloque"
+                                [placeholder]="'Bloque' | localize"
+                                [(ngModel)]="paciente.dondeViveBloque" />
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input matInput
+                                name="Planta"
+                                [placeholder]="'Planta' | localize"
+                                [(ngModel)]="paciente.dondeVivePlanta" />
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input matInput
+                                name="Entidad de Poblacion"
+                                [placeholder]="'Entidad de Poblacion' | localize"
+                                [(ngModel)]="paciente.dondeViveEntidad_de_Poblacion" />
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input matInput
+                                name="Pais"
+                                [placeholder]="'Pais' | localize"
+                                [(ngModel)]="paciente.dondeVivePais" 
+                                />
+                        </mat-form-field>
+                    </div>
+                </div>
+            </mat-tab>
+
+            <mat-tab [label]="'Datos del Termometro' | localize">
+                <br />
+                <div class="row-fluid">
+                    <div class="col-md-12">
+                        <mat-form-field>
+                            <input matInput
+                                name="Fabricante"
+                                [placeholder]="'Fabricante' | localize"
+                                [(ngModel)]="paciente.termometroFabricante"
+                                 />
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input matInput
+                                name="Temperatura Media"
+                                [placeholder]="'Temperatura Media' | localize"
+                                [(ngModel)]="paciente.temperatura_Media"
+                                 />
+                        </mat-form-field>
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab [label]="'Datos del Medico de Cabecera' | localize">
+              <br />
+              <div class="row-fluid">
+                  <div class="col-md-12">
+                    <mat-form-field>
+                      <mat-label>Login del userName</mat-label>
+                      <mat-select matNativeControl  [(value)]="selectedUserNameMedico" >
+                        <mat-option *ngFor="let userName of medicosCabecera" value="{{userName.userName}}">{{userName.userName}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+              </div>
+          </mat-tab>
+        </mat-tab-group>
+    </mat-dialog-content>
+    <div mat-dialog-actions align="end">
+        <button mat-button type="button" [disabled]="saving" (click)="close(false)">
+            {{ "Cancel" | localize }}
+        </button>
+        <button mat-flat-button
+                type="submit"
+                flex="15"
+                color="primary"
+                [disabled]="!editPacienteForm.form.valid || saving">
+            {{ "Save" | localize }}
+        </button>
+    </div>
+</form>

@@ -1,11 +1,11 @@
 import { Component,  Injector } from '@angular/core';
-import {PacienteMedicoCabeceraServiceProxy, PacienteDto, AuthenticateResultModel, PacienteDtoPagedResultDto } from 'shared/service-proxies/service-proxies';
+import {PacienteMedicoCabeceraServiceProxy, PacienteDto, AuthenticateResultModel } from 'shared/service-proxies/service-proxies';
 import { finalize } from 'rxjs/operators';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import {PagedListingComponentBase,PagedRequestDto} from '@shared/paged-listing-component-base';
 import { MatDialog } from '@angular/material';
 import { CreatePacienteDialogComponent } from './create-paciente/create-paciente-dialog.component';
-//import { EditPacienteDialogComponent } from './edit-paciente/edit-paciente-dialog.component';
+import { EditPacienteDialogComponent } from './edit-paciente/edit-paciente-dialog.component';
 import {MoreDetailsDialogComponent} from './moredetails/moredetails-paciente-dialog.component'; 
 import {ResponsablesDialogComponent} from './responsables-paciente/responsables-paciente-dialog.component';
 
@@ -96,11 +96,11 @@ export class PacientesComponent extends PagedListingComponentBase<PacienteDto> {
         let createOrEditPacienteDialog;
         if (id === undefined || id <= 0) {
             createOrEditPacienteDialog = this._dialog.open(CreatePacienteDialogComponent);
-        } /*else {
+        }else {
             createOrEditPacienteDialog = this._dialog.open(EditPacienteDialogComponent, {
                 data: id
             });
-        }*/
+        }
 
         createOrEditPacienteDialog.afterClosed().subscribe(result => {
             if (result) {

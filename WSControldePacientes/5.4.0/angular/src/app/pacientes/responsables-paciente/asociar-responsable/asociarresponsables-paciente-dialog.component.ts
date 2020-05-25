@@ -9,7 +9,6 @@ import * as _ from 'lodash';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/app-component-base';
 import {PacienteMedicoCabeceraServiceProxy, PacienteCompletoDto, MisResponsables, ResponsableDto } from '@shared/service-proxies/service-proxies';
-import { AsociarResponsableDialogComponent } from './asociar-responsable/asociarresponsables-paciente-dialog.component';
 
 class PagedPacientesRequestDto extends PagedRequestDto {
     filter: string;
@@ -27,14 +26,14 @@ class PagedPacientesRequestDto extends PagedRequestDto {
         `
     ]
 })
-export class ResponsablesDialogComponent extends AppComponentBase  {
+export class AsociarResponsableDialogComponent extends AppComponentBase  {
     saving = false;
     responsables: MisResponsables = new MisResponsables();
       
     constructor(
         injector: Injector,
         private _pacienteService: PacienteMedicoCabeceraServiceProxy,
-        private _dialogRef: MatDialogRef<ResponsablesDialogComponent>,
+        private _dialogRef: MatDialogRef<AsociarResponsableDialogComponent>,
         private _dialog: MatDialog,
         @Optional() @Inject(MAT_DIALOG_DATA) private _id: number
     ) {

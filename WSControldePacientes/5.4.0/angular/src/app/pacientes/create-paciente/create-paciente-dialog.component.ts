@@ -32,11 +32,7 @@ export class CreatePacienteDialogComponent extends AppComponentBase  {
     ) {
         super(injector);
     }
-
-  
-    cogerTipo(){
-        this.paciente.dondeViveTipo= this.selected;
-    }
+    
     
     save(): void {
         this.saving = true;
