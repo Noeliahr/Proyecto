@@ -9,7 +9,7 @@ import * as _ from 'lodash';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/app-component-base';
 import {PacienteMedicoCabeceraServiceProxy, PacienteCompletoDto, MisResponsables, ResponsableDto } from '@shared/service-proxies/service-proxies';
-import { AsociarResponsableDialogComponent } from './asociar-responsable/asociarresponsables-paciente-dialog.component';
+import { AsociarResponsableDialogComponent } from './asociar-responsable/asociar-responsables-paciente-dialog.component';
 
 class PagedPacientesRequestDto extends PagedRequestDto {
     filter: string;
@@ -54,7 +54,7 @@ export class ResponsablesDialogComponent extends AppComponentBase  {
 
     desasociar(id : number, responsable : ResponsableDto){
         abp.message.confirm(
-            this.l('¿Esta seguro que quiere desasociar a ?', responsable.responsableDatosPersonalesUserName),
+            this.l('¿Esta seguro que quiere desasociar a ?', responsable.datosPersonalesUserName),
             undefined,
             (result: boolean) => {
                 if (result) {

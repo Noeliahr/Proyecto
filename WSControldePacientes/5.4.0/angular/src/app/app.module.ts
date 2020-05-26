@@ -41,10 +41,11 @@ import { ResetPasswordDialogComponent } from './users/reset-password/reset-passw
 
 // paciente
 import { PacientesComponent } from '@app/pacientes/pacientes.component';
-import { PacienteMedicoCabeceraServiceProxy } from '@shared/service-proxies/service-proxies';
+import { PacienteMedicoCabeceraServiceProxy, ResponsableServiceProxy } from '@shared/service-proxies/service-proxies';
 import { CreatePacienteDialogComponent } from './pacientes/create-paciente/create-paciente-dialog.component';
 import {MoreDetailsDialogComponent} from './pacientes/moredetails/moredetails-paciente-dialog.component';
 import {ResponsablesDialogComponent} from './pacientes/responsables-paciente/responsables-paciente-dialog.component';
+import {AsociarResponsableDialogComponent} from './pacientes/responsables-paciente/asociar-responsable/asociar-responsables-paciente-dialog.component';
 import { EditPacienteDialogComponent } from './pacientes/edit-paciente/edit-paciente-dialog.component'; 
 
 @NgModule({
@@ -78,7 +79,8 @@ import { EditPacienteDialogComponent } from './pacientes/edit-paciente/edit-paci
     CreatePacienteDialogComponent,
     MoreDetailsDialogComponent,
     ResponsablesDialogComponent,
-    EditPacienteDialogComponent
+    EditPacienteDialogComponent,
+    AsociarResponsableDialogComponent
   ],
   imports: [
     CommonModule,
@@ -93,7 +95,7 @@ import { EditPacienteDialogComponent } from './pacientes/edit-paciente/edit-paci
     SharedModule,
     NgxPaginationModule
   ],
-  providers: [PacienteMedicoCabeceraServiceProxy],
+  providers: [PacienteMedicoCabeceraServiceProxy, ResponsableServiceProxy],
   entryComponents: [
     // tenants
     CreateTenantDialogComponent,
@@ -110,7 +112,8 @@ import { EditPacienteDialogComponent } from './pacientes/edit-paciente/edit-paci
     CreatePacienteDialogComponent,
     MoreDetailsDialogComponent,
     ResponsablesDialogComponent,
-    EditPacienteDialogComponent
+    EditPacienteDialogComponent,
+    AsociarResponsableDialogComponent
   ]
 })
 export class AppModule {}

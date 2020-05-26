@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WSControldePacientesApi.Api.Pacientes.Dto;
+using WSControldePacientesApi.Api.Responsables.Dto;
 using WSControldePacientesApi.Authorization;
 using WSControldePacientesApi.Authorization.Users;
 using WSControldePacientesApi.ControlPacientes.Pacientes;

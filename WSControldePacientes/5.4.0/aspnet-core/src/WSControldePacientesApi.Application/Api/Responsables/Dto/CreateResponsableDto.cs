@@ -8,7 +8,7 @@ using System.Text;
 
 namespace WSControldePacientesApi.Api.Responsables.Dto
 {
-    public class ResponsableDto : EntityDto
+    public class CreateResponsableDto : EntityDto
     {
         //DatosPersonales(User)
         //public string Login { get; set; }
@@ -35,5 +35,10 @@ namespace WSControldePacientesApi.Api.Responsables.Dto
         public string DatosPersonalesTelefono { get; set; }
 
         public bool DatosPersonalesIsActive { get; set; }
+
+        [Required]
+        [StringLength(AbpUserBase.MaxPlainPasswordLength)]
+        [DisableAuditing]
+        public string DatosPersonalesPassword { get; set; }
     }
 }

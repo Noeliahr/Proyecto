@@ -15,6 +15,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WSControldePacientesApi.Api.Pacientes.Dto;
+using WSControldePacientesApi.Api.Responsables.Dto;
 using WSControldePacientesApi.Authorization;
 using WSControldePacientesApi.Authorization.Users;
 using WSControldePacientesApi.ControlPacientes.Medicos;
@@ -63,6 +64,7 @@ namespace WSControlPacientesApi.Authorization.ControlPacienteApi.Pacientes
         public async Task<MisResponsables> AsociarResponsables(int id, ResponsableDto responsable)
         {
             var pacientes = await _pacienteRepository.GetAll()
+                .Include(pacientes=> pacientes.DatosPersonales)
                 .Include(pacientes => pacientes.MisResponsables)
                     .ThenInclude(pacientes => pacientes.Responsable)
                         .ThenInclude(pacientes => pacientes.DatosPersonales)
@@ -74,6 +76,7 @@ namespace WSControlPacientesApi.Authorization.ControlPacienteApi.Pacientes
             pacienteResponsableDto.Responsable = responsable;
 
             pacientes.MisResponsables.Add(ObjectMapper.Map<PacienteResponsable>(pacienteResponsableDto));
+
 
             await _pacienteRepository.UpdateAsync(pacientes);
 
@@ -91,7 +94,7 @@ namespace WSControlPacientesApi.Authorization.ControlPacienteApi.Pacientes
 
             foreach (PacienteResponsable respon in pacientes.MisResponsables)
             {
-                if (respon.Responsable.DatosPersonales.UserName.Equals(responsable.ResponsableDatosPersonalesUserName))
+                if (respon.Responsable.DatosPersonales.UserName.Equals(responsable.DatosPersonalesUserName))
                 {
                     respon.IsDeleted = true;
                 }

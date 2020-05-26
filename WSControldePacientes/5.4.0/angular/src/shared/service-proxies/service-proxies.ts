@@ -2775,128 +2775,6 @@ export class ResponsableServiceProxy {
     }
 
     /**
-     * @param id (optional) 
-     * @return Success
-     */
-    get(id: number | undefined): Observable<ResponsableDto> {
-        let url_ = this.baseUrl + "/api/services/app/Responsable/Get?";
-        if (id === null)
-            throw new Error("The parameter 'id' cannot be null.");
-        else if (id !== undefined)
-            url_ += "Id=" + encodeURIComponent("" + id) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGet(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGet(<any>response_);
-                } catch (e) {
-                    return <Observable<ResponsableDto>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<ResponsableDto>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processGet(response: HttpResponseBase): Observable<ResponsableDto> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ResponsableDto.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<ResponsableDto>(<any>null);
-    }
-
-    /**
-     * @param keyword (optional) 
-     * @param skipCount (optional) 
-     * @param maxResultCount (optional) 
-     * @return Success
-     */
-    getAll(keyword: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<ResponsableDtoPagedResultDto> {
-        let url_ = this.baseUrl + "/api/services/app/Responsable/GetAll?";
-        if (keyword === null)
-            throw new Error("The parameter 'keyword' cannot be null.");
-        else if (keyword !== undefined)
-            url_ += "Keyword=" + encodeURIComponent("" + keyword) + "&";
-        if (skipCount === null)
-            throw new Error("The parameter 'skipCount' cannot be null.");
-        else if (skipCount !== undefined)
-            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&";
-        if (maxResultCount === null)
-            throw new Error("The parameter 'maxResultCount' cannot be null.");
-        else if (maxResultCount !== undefined)
-            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetAll(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetAll(<any>response_);
-                } catch (e) {
-                    return <Observable<ResponsableDtoPagedResultDto>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<ResponsableDtoPagedResultDto>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processGetAll(response: HttpResponseBase): Observable<ResponsableDtoPagedResultDto> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ResponsableDtoPagedResultDto.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<ResponsableDtoPagedResultDto>(<any>null);
-    }
-
-    /**
      * @param body (optional) 
      * @return Success
      */
@@ -2953,40 +2831,35 @@ export class ResponsableServiceProxy {
     }
 
     /**
-     * @param body (optional) 
      * @return Success
      */
-    update(body: ResponsableDto | undefined): Observable<ResponsableDto> {
-        let url_ = this.baseUrl + "/api/services/app/Responsable/Update";
+    getAll(): Observable<ResponsableDtoListResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/Responsable/GetAll";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(body);
-
         let options_ : any = {
-            body: content_,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json-patch+json",
                 "Accept": "text/plain"
             })
         };
 
-        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processUpdate(response_);
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAll(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processUpdate(<any>response_);
+                    return this.processGetAll(<any>response_);
                 } catch (e) {
-                    return <Observable<ResponsableDto>><any>_observableThrow(e);
+                    return <Observable<ResponsableDtoListResultDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ResponsableDto>><any>_observableThrow(response_);
+                return <Observable<ResponsableDtoListResultDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processUpdate(response: HttpResponseBase): Observable<ResponsableDto> {
+    protected processGetAll(response: HttpResponseBase): Observable<ResponsableDtoListResultDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -2997,7 +2870,7 @@ export class ResponsableServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ResponsableDto.fromJS(resultData200);
+            result200 = ResponsableDtoListResultDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -3005,43 +2878,44 @@ export class ResponsableServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ResponsableDto>(<any>null);
+        return _observableOf<ResponsableDtoListResultDto>(<any>null);
     }
 
     /**
-     * @param id (optional) 
+     * @param name (optional) 
      * @return Success
      */
-    delete(id: number | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/api/services/app/Responsable/Delete?";
-        if (id === null)
-            throw new Error("The parameter 'id' cannot be null.");
-        else if (id !== undefined)
-            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+    buscarByUserNameOrName(name: string | undefined): Observable<ResponsableDtoListResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/Responsable/BuscarByUserNameOrName?";
+        if (name === null)
+            throw new Error("The parameter 'name' cannot be null.");
+        else if (name !== undefined)
+            url_ += "name=" + encodeURIComponent("" + name) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
+                "Accept": "text/plain"
             })
         };
 
-        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processDelete(response_);
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processBuscarByUserNameOrName(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processDelete(<any>response_);
+                    return this.processBuscarByUserNameOrName(<any>response_);
                 } catch (e) {
-                    return <Observable<void>><any>_observableThrow(e);
+                    return <Observable<ResponsableDtoListResultDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<void>><any>_observableThrow(response_);
+                return <Observable<ResponsableDtoListResultDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processDelete(response: HttpResponseBase): Observable<void> {
+    protected processBuscarByUserNameOrName(response: HttpResponseBase): Observable<ResponsableDtoListResultDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -3050,14 +2924,17 @@ export class ResponsableServiceProxy {
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return _observableOf<void>(<any>null);
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ResponsableDtoListResultDto.fromJS(resultData200);
+            return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<void>(<any>null);
+        return _observableOf<ResponsableDtoListResultDto>(<any>null);
     }
 }
 
@@ -6304,11 +6181,13 @@ export interface IMensajeDtoPagedResultDto {
 }
 
 export class ResponsableDto implements IResponsableDto {
-    responsableDatosPersonalesUserName: string | undefined;
-    responsableDatosPersonalesName: string | undefined;
-    responsableDatosPersonalesSurname: string | undefined;
-    responsableDatosPersonalesEmailAddress: string | undefined;
-    responsableDatosPersonalesTelefono: string | undefined;
+    datosPersonalesUserName: string | undefined;
+    datosPersonalesName: string | undefined;
+    datosPersonalesSurname: string | undefined;
+    datosPersonalesEmailAddress: string | undefined;
+    datosPersonalesTelefono: string | undefined;
+    datosPersonalesIsActive: boolean;
+    datosPersonalesPassword: string | undefined;
     id: number;
 
     constructor(data?: IResponsableDto) {
@@ -6322,11 +6201,13 @@ export class ResponsableDto implements IResponsableDto {
 
     init(_data?: any) {
         if (_data) {
-            this.responsableDatosPersonalesUserName = _data["responsableDatosPersonalesUserName"];
-            this.responsableDatosPersonalesName = _data["responsableDatosPersonalesName"];
-            this.responsableDatosPersonalesSurname = _data["responsableDatosPersonalesSurname"];
-            this.responsableDatosPersonalesEmailAddress = _data["responsableDatosPersonalesEmailAddress"];
-            this.responsableDatosPersonalesTelefono = _data["responsableDatosPersonalesTelefono"];
+            this.datosPersonalesUserName = _data["datosPersonalesUserName"];
+            this.datosPersonalesName = _data["datosPersonalesName"];
+            this.datosPersonalesSurname = _data["datosPersonalesSurname"];
+            this.datosPersonalesEmailAddress = _data["datosPersonalesEmailAddress"];
+            this.datosPersonalesTelefono = _data["datosPersonalesTelefono"];
+            this.datosPersonalesIsActive = _data["datosPersonalesIsActive"];
+            this.datosPersonalesPassword = _data["datosPersonalesPassword"];
             this.id = _data["id"];
         }
     }
@@ -6340,11 +6221,13 @@ export class ResponsableDto implements IResponsableDto {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["responsableDatosPersonalesUserName"] = this.responsableDatosPersonalesUserName;
-        data["responsableDatosPersonalesName"] = this.responsableDatosPersonalesName;
-        data["responsableDatosPersonalesSurname"] = this.responsableDatosPersonalesSurname;
-        data["responsableDatosPersonalesEmailAddress"] = this.responsableDatosPersonalesEmailAddress;
-        data["responsableDatosPersonalesTelefono"] = this.responsableDatosPersonalesTelefono;
+        data["datosPersonalesUserName"] = this.datosPersonalesUserName;
+        data["datosPersonalesName"] = this.datosPersonalesName;
+        data["datosPersonalesSurname"] = this.datosPersonalesSurname;
+        data["datosPersonalesEmailAddress"] = this.datosPersonalesEmailAddress;
+        data["datosPersonalesTelefono"] = this.datosPersonalesTelefono;
+        data["datosPersonalesIsActive"] = this.datosPersonalesIsActive;
+        data["datosPersonalesPassword"] = this.datosPersonalesPassword;
         data["id"] = this.id;
         return data; 
     }
@@ -6358,11 +6241,13 @@ export class ResponsableDto implements IResponsableDto {
 }
 
 export interface IResponsableDto {
-    responsableDatosPersonalesUserName: string | undefined;
-    responsableDatosPersonalesName: string | undefined;
-    responsableDatosPersonalesSurname: string | undefined;
-    responsableDatosPersonalesEmailAddress: string | undefined;
-    responsableDatosPersonalesTelefono: string | undefined;
+    datosPersonalesUserName: string | undefined;
+    datosPersonalesName: string | undefined;
+    datosPersonalesSurname: string | undefined;
+    datosPersonalesEmailAddress: string | undefined;
+    datosPersonalesTelefono: string | undefined;
+    datosPersonalesIsActive: boolean;
+    datosPersonalesPassword: string | undefined;
     id: number;
 }
 
@@ -7645,11 +7530,10 @@ export interface IPrescripcionDtoListResultDto {
     items: PrescripcionDto[] | undefined;
 }
 
-export class ResponsableDtoPagedResultDto implements IResponsableDtoPagedResultDto {
-    totalCount: number;
+export class ResponsableDtoListResultDto implements IResponsableDtoListResultDto {
     items: ResponsableDto[] | undefined;
 
-    constructor(data?: IResponsableDtoPagedResultDto) {
+    constructor(data?: IResponsableDtoListResultDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -7660,7 +7544,6 @@ export class ResponsableDtoPagedResultDto implements IResponsableDtoPagedResultD
 
     init(_data?: any) {
         if (_data) {
-            this.totalCount = _data["totalCount"];
             if (Array.isArray(_data["items"])) {
                 this.items = [] as any;
                 for (let item of _data["items"])
@@ -7669,16 +7552,15 @@ export class ResponsableDtoPagedResultDto implements IResponsableDtoPagedResultD
         }
     }
 
-    static fromJS(data: any): ResponsableDtoPagedResultDto {
+    static fromJS(data: any): ResponsableDtoListResultDto {
         data = typeof data === 'object' ? data : {};
-        let result = new ResponsableDtoPagedResultDto();
+        let result = new ResponsableDtoListResultDto();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["totalCount"] = this.totalCount;
         if (Array.isArray(this.items)) {
             data["items"] = [];
             for (let item of this.items)
@@ -7687,16 +7569,15 @@ export class ResponsableDtoPagedResultDto implements IResponsableDtoPagedResultD
         return data; 
     }
 
-    clone(): ResponsableDtoPagedResultDto {
+    clone(): ResponsableDtoListResultDto {
         const json = this.toJSON();
-        let result = new ResponsableDtoPagedResultDto();
+        let result = new ResponsableDtoListResultDto();
         result.init(json);
         return result;
     }
 }
 
-export interface IResponsableDtoPagedResultDto {
-    totalCount: number;
+export interface IResponsableDtoListResultDto {
     items: ResponsableDto[] | undefined;
 }
 

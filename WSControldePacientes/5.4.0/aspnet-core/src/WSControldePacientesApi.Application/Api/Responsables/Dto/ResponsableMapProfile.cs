@@ -11,11 +11,11 @@ namespace WSControlPacientesApi.ControlPacienteApi.Responsables.Dto
     {
         public ResponsableMapProfile()
         {
-            CreateMap<Responsable, ResponsableDto>().ForMember(pmrdto => pmrdto.ResponsableDatosPersonalesUserName, opts => opts.MapFrom(pr => pr.DatosPersonales.UserName))
-                .ForMember(pmrdto => pmrdto.ResponsableDatosPersonalesName, opts => opts.MapFrom(pr => pr.DatosPersonales.Name))
-                .ForMember(pmrdto => pmrdto.ResponsableDatosPersonalesSurname, opts => opts.MapFrom(pr => pr.DatosPersonales.Surname))
-                .ForMember(pmrdto => pmrdto.ResponsableDatosPersonalesEmailAddress, opts => opts.MapFrom(pr => pr.DatosPersonales.EmailAddress))
-                .ForMember(pmrdto => pmrdto.ResponsableDatosPersonalesTelefono, opts => opts.MapFrom(pr => pr.DatosPersonales.Telefono))
+            CreateMap<Responsable, ResponsableDto>().ForMember(pmrdto => pmrdto.DatosPersonalesUserName, opts => opts.MapFrom(pr => pr.DatosPersonales.UserName))
+                .ForMember(pmrdto => pmrdto.DatosPersonalesName, opts => opts.MapFrom(pr => pr.DatosPersonales.Name))
+                .ForMember(pmrdto => pmrdto.DatosPersonalesSurname, opts => opts.MapFrom(pr => pr.DatosPersonales.Surname))
+                .ForMember(pmrdto => pmrdto.DatosPersonalesEmailAddress, opts => opts.MapFrom(pr => pr.DatosPersonales.EmailAddress))
+                .ForMember(pmrdto => pmrdto.DatosPersonalesTelefono, opts => opts.MapFrom(pr => pr.DatosPersonales.Telefono))
                 .ReverseMap();
 
             CreateMap<Responsable, DatosResponsableDto>()
