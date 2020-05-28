@@ -17,10 +17,14 @@ namespace WSControlPacientesApi.ControlPacienteApi.Pacientes.Dto
 
             CreateMap<Paciente, EditPacienteDto>().ReverseMap();
 
-            CreateMap<Paciente, PacienteDto>().ForMember(pa => pa.datosPersonales, opts => opts.MapFrom(p => p.DatosPersonales));
-
-
-            CreateMap<PacienteDto, Paciente>().ForMember(p => p.DatosPersonales, opts => opts.MapFrom(pa => pa.datosPersonales));
+            CreateMap<Paciente, PacienteDto>().ForMember(pmrdto => pmrdto.DatosPersonalesUserName, opts => opts.MapFrom(pr => pr.DatosPersonales.UserName))
+                .ForMember(pmrdto => pmrdto.DatosPersonalesName, opts => opts.MapFrom(pr => pr.DatosPersonales.Name))
+                .ForMember(pmrdto => pmrdto.DatosPersonalesSurname, opts => opts.MapFrom(pr => pr.DatosPersonales.Surname))
+                .ForMember(pmrdto => pmrdto.DatosPersonalesEmailAddress, opts => opts.MapFrom(pr => pr.DatosPersonales.EmailAddress))
+                .ForMember(pmrdto => pmrdto.DatosPersonalesTelefono, opts => opts.MapFrom(pr => pr.DatosPersonales.Telefono))
+                .ForMember(pmrdto => pmrdto.NumSeguridadSocial, opts => opts.MapFrom(p => p.NumSeguridadSocial))
+                .ForMember(p => p.FechaNacimiento, opts => opts.MapFrom(p => p.FechaNacimiento))
+                .ReverseMap();
 
             CreateMap<Paciente, MisResponsables>().ForMember(res => res.Responsables, opts => opts.MapFrom(pac => pac.MisResponsables))
                 .ForMember(res => res.NumSeguridadSocial, opts => opts.MapFrom(pac => pac.NumSeguridadSocial)).ReverseMap();

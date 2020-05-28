@@ -52,5 +52,20 @@ namespace WSControldePacientesApi.Api.Citas
         }
 
 
+        public async Task<ListResultDto<CitaDto>> GetCitasByPaciente(int id)
+        {
+            var citas = await _citaRepository.GetAll()
+                .Include(c => c.Direccion)
+                .Include(c => c.Medico)
+                    .ThenInclude(c => c.DatosPersonales)
+                .Where(c=> c.PacienteId==id)
+                .OrderByDescending(c => c.FechaHora)
+                .ToListAsync();
+
+            return new ListResultDto<CitaDto>(ObjectMapper.Map<List<CitaDto>>(citas));
+
+        }
+
+
     }
 }

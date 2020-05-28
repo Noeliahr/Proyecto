@@ -65,12 +65,13 @@
                 <br />
                 <div class="row-fluid">
                     <div class="col-md-12">
-                        <mat-form-field>
-                          <mat-label>Fecha de Nacimiento</mat-label>
-                          <input matInput [matDatepicker]="picker" [(ngModel)]="paciente.numSeguridadSocial">
-                          <mat-datepicker-toggle matSuffix [for]="picker" [(ngModel)]="paciente.numSeguridadSocial"></mat-datepicker-toggle>
-                          <mat-datepicker #picker [(ngModel)]="paciente.numSeguridadSocial"></mat-datepicker>
-                        </mat-form-field>
+                      <mat-form-field>
+                        <input matInput
+                               
+                               name="FechaNacimiento"
+                               [placeholder]="'Fecha de  Nacimiento' | localize"
+                               [(ngModel)]="paciente.fechaNacimiento" />
+                    </mat-form-field>
                         <mat-form-field>
                             <input matInput
                                    name="Numero de Seguridad Social"
@@ -89,7 +90,8 @@
                     <div class="col-sm-3">
                         <mat-form-field>
                           <mat-label>Tipo</mat-label>
-                          <mat-select matNativeControl [(value)]="selectedTipo" >
+                          <!--<mat-label>{{paciente.dondeViveTipo}}</mat-label> -->
+                          <mat-select matNativeControl [(value)]="paciente.dondeViveTipo">
                             <mat-option value="Calle">Calle</mat-option>
                             <mat-option value="Avenida">Avenida</mat-option>
                             <mat-option value="Plaza">Plaza</mat-option>
@@ -147,9 +149,9 @@
                         </mat-form-field>
                         <mat-form-field>
                             <input matInput
-                                name="Codigo Postal"
+                                name="CodigoPostal"
                                 [placeholder]="'Codigo Postal' | localize"
-                                [(ngModel)]="paciente.dondeViveCodigoPostal" 
+                                [(ngModel)]="paciente.dondeViveCodigo_Postal" 
                                 minlength="5"
                                 maxlength="5"/>
                         </mat-form-field>
@@ -226,7 +228,7 @@
                   <div class="col-md-12">
                     <mat-form-field>
                       <mat-label>Login del userName</mat-label>
-                      <mat-select matNativeControl  [(value)]="selectedUserNameMedico" >
+                      <mat-select matNativeControl  [(value)]="paciente.miMedicoCabeceraDatosPersonalesUserName" >
                         <mat-option *ngFor="let userName of medicosCabecera" value="{{userName.userName}}">{{userName.userName}}</mat-option>
                       </mat-select>
                     </mat-form-field>

@@ -1,15 +1,16 @@
-﻿using System;
+﻿using Abp.Application.Services.Dto;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using WSControldePacientesApi.Api.Responsables.Dto;
 using WSControlPacientesApi.ControlPacienteApi.Pacientes.Dto;
 
-namespace WSControlPacientesApi.ControlPacienteApi.PacientesResponsables.Dto
+namespace WSControldePacientesApi.Api.PacientesResponsables
 {
-    public class PacienteResponsableDto
+    public  class PacienteResponsableDto : EntityDto
     {
-        public PacienteDto Paciente { get; set; }
+        public PacienteDto paciente { get; set; }
 
-        public ResponsableDto Responsable { get; set; }
+        public ResponsableDto responsable { get; set; }
     }
 }

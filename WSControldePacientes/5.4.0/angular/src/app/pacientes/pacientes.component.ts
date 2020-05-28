@@ -115,7 +115,7 @@ export class PacientesComponent extends PagedListingComponentBase<PacienteDto> {
     }
 
     misResponsables (paciente: PacienteDto){
-        this._dialog.open(ResponsablesDialogComponent, {data : paciente.id});
+        this._dialog.open(ResponsablesDialogComponent, {data : paciente});
     }
 
 

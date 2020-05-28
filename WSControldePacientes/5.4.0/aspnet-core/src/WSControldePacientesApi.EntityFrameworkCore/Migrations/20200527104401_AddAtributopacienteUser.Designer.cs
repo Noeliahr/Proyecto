@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WSControldePacientesApi.EntityFrameworkCore;
 
 namespace WSControldePacientesApi.Migrations
 {
     [DbContext(typeof(WSControldePacientesApiDbContext))]
-    partial class WSControldePacientesApiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200527104401_AddAtributopacienteUser")]
+    partial class AddAtributopacienteUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1544,6 +1546,9 @@ namespace WSControldePacientesApi.Migrations
                     b.Property<int?>("medicoId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("pacienteId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CreatorUserId");
@@ -1553,6 +1558,8 @@ namespace WSControldePacientesApi.Migrations
                     b.HasIndex("LastModifierUserId");
 
                     b.HasIndex("medicoId");
+
+                    b.HasIndex("pacienteId");
 
                     b.HasIndex("TenantId", "NormalizedEmailAddress");
 
@@ -1692,7 +1699,7 @@ namespace WSControldePacientesApi.Migrations
                     b.Property<DateTime?>("DeletionTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("EntidadePoblacion")
+                    b.Property<string>("Entidad_de_Poblacion")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Escalera")
@@ -1701,7 +1708,7 @@ namespace WSControldePacientesApi.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<int>("Kmenlavia")
+                    b.Property<int>("Km_en_la_via")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("LastModificationTime")
@@ -2095,7 +2102,7 @@ namespace WSControldePacientesApi.Migrations
 
                     b.HasIndex("ResponsableId");
 
-                    b.ToTable("pacienteResponsables");
+                    b.ToTable("PacienteResponsable");
                 });
 
             modelBuilder.Entity("WSControldePacientesApi.ControlPacientes.Prescripciones.Prescripcion", b =>
@@ -2496,6 +2503,10 @@ namespace WSControldePacientesApi.Migrations
                     b.HasOne("WSControldePacientesApi.ControlPacientes.Medicos.Medico", "medico")
                         .WithMany()
                         .HasForeignKey("medicoId");
+
+                    b.HasOne("WSControldePacientesApi.ControlPacientes.Pacientes.Paciente", "paciente")
+                        .WithMany()
+                        .HasForeignKey("pacienteId");
                 });
 
             modelBuilder.Entity("WSControldePacientesApi.ControlPacientes.Citas.Cita", b =>

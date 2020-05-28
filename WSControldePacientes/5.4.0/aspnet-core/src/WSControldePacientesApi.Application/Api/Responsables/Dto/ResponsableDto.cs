@@ -13,24 +13,19 @@ namespace WSControldePacientesApi.Api.Responsables.Dto
         //DatosPersonales(User)
         //public string Login { get; set; }
         // public MiCrearUserDto DatosPersonales { get; set; }
-        [Required]
         [StringLength(AbpUserBase.MaxUserNameLength)]
         public string DatosPersonalesUserName { get; set; }
 
-        [Required]
         [StringLength(AbpUserBase.MaxNameLength)]
         public string DatosPersonalesName { get; set; }
 
-        [Required]
         [StringLength(AbpUserBase.MaxSurnameLength)]
         public string DatosPersonalesSurname { get; set; }
 
-        [Required]
         [EmailAddress]
         [StringLength(AbpUserBase.MaxEmailAddressLength)]
         public string DatosPersonalesEmailAddress { get; set; }
 
-        [Required]
         [MaxLength(15)]
         public string DatosPersonalesTelefono { get; set; }
 

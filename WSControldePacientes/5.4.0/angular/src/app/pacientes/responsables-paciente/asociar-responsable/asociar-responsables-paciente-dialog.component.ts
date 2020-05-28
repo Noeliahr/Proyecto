@@ -8,7 +8,7 @@ import { finalize } from 'rxjs/operators';
 import * as _ from 'lodash';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/app-component-base';
-import {PacienteMedicoCabeceraServiceProxy, ResponsableServiceProxy, MisResponsables, ResponsableDto } from '@shared/service-proxies/service-proxies';
+import {MisResponsablesServiceProxy, ResponsableServiceProxy, MisResponsables, ResponsableDto, PacienteDto, CreateResponsableDto } from '@shared/service-proxies/service-proxies';
 
 
 class PagedResponsablesRequestDto extends PagedRequestDto {
@@ -35,11 +35,12 @@ export class AsociarResponsableDialogComponent extends PagedListingComponentBase
       
     constructor(
         injector: Injector,
-        private _pacienteService: PacienteMedicoCabeceraServiceProxy,
+        
         private _responsableService: ResponsableServiceProxy,
+        private _misresponService: MisResponsablesServiceProxy,
         private _dialogRef: MatDialogRef<AsociarResponsableDialogComponent>,
         private _dialog: MatDialog,
-        @Optional() @Inject(MAT_DIALOG_DATA) private _id: number
+        @Optional() @Inject(MAT_DIALOG_DATA) private _paciente: PacienteDto
     ) {
         super(injector);
     }
@@ -77,16 +78,18 @@ export class AsociarResponsableDialogComponent extends PagedListingComponentBase
     }
 
     save(responsable : ResponsableDto){
+        
         abp.message.confirm(
-            this.l('¿Esta seguro que quiere asociarle?', this._id),
+            this.l('¿Esta seguro que quiere asociarle?', this._paciente),
             undefined,
             (result: boolean) => {
                 if (result) {
-                    this._pacienteService
-                        .asociarResponsables(this._id, responsable)
+                    this._misresponService
+                        .asociarResponsables(this._paciente.id, responsable.id)
                         .pipe(
                             finalize(() => {
                                 abp.notify.success(this.l('Responsable Asociado'));
+                                this.close(result);
                             })
                         )
                         .subscribe(() => { });
@@ -96,8 +99,9 @@ export class AsociarResponsableDialogComponent extends PagedListingComponentBase
     }
 
     saveyguardar(){
+
         this.saving = true;
-        const responsable_ = new ResponsableDto();
+        const responsable_ = new CreateResponsableDto();
         responsable_.init(this.responsable);
         console.log(responsable_);
 
@@ -111,25 +115,12 @@ export class AsociarResponsableDialogComponent extends PagedListingComponentBase
             .subscribe(() => {
                 this.notify.info(this.l('Responsable Creado'));
                 this.close(true);
+                result  => {
+                    this.responsable = result;
+                }
             });
 
-        abp.message.confirm(
-            this.l('¿Esta seguro que quiere asociarle ?', this._id),
-            undefined,
-            (result: boolean) => {
-                if (result) {
-                    this._pacienteService
-                        .asociarResponsables(this._id, responsable_)
-                        .pipe(
-                            finalize(() => {
-                                abp.notify.success(this.l('Responsable Asociado'));
-                                this.ngOnInit();
-                            })
-                        )
-                        .subscribe(() => { });
-                }
-            }
-        );
+        this.save(this.responsable);
     }
 
     delete(){}

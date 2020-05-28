@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WSControldePacientesApi.EntityFrameworkCore;
 
 namespace WSControldePacientesApi.Migrations
 {
     [DbContext(typeof(WSControldePacientesApiDbContext))]
-    partial class WSControldePacientesApiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200527155249_AddAtributopacienteUser1")]
+    partial class AddAtributopacienteUser1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1692,7 +1694,7 @@ namespace WSControldePacientesApi.Migrations
                     b.Property<DateTime?>("DeletionTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("EntidadePoblacion")
+                    b.Property<string>("Entidad_de_Poblacion")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Escalera")
@@ -1701,7 +1703,7 @@ namespace WSControldePacientesApi.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<int>("Kmenlavia")
+                    b.Property<int>("Km_en_la_via")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("LastModificationTime")
@@ -2095,7 +2097,7 @@ namespace WSControldePacientesApi.Migrations
 
                     b.HasIndex("ResponsableId");
 
-                    b.ToTable("pacienteResponsables");
+                    b.ToTable("PacienteResponsable");
                 });
 
             modelBuilder.Entity("WSControldePacientesApi.ControlPacientes.Prescripciones.Prescripcion", b =>

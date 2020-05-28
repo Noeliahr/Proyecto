@@ -2,7 +2,7 @@
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="card main-content">
             <div class="header">
-                <h2><mat-icon>assignment_ind</mat-icon>{{ "Pacientes" | localize }}</h2>
+                <h2><i class="fa fa-address-card-o" aria-hidden="true"></i> {{ "Pacientes" | localize }}</h2>
                 <ul class="header-dropdown m-r--5">
                     <li>
                         <button mat-icon-button [matMenuTriggerFor]="headerMenu" class="header-dropdown-mat-icon-button">
@@ -54,10 +54,10 @@
                         totalItems: totalItems
                       })
               ">
-                            <td>{{ paciente.datosPersonales.userName }}</td>
-                            <td>{{ paciente.datosPersonales.name }}</td>
-                            <td>{{ paciente.datosPersonales.surname }}</td>
-                            <td>{{ paciente.datosPersonales.telefono }}</td>
+                            <td>{{ paciente.datosPersonalesUserName }}</td>
+                            <td>{{ paciente.datosPersonalesName }}</td>
+                            <td>{{ paciente.datosPersonalesSurname }}</td>
+                            <td>{{ paciente.datosPersonalesTelefono }}</td>
                             <td>{{ paciente.numSeguridadSocial }}</td>
                             <td>
                                 <button class="action-button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
@@ -80,9 +80,13 @@
                                         <mat-icon>supervisor_account</mat-icon>
                                         <span>{{ "Sus Responsables" | localize }}</span>
                                     </button>
-                                    <button mat-menu-item (click)="delete(paciente)">
-                                        <mat-icon>today</mat-icon>
-                                        <span>{{ "Sus Citas" | localize }}</span>
+                                    <button mat-menu-item (click)="citas(paciente)">
+                                        <a [routerLink]="['/app/citas', paciente.id]" class="navbar-brand"> 
+                                      <!--  <a routerLink="/app/home" class="navbar-brand"> -->
+                                            <mat-icon>today</mat-icon>
+                                            <span>{{ "Sus Citas" | localize }}</span> 
+                                        </a>
+                                        
                                     </button>
                                     <button mat-menu-item (click)="delete(paciente)">
                                         <mat-icon>announcement</mat-icon>

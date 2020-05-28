@@ -26,7 +26,7 @@
                             <tr> 
                                 <th>{{"Fecha de Nacimiento" | localize}}</th>
                                 <th> </th>
-                                <td> {{paciente.fechaNacimiento}}</td>
+                                <td> {{paciente.fechaNacimiento | date:"dd-MM-yyyy" }}</td>
                             </tr>
                         </thead>
                         <tbody>

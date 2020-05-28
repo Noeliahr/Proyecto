@@ -27,8 +27,6 @@ export class EditPacienteDialogComponent extends AppComponentBase  {
     saving = false;
     paciente: PacienteCompletoDto = new PacienteCompletoDto();
     medicosCabecera : UserNameMedicosCabecera[] = [];
-    selectedTipo : string = "";
-    selectedUserNameMedico : string ="";
 
 
     constructor(
@@ -43,9 +41,6 @@ export class EditPacienteDialogComponent extends AppComponentBase  {
     ngOnInit(){
         this._pacienteService.getDatosCompletosByPaciente(this._id).subscribe(result =>
             this.paciente = result);
-
-            this.selectedTipo= this.paciente.dondeViveTipo;
-            this.selectedUserNameMedico = this.paciente.miMedicoCabeceraDatosPersonalesUserName;
         
         this._pacienteService.getAllMedicosCabecera().subscribe(result=> this.medicosCabecera= result.items);
         
@@ -58,9 +53,11 @@ export class EditPacienteDialogComponent extends AppComponentBase  {
         paciente_.init(this.paciente);
         console.log(paciente_);
 
-        paciente_.dondeViveTipo= this.selectedTipo;
+        paciente_.dondeViveTipo= this.paciente.dondeViveTipo;
 
-        paciente_.medicoCabeceraUserName= this.selectedUserNameMedico;
+        paciente_.medicoCabeceraUserName= this.paciente.miMedicoCabeceraDatosPersonalesUserName;
+
+        paciente_.dondeViveCodigoPostal = this.paciente.dondeViveCodigo_Postal;
         
         this._pacienteService
             .update(paciente_)

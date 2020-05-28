@@ -25,7 +25,7 @@ namespace WSControldePacientesApi.Api.Citas.Dto
 
         public string DireccionLetra { get; set; }
 
-        public int DireccionKm_en_la_via { get; set; }
+        public int DireccionKmenlavia { get; set; }
 
         public string DireccionBloque { get; set; }
 
@@ -37,9 +37,9 @@ namespace WSControldePacientesApi.Api.Citas.Dto
 
         public char DireccionPuerta { get; set; }
 
-        public string DireccionCodigo_Postal { get; set; }
+        public string DireccionCodigoPostal { get; set; }
 
-        public string DireccionEntidad_de_Poblacion { get; set; }
+        public string DireccionEntidaddePoblacion { get; set; }
 
         public string DireccionMunicipio { get; set; }
         public string DireccionProvincia { get; set; }

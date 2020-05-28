@@ -9,6 +9,8 @@ import { TenantsComponent } from './tenants/tenants.component';
 import { RolesComponent } from 'app/roles/roles.component';
 import { ChangePasswordComponent } from './users/change-password/change-password.component';
 import { PacientesComponent } from '@app/pacientes/pacientes.component';
+import { CitaPacienteComponent } from './pacientes/citas-paciente/citas-paciente.component';
+import { PacienteDto } from '@shared/service-proxies/service-proxies';
 
 @NgModule({
     imports: [
@@ -24,7 +26,9 @@ import { PacientesComponent } from '@app/pacientes/pacientes.component';
                     { path: 'about', component: AboutComponent },
                     { path: 'update-password', component: ChangePasswordComponent },
 
-                    { path: 'pacientesMedicoCabecera', component: PacientesComponent, data: { permission: 'Pages.PacientesMedicoCabecera' }}
+                    { path: 'pacientesMedicoCabecera', component: PacientesComponent, data: { permission: 'Pages.PacientesMedicoCabecera' }},
+
+                    { path: 'citas/:id', component: CitaPacienteComponent, data: { permission: 'Pages.Citas' },}
                 ]
             }
         ])

@@ -11,9 +11,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WSControldePacientesApi.Api.Responsables.Dto;
 using WSControldePacientesApi.Authorization;
 using WSControldePacientesApi.Authorization.Users;
+using WSControldePacientesApi.ControlPacientes.Pacientes;
 using WSControldePacientesApi.ControlPacientes.PacientesResponsables;
+using WSControldePacientesApi.ControlPacientes.Responsables;
+using WSControlPacientesApi.ControlPacienteApi.Pacientes.Dto;
 using WSControlPacientesApi.ControlPacienteApi.PacientesResponsables.Dto;
 
 namespace WSControldePacientesApi.Api.PacientesResponsables
@@ -42,6 +46,18 @@ namespace WSControldePacientesApi.Api.PacientesResponsables
                 .ToListAsync();
 
             return new ListResultDto<PacienteMiResponsableDto>(ObjectMapper.Map<List<PacienteMiResponsableDto>>(responsables));
+        }
+
+        public async Task AsociarResponsables(int pacienteId, int responsableId)
+        {
+
+            PacienteResponsable nuevoPacienteResponsable = new PacienteResponsable();
+            nuevoPacienteResponsable.PacienteId = pacienteId;
+            nuevoPacienteResponsable.ResponsableId = responsableId;
+            
+            await _pacienteRepository.InsertAsync(nuevoPacienteResponsable);
+            CurrentUnitOfWork.SaveChanges();
+
         }
     }
 }

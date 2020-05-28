@@ -424,6 +424,62 @@ export class CitasServiceProxy {
         }
         return _observableOf<void>(<any>null);
     }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getCitasByPaciente(id: number | undefined): Observable<CitaDtoListResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/Citas/GetCitasByPaciente?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetCitasByPaciente(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetCitasByPaciente(<any>response_);
+                } catch (e) {
+                    return <Observable<CitaDtoListResultDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<CitaDtoListResultDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetCitasByPaciente(response: HttpResponseBase): Observable<CitaDtoListResultDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = CitaDtoListResultDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<CitaDtoListResultDto>(<any>null);
+    }
 }
 
 @Injectable()
@@ -1487,6 +1543,63 @@ export class MisResponsablesServiceProxy {
         }
         return _observableOf<PacienteMiResponsableDtoListResultDto>(<any>null);
     }
+
+    /**
+     * @param pacienteId (optional) 
+     * @param responsableId (optional) 
+     * @return Success
+     */
+    asociarResponsables(pacienteId: number | undefined, responsableId: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/MisResponsables/AsociarResponsables?";
+        if (pacienteId === null)
+            throw new Error("The parameter 'pacienteId' cannot be null.");
+        else if (pacienteId !== undefined)
+            url_ += "pacienteId=" + encodeURIComponent("" + pacienteId) + "&";
+        if (responsableId === null)
+            throw new Error("The parameter 'responsableId' cannot be null.");
+        else if (responsableId !== undefined)
+            url_ += "responsableId=" + encodeURIComponent("" + responsableId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAsociarResponsables(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAsociarResponsables(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processAsociarResponsables(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
 }
 
 @Injectable()
@@ -1586,67 +1699,6 @@ export class PacienteMedicoCabeceraServiceProxy {
     }
 
     protected processGetMisResponsables(response: HttpResponseBase): Observable<MisResponsables> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = MisResponsables.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<MisResponsables>(<any>null);
-    }
-
-    /**
-     * @param id (optional) 
-     * @param body (optional) 
-     * @return Success
-     */
-    asociarResponsables(id: number | undefined, body: ResponsableDto | undefined): Observable<MisResponsables> {
-        let url_ = this.baseUrl + "/api/services/app/PacienteMedicoCabecera/AsociarResponsables?";
-        if (id === null)
-            throw new Error("The parameter 'id' cannot be null.");
-        else if (id !== undefined)
-            url_ += "id=" + encodeURIComponent("" + id) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json-patch+json",
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processAsociarResponsables(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processAsociarResponsables(<any>response_);
-                } catch (e) {
-                    return <Observable<MisResponsables>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<MisResponsables>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processAsociarResponsables(response: HttpResponseBase): Observable<MisResponsables> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -2353,67 +2405,6 @@ export class PacienteparaMedicoServiceProxy {
      * @param body (optional) 
      * @return Success
      */
-    asociarResponsables(id: number | undefined, body: ResponsableDto | undefined): Observable<MisResponsables> {
-        let url_ = this.baseUrl + "/api/services/app/PacienteparaMedico/AsociarResponsables?";
-        if (id === null)
-            throw new Error("The parameter 'id' cannot be null.");
-        else if (id !== undefined)
-            url_ += "id=" + encodeURIComponent("" + id) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json-patch+json",
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processAsociarResponsables(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processAsociarResponsables(<any>response_);
-                } catch (e) {
-                    return <Observable<MisResponsables>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<MisResponsables>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processAsociarResponsables(response: HttpResponseBase): Observable<MisResponsables> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = MisResponsables.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<MisResponsables>(<any>null);
-    }
-
-    /**
-     * @param id (optional) 
-     * @param body (optional) 
-     * @return Success
-     */
     desasociarResponsable(id: number | undefined, body: ResponsableDto | undefined): Observable<MisResponsables> {
         let url_ = this.baseUrl + "/api/services/app/PacienteparaMedico/DesasociarResponsable?";
         if (id === null)
@@ -2778,7 +2769,7 @@ export class ResponsableServiceProxy {
      * @param body (optional) 
      * @return Success
      */
-    create(body: ResponsableDto | undefined): Observable<ResponsableDto> {
+    create(body: CreateResponsableDto | undefined): Observable<ResponsableDto> {
         let url_ = this.baseUrl + "/api/services/app/Responsable/Create";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -6187,7 +6178,6 @@ export class ResponsableDto implements IResponsableDto {
     datosPersonalesEmailAddress: string | undefined;
     datosPersonalesTelefono: string | undefined;
     datosPersonalesIsActive: boolean;
-    datosPersonalesPassword: string | undefined;
     id: number;
 
     constructor(data?: IResponsableDto) {
@@ -6207,7 +6197,6 @@ export class ResponsableDto implements IResponsableDto {
             this.datosPersonalesEmailAddress = _data["datosPersonalesEmailAddress"];
             this.datosPersonalesTelefono = _data["datosPersonalesTelefono"];
             this.datosPersonalesIsActive = _data["datosPersonalesIsActive"];
-            this.datosPersonalesPassword = _data["datosPersonalesPassword"];
             this.id = _data["id"];
         }
     }
@@ -6227,7 +6216,6 @@ export class ResponsableDto implements IResponsableDto {
         data["datosPersonalesEmailAddress"] = this.datosPersonalesEmailAddress;
         data["datosPersonalesTelefono"] = this.datosPersonalesTelefono;
         data["datosPersonalesIsActive"] = this.datosPersonalesIsActive;
-        data["datosPersonalesPassword"] = this.datosPersonalesPassword;
         data["id"] = this.id;
         return data; 
     }
@@ -6247,7 +6235,6 @@ export interface IResponsableDto {
     datosPersonalesEmailAddress: string | undefined;
     datosPersonalesTelefono: string | undefined;
     datosPersonalesIsActive: boolean;
-    datosPersonalesPassword: string | undefined;
     id: number;
 }
 
@@ -6345,72 +6332,13 @@ export interface IPacienteMiResponsableDtoListResultDto {
     items: PacienteMiResponsableDto[] | undefined;
 }
 
-export class DatosPersonalesDto implements IDatosPersonalesDto {
-    userName: string | undefined;
-    name: string | undefined;
-    surname: string | undefined;
-    emailAddress: string | undefined;
-    telefono: string | undefined;
-    id: number;
-
-    constructor(data?: IDatosPersonalesDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.userName = _data["userName"];
-            this.name = _data["name"];
-            this.surname = _data["surname"];
-            this.emailAddress = _data["emailAddress"];
-            this.telefono = _data["telefono"];
-            this.id = _data["id"];
-        }
-    }
-
-    static fromJS(data: any): DatosPersonalesDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new DatosPersonalesDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["userName"] = this.userName;
-        data["name"] = this.name;
-        data["surname"] = this.surname;
-        data["emailAddress"] = this.emailAddress;
-        data["telefono"] = this.telefono;
-        data["id"] = this.id;
-        return data; 
-    }
-
-    clone(): DatosPersonalesDto {
-        const json = this.toJSON();
-        let result = new DatosPersonalesDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IDatosPersonalesDto {
-    userName: string | undefined;
-    name: string | undefined;
-    surname: string | undefined;
-    emailAddress: string | undefined;
-    telefono: string | undefined;
-    id: number;
-}
-
 export class PacienteDto implements IPacienteDto {
     numSeguridadSocial: number;
-    datosPersonales: DatosPersonalesDto;
+    datosPersonalesUserName: string | undefined;
+    datosPersonalesName: string | undefined;
+    datosPersonalesSurname: string | undefined;
+    datosPersonalesEmailAddress: string | undefined;
+    datosPersonalesTelefono: string | undefined;
     fechaNacimiento: moment.Moment;
     id: number;
 
@@ -6421,15 +6349,16 @@ export class PacienteDto implements IPacienteDto {
                     (<any>this)[property] = (<any>data)[property];
             }
         }
-        if (!data) {
-            this.datosPersonales = new DatosPersonalesDto();
-        }
     }
 
     init(_data?: any) {
         if (_data) {
             this.numSeguridadSocial = _data["numSeguridadSocial"];
-            this.datosPersonales = _data["datosPersonales"] ? DatosPersonalesDto.fromJS(_data["datosPersonales"]) : new DatosPersonalesDto();
+            this.datosPersonalesUserName = _data["datosPersonalesUserName"];
+            this.datosPersonalesName = _data["datosPersonalesName"];
+            this.datosPersonalesSurname = _data["datosPersonalesSurname"];
+            this.datosPersonalesEmailAddress = _data["datosPersonalesEmailAddress"];
+            this.datosPersonalesTelefono = _data["datosPersonalesTelefono"];
             this.fechaNacimiento = _data["fechaNacimiento"] ? moment(_data["fechaNacimiento"].toString()) : <any>undefined;
             this.id = _data["id"];
         }
@@ -6445,7 +6374,11 @@ export class PacienteDto implements IPacienteDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["numSeguridadSocial"] = this.numSeguridadSocial;
-        data["datosPersonales"] = this.datosPersonales ? this.datosPersonales.toJSON() : <any>undefined;
+        data["datosPersonalesUserName"] = this.datosPersonalesUserName;
+        data["datosPersonalesName"] = this.datosPersonalesName;
+        data["datosPersonalesSurname"] = this.datosPersonalesSurname;
+        data["datosPersonalesEmailAddress"] = this.datosPersonalesEmailAddress;
+        data["datosPersonalesTelefono"] = this.datosPersonalesTelefono;
         data["fechaNacimiento"] = this.fechaNacimiento ? this.fechaNacimiento.toISOString() : <any>undefined;
         data["id"] = this.id;
         return data; 
@@ -6461,7 +6394,11 @@ export class PacienteDto implements IPacienteDto {
 
 export interface IPacienteDto {
     numSeguridadSocial: number;
-    datosPersonales: DatosPersonalesDto;
+    datosPersonalesUserName: string | undefined;
+    datosPersonalesName: string | undefined;
+    datosPersonalesSurname: string | undefined;
+    datosPersonalesEmailAddress: string | undefined;
+    datosPersonalesTelefono: string | undefined;
     fechaNacimiento: moment.Moment;
     id: number;
 }
@@ -7528,6 +7465,77 @@ export class PrescripcionDtoListResultDto implements IPrescripcionDtoListResultD
 
 export interface IPrescripcionDtoListResultDto {
     items: PrescripcionDto[] | undefined;
+}
+
+export class CreateResponsableDto implements ICreateResponsableDto {
+    datosPersonalesUserName: string | undefined;
+    datosPersonalesName: string | undefined;
+    datosPersonalesSurname: string | undefined;
+    datosPersonalesEmailAddress: string | undefined;
+    datosPersonalesTelefono: string | undefined;
+    datosPersonalesIsActive: boolean;
+    datosPersonalesPassword: string | undefined;
+    id: number;
+
+    constructor(data?: ICreateResponsableDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.datosPersonalesUserName = _data["datosPersonalesUserName"];
+            this.datosPersonalesName = _data["datosPersonalesName"];
+            this.datosPersonalesSurname = _data["datosPersonalesSurname"];
+            this.datosPersonalesEmailAddress = _data["datosPersonalesEmailAddress"];
+            this.datosPersonalesTelefono = _data["datosPersonalesTelefono"];
+            this.datosPersonalesIsActive = _data["datosPersonalesIsActive"];
+            this.datosPersonalesPassword = _data["datosPersonalesPassword"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): CreateResponsableDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateResponsableDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["datosPersonalesUserName"] = this.datosPersonalesUserName;
+        data["datosPersonalesName"] = this.datosPersonalesName;
+        data["datosPersonalesSurname"] = this.datosPersonalesSurname;
+        data["datosPersonalesEmailAddress"] = this.datosPersonalesEmailAddress;
+        data["datosPersonalesTelefono"] = this.datosPersonalesTelefono;
+        data["datosPersonalesIsActive"] = this.datosPersonalesIsActive;
+        data["datosPersonalesPassword"] = this.datosPersonalesPassword;
+        data["id"] = this.id;
+        return data; 
+    }
+
+    clone(): CreateResponsableDto {
+        const json = this.toJSON();
+        let result = new CreateResponsableDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICreateResponsableDto {
+    datosPersonalesUserName: string | undefined;
+    datosPersonalesName: string | undefined;
+    datosPersonalesSurname: string | undefined;
+    datosPersonalesEmailAddress: string | undefined;
+    datosPersonalesTelefono: string | undefined;
+    datosPersonalesIsActive: boolean;
+    datosPersonalesPassword: string | undefined;
+    id: number;
 }
 
 export class ResponsableDtoListResultDto implements IResponsableDtoListResultDto {

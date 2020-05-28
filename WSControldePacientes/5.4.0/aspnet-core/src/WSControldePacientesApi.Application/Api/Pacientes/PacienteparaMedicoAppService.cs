@@ -70,26 +70,6 @@ namespace WSControldePacientesApi.Api.Pacientes
             return new ListResultDto<MisResponsables>(ObjectMapper.Map<List<MisResponsables>>(pacientes));
         }
 
-        public async Task<MisResponsables> AsociarResponsables(int id, ResponsableDto responsable)
-        {
-            var pacientes = await _pacienteRepository.GetAll()
-                .Include(pacientes => pacientes.MisResponsables)
-                    .ThenInclude(pacientes => pacientes.Responsable)
-                        .ThenInclude(pacientes => pacientes.DatosPersonales)
-                .Where(pacientes => pacientes.Id == id)
-                .FirstOrDefaultAsync();
-
-            PacienteResponsableDto pacienteResponsableDto = new PacienteResponsableDto();
-            pacienteResponsableDto.Paciente = ObjectMapper.Map<PacienteDto>(pacientes);
-            pacienteResponsableDto.Responsable = responsable;
-
-            pacientes.MisResponsables.Add(ObjectMapper.Map<PacienteResponsable>(pacienteResponsableDto));
-
-            await _pacienteRepository.UpdateAsync(pacientes);
-
-            return ObjectMapper.Map<MisResponsables>(pacientes);
-        }
-
         public async Task<MisResponsables> DesasociarResponsable(int id, ResponsableDto responsable)
         {
             var pacientes = await _pacienteRepository.GetAll()

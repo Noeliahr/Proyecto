@@ -43,6 +43,8 @@ namespace WSControldePacientesApi.EntityFrameworkCore
 
         public DbSet<Paciente> pacientes { get; set; }
 
+        public DbSet<PacienteResponsable> pacienteResponsables { get; set; }
+
         public DbSet<Prescripcion> prescripciones { get; set; }
 
         public DbSet<Recordatorio> recordatorios { get; set; }

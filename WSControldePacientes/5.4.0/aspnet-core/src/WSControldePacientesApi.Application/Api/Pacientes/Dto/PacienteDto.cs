@@ -1,4 +1,5 @@
 ﻿using Abp.Application.Services.Dto;
+using Abp.Authorization.Users;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -10,13 +11,24 @@ namespace WSControlPacientesApi.ControlPacienteApi.Pacientes.Dto
 {
     public class PacienteDto :EntityDto
     {
-        [Required]
         public long NumSeguridadSocial { get; set; }
 
-        [Required]
-        public DatosPersonalesDto datosPersonales { get; set; }
+        [StringLength(AbpUserBase.MaxUserNameLength)]
+        public string DatosPersonalesUserName { get; set; }
 
-        [Required]
+        [StringLength(AbpUserBase.MaxNameLength)]
+        public string DatosPersonalesName { get; set; }
+
+        [StringLength(AbpUserBase.MaxSurnameLength)]
+        public string DatosPersonalesSurname { get; set; }
+
+        [EmailAddress]
+        [StringLength(AbpUserBase.MaxEmailAddressLength)]
+        public string DatosPersonalesEmailAddress { get; set; }
+
+        [MaxLength(15)]
+        public string DatosPersonalesTelefono { get; set; }
+
         public DateTime FechaNacimiento { get; set; }
 
     }

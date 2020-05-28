@@ -5,6 +5,7 @@ using Abp.Authorization.Users;
 using Abp.Extensions;
 using WSControldePacientesApi.ControlPacientes.Medicos;
 using WSControldePacientesApi.ControlPacientes.Mensajes;
+using WSControldePacientesApi.ControlPacientes.Pacientes;
 
 namespace WSControldePacientesApi.Authorization.Users
 {

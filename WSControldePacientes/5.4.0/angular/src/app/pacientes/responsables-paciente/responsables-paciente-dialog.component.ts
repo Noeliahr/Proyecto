@@ -8,7 +8,7 @@ import { finalize } from 'rxjs/operators';
 import * as _ from 'lodash';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/app-component-base';
-import {PacienteMedicoCabeceraServiceProxy, PacienteCompletoDto, MisResponsables, ResponsableDto } from '@shared/service-proxies/service-proxies';
+import {PacienteMedicoCabeceraServiceProxy, PacienteCompletoDto, MisResponsables, ResponsableDto, PacienteDto } from '@shared/service-proxies/service-proxies';
 import { AsociarResponsableDialogComponent } from './asociar-responsable/asociar-responsables-paciente-dialog.component';
 
 class PagedPacientesRequestDto extends PagedRequestDto {
@@ -36,14 +36,14 @@ export class ResponsablesDialogComponent extends AppComponentBase  {
         private _pacienteService: PacienteMedicoCabeceraServiceProxy,
         private _dialogRef: MatDialogRef<ResponsablesDialogComponent>,
         private _dialog: MatDialog,
-        @Optional() @Inject(MAT_DIALOG_DATA) private _id: number
+        @Optional() @Inject(MAT_DIALOG_DATA) private _paciente: PacienteDto
     ) {
         super(injector);
     }
 
   
     ngOnInit() {
-        this._pacienteService.getMisResponsables(this._id)
+        this._pacienteService.getMisResponsables(this._paciente.id)
             .subscribe(result =>
         this.responsables = result);
     }   
@@ -72,9 +72,9 @@ export class ResponsablesDialogComponent extends AppComponentBase  {
         );
     }
 
-    asociar(id: number){
+    asociar(){
         this._dialog.open(AsociarResponsableDialogComponent, {
-            data: id
+            data: this._paciente
         });
     }
 

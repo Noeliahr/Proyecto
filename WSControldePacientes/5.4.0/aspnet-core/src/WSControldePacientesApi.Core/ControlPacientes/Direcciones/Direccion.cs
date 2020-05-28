@@ -22,7 +22,7 @@ namespace WSControldePacientesApi.ControlPacientes.Direcciones
 
         public string Letra { get; set; }
 
-        public int Km_en_la_via { get; set; }
+        public int Kmenlavia { get; set; }
 
         public string Bloque { get; set; }
 
@@ -38,7 +38,7 @@ namespace WSControldePacientesApi.ControlPacientes.Direcciones
         [Required]
         public string CodigoPostal { get; set; }
 
-        public string Entidad_de_Poblacion { get; set; }
+        public string EntidadePoblacion { get; set; }
 
         [Required]
         public string Municipio { get; set; }

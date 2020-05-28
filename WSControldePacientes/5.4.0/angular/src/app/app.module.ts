@@ -41,12 +41,13 @@ import { ResetPasswordDialogComponent } from './users/reset-password/reset-passw
 
 // paciente
 import { PacientesComponent } from '@app/pacientes/pacientes.component';
-import { PacienteMedicoCabeceraServiceProxy, ResponsableServiceProxy } from '@shared/service-proxies/service-proxies';
+import { PacienteMedicoCabeceraServiceProxy, ResponsableServiceProxy, MisResponsablesServiceProxy, CitasServiceProxy } from '@shared/service-proxies/service-proxies';
 import { CreatePacienteDialogComponent } from './pacientes/create-paciente/create-paciente-dialog.component';
 import {MoreDetailsDialogComponent} from './pacientes/moredetails/moredetails-paciente-dialog.component';
 import {ResponsablesDialogComponent} from './pacientes/responsables-paciente/responsables-paciente-dialog.component';
 import {AsociarResponsableDialogComponent} from './pacientes/responsables-paciente/asociar-responsable/asociar-responsables-paciente-dialog.component';
 import { EditPacienteDialogComponent } from './pacientes/edit-paciente/edit-paciente-dialog.component'; 
+import { CitaPacienteComponent } from './pacientes/citas-paciente/citas-paciente.component';
 
 @NgModule({
   declarations: [
@@ -80,7 +81,8 @@ import { EditPacienteDialogComponent } from './pacientes/edit-paciente/edit-paci
     MoreDetailsDialogComponent,
     ResponsablesDialogComponent,
     EditPacienteDialogComponent,
-    AsociarResponsableDialogComponent
+    AsociarResponsableDialogComponent,
+    CitaPacienteComponent
   ],
   imports: [
     CommonModule,
@@ -95,7 +97,7 @@ import { EditPacienteDialogComponent } from './pacientes/edit-paciente/edit-paci
     SharedModule,
     NgxPaginationModule
   ],
-  providers: [PacienteMedicoCabeceraServiceProxy, ResponsableServiceProxy],
+  providers: [PacienteMedicoCabeceraServiceProxy, ResponsableServiceProxy, MisResponsablesServiceProxy,CitasServiceProxy],
   entryComponents: [
     // tenants
     CreateTenantDialogComponent,
