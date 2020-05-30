@@ -1,0 +1,177 @@
+<form autocomplete="off" #createcitaForm="ngForm" (ngSubmit)="save()">
+    <mat-dialog-content style="width:900px;height:400px;">
+        <mat-tab-group>
+            <mat-tab [label]="'Detalles de la cita' | localize">
+                <br />
+                <div class="row-fluid">
+                    <div class="col-md-6">
+                        <mat-form-field>
+                            <input matInput
+                                   type="datetime-local"
+                                   name="Fecha y Hora"
+                                   [placeholder]="'Fecha y Hora' | localize"
+                                   [(ngModel)]="cita.fechaHora"
+                                   required />
+                        </mat-form-field>
+                        <mat-form-field>
+                          <input matInput
+                                 name="Consulta"
+                                 [placeholder]="'Consulta' | localize"
+                                 [(ngModel)]="cita.consulta"
+                                 required />
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-6" style="padding-bottom: 0%; margin-bottom: 2%;">
+                      <mat-form-field>
+                          <input matInput
+                                 name="Servicio"
+                                 [placeholder]="'Servicio' | localize"
+                                 [(ngModel)]="cita.servicio_Especialidad"
+                                 required />
+                      </mat-form-field>
+                      <mat-form-field>
+                        <input matInput
+                               name="Centro"
+                               [placeholder]="'Centro' | localize"
+                               [(ngModel)]="cita.centro"
+                               required />
+                      </mat-form-field>
+                    </div>
+                  <h3 style="margin-left: 2%;">Direccion</h3>
+                  <div class="col-md-4">
+                    <mat-form-field>
+                      <mat-label>Tipo</mat-label>
+                      <mat-select matNativeControl required [(value)]="selected" >
+                        <mat-option value="Calle">Calle</mat-option>
+                        <mat-option value="Avenida">Avenida</mat-option>
+                        <mat-option value="Plaza">Plaza</mat-option>
+                        <mat-option value="Callejon">Callejon</mat-option>
+                        <mat-option value="Urbanizacion">Urbanizacion</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <input matInput
+                            name="Letra"
+                            [placeholder]="'Letra' | localize"
+                            [(ngModel)]="cita.direccionLetra"/>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <input matInput
+                            name="Portal"
+                            [placeholder]="'Portal' | localize"
+                            [(ngModel)]="cita.direccionPortal" />
+                    </mat-form-field>
+                    <mat-form-field>
+                        <input matInput
+                            name="Puerta"
+                            [placeholder]="'Puerta' | localize"
+                            [(ngModel)]="cita.direccionPuerta" />
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input matInput
+                            name="Municipio"
+                            [placeholder]="'Municipio' | localize"
+                            [(ngModel)]="cita.direccionMunicipio" 
+                            required/>
+                    </mat-form-field>  
+                </div>
+                <div class="col-md-4">
+                    <mat-form-field>
+                        <input matInput
+                            name="Nombre"
+                            [placeholder]="'Nombre' | localize"
+                            [(ngModel)]="cita.direccionNombre"
+                            required />
+                    </mat-form-field>
+                    <mat-form-field>
+                        <input matInput
+                            name="Km en la Via"
+                            [placeholder]="'Km en la Via' | localize"
+                            [(ngModel)]="cita.direccionKm_en_la_via" />
+                    </mat-form-field>  
+                    <mat-form-field>
+                        <input matInput
+                            name="Escalera"
+                            [placeholder]="'Escalera' | localize"
+                            [(ngModel)]="cita.direccionEscalera" />
+                    </mat-form-field>
+                    <mat-form-field>
+                        <input matInput
+                            name="Codigo Postal"
+                            [placeholder]="'Codigo Postal' | localize"
+                            [(ngModel)]="cita.direccionCodigoPostal" 
+                            required
+                            minlength="5"
+                            maxlength="5"/>
+                    </mat-form-field>
+                    
+                    <mat-form-field>
+                        <input matInput
+                            name="Provincia"
+                            [placeholder]="'Provincia' | localize"
+                            [(ngModel)]="cita.direccionProvincia"
+                            required />
+                    </mat-form-field>
+                </div>
+                <div class="col-md-4">
+                    <mat-form-field>
+                        <input matInput
+                            name="Numero"
+                            [placeholder]="'Numero' | localize"
+                            [(ngModel)]="cita.direccionNumero"
+                            required />
+                    </mat-form-field>
+                    <mat-form-field>
+                        <input matInput
+                            name="Bloque"
+                            [placeholder]="'Bloque' | localize"
+                            [(ngModel)]="cita.direccionBloque" />
+                    </mat-form-field>
+                    <mat-form-field>
+                        <input matInput
+                            name="Planta"
+                            [placeholder]="'Planta' | localize"
+                            [(ngModel)]="cita.direccionPlanta" />
+                    </mat-form-field>
+                    <mat-form-field>
+                        <input matInput
+                            name="Entidad de Poblacion"
+                            [placeholder]="'Entidad de Poblacion' | localize"
+                            [(ngModel)]="cita.direccionEntidad_de_Poblacion" />
+                    </mat-form-field>
+                    <mat-form-field>
+                        <input matInput
+                            name="Pais"
+                            [placeholder]="'Pais' | localize"
+                            [(ngModel)]="cita.direccionPais" 
+                            required/>
+                    </mat-form-field>
+                </div>
+
+                </div>
+            </mat-tab>
+
+<!--            <mat-tab [label]="'Datos de la Direccion' | localize">
+                <br />
+                <div class="row-fluid">
+                    
+
+                </div>
+            </mat-tab> -->
+            
+        </mat-tab-group>
+    </mat-dialog-content>
+    <div mat-dialog-actions align="end">
+        <button mat-button type="button" [disabled]="saving" (click)="close(false)">
+            {{ "Cancel" | localize }}
+        </button>
+        <button mat-flat-button
+                type="submit"
+                flex="15"
+                color="primary"
+                [disabled]="!createcitaForm.form.valid || saving">
+            {{ "Save" | localize }}
+        </button>
+    </div>
+</form>

@@ -1,11 +1,12 @@
 import { Component,  Injector, Optional, Inject } from '@angular/core';
-import {CitasServiceProxy, PacienteDto, AuthenticateResultModel, CitaDto } from 'shared/service-proxies/service-proxies';
+import {CitasServiceProxy, PacienteDto, AuthenticateResultModel, CitaDto, PacienteMedicoCabeceraServiceProxy } from 'shared/service-proxies/service-proxies';
 import { finalize } from 'rxjs/operators';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import {PagedListingComponentBase,PagedRequestDto} from '@shared/paged-listing-component-base';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material';
 import { ActivatedRoute, Params } from '@angular/router';
 import { from } from 'rxjs';
+import { CitarPacienteDialogComponent } from './citar/citarpaciente-dialog.component';
 
 class PagedPacientesRequestDto extends PagedRequestDto {
     filter: string;
@@ -30,9 +31,12 @@ export class CitaPacienteComponent extends PagedListingComponentBase<PacienteDto
     citas: CitaDto[] = [];
     filterText = '';
     idPaciente : number;
-    constructor(
+
+    paciente : PacienteDto = new PacienteDto();
+        constructor(
         injector: Injector,
         private _citasService: CitasServiceProxy,
+        private _pacienteService : PacienteMedicoCabeceraServiceProxy,
         private _dialog: MatDialog,
         //private _route : ActivatedRoute,
         
@@ -50,6 +54,9 @@ export class CitaPacienteComponent extends PagedListingComponentBase<PacienteDto
 
         this.idPaciente=this.rutaActiva.snapshot.params.id;
         request.filter = this.filterText;
+
+        this._pacienteService.getDatosCompletosByPaciente(this.idPaciente).subscribe(result =>
+            this.paciente = result);
 
         this._citasService
             .getCitasByPaciente(this.idPaciente)
@@ -71,5 +78,16 @@ export class CitaPacienteComponent extends PagedListingComponentBase<PacienteDto
     
 
     delete(){}
+
+    citar(){
+        
+        let paraupdate=this._dialog.open(CitarPacienteDialogComponent, {data :this.idPaciente}); 
+
+        paraupdate.afterClosed().subscribe(result => {
+            if (result) {
+                this.refresh();
+            }
+        });
+    }
 
 }

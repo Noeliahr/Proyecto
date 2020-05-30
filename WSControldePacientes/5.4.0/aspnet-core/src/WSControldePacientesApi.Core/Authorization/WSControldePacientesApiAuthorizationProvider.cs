@@ -14,6 +14,7 @@ namespace WSControldePacientesApi.Authorization
 
             context.CreatePermission(PermissionNames.Pages_CitasMedico, L("Agenda"));
             context.CreatePermission(PermissionNames.Pages_CitasPaciente, L("Citas"));
+            context.CreatePermission(PermissionNames.Pages_Citas, L("PacienteCita"));
             context.CreatePermission(PermissionNames.Pages_Direcciones, L("Direcciones"));
             context.CreatePermission(PermissionNames.Pages_Enfermedades, L("Enfermedades"));
             context.CreatePermission(PermissionNames.Pages_EnfermedadesPacientes, L("EnfermedadesDePacientes"));

@@ -12,7 +12,6 @@ namespace WSControldePacientesApi.ControlPacientes.Enfermedades
         [Required]
         public string Nombre { get; set; }
 
-        [Required]
         public string Sintomas { get; set; }
 
         public string Causas { get; set; }

@@ -8,6 +8,7 @@ import { CreatePacienteDialogComponent } from './create-paciente/create-paciente
 import { EditPacienteDialogComponent } from './edit-paciente/edit-paciente-dialog.component';
 import {MoreDetailsDialogComponent} from './moredetails/moredetails-paciente-dialog.component'; 
 import {ResponsablesDialogComponent} from './responsables-paciente/responsables-paciente-dialog.component';
+import { EnfermedadesDialogComponent } from './enfermedades-paciente/enfermedades-paciente-dialog.component';
 
 class PagedPacientesRequestDto extends PagedRequestDto {
     filter: string;
@@ -116,6 +117,10 @@ export class PacientesComponent extends PagedListingComponentBase<PacienteDto> {
 
     misResponsables (paciente: PacienteDto){
         this._dialog.open(ResponsablesDialogComponent, {data : paciente});
+    }
+
+    misEnfermedades (paciente: PacienteDto){
+        this._dialog.open(EnfermedadesDialogComponent, {data : paciente});
     }
 
 

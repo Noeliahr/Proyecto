@@ -8,7 +8,7 @@ namespace WSControlPacientesApi.ControlPacienteApi.Pacientes.Dto
 {
     public class MisEnfermedades : EntityDto
     {
-        public long NumSeguridadSocial { get; set; }
+        public long PacienteNumSeguridadSocial { get; set; }
 
         public ICollection<EnfermedadPacienteDto> enfermedadPacientes { get; set;}
     }

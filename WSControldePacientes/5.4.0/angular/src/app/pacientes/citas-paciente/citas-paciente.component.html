@@ -1,8 +1,8 @@
 <div class="row clearfix" [@routerTransition]>
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <div class="card main-content">
+        <div class="card main-content" style="background-color:  #D3ECEA;">
             <div class="header">
-                <h2><mat-icon>today</mat-icon>{{ "Citas de" | localize }}</h2>
+                <h2><mat-icon>today</mat-icon> {{ "Citas de" | localize }} {{paciente.datosPersonalesUserName}} </h2>
                 <ul class="header-dropdown m-r--5">
                     <li>
                         <button mat-icon-button [matMenuTriggerFor]="headerMenu" class="header-dropdown-mat-icon-button">
@@ -17,7 +17,8 @@
                     </li>
                 </ul>
             </div>
-            <div class="body table-responsive" *ngFor="
+            <br/>
+            <div class="card main-content"  *ngFor="
             let cita of (citas
               | paginate
                 : {
@@ -27,6 +28,7 @@
                     totalItems: totalItems
                   })
           ">
+                <div  class="body table-responsive" style="padding-bottom: 2px;">
                   <div style="width: auto; height: auto; display: inline; float: left;">
                       <h4> <i class="fa fa-user-md" aria-hidden="true"></i> {{"Medico" | localize}}</h4>
                       <p>{{cita.medicoDatosPersonalesName}} {{cita.medicoDatosPersonalesSurname}} </p>
@@ -47,11 +49,16 @@
                     <h4> <i class="fa fa-calendar" aria-hidden="true"></i> Fecha y Hora</h4>
                     {{cita.fechaHora}}
                 </div>    
-                <div style="display: inline-block; margin-left: 150px; ">
+                <div style="display: inline-block; margin-left: 90px; ">
                     <h4> <i class="fa fa-medkit" aria-hidden="true"></i> Servicio</h4>
                     {{cita.servicio_Especialidad}}
                 </div>
             </div>
+            </div>
         </div>
+        <button style="display:scroll; position:fixed; bottom:20px; right:10px;"
+                             mat-mini-fab color="primary" class="pull-right" (click)="citar()">
+            <mat-icon>add</mat-icon> 
+        </button>
     </div>
 </div>

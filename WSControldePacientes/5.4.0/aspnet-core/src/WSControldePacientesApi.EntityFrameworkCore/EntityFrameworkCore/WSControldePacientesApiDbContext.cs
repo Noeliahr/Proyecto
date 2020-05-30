@@ -35,6 +35,8 @@ namespace WSControldePacientesApi.EntityFrameworkCore
 
         public DbSet<Enfermedad> enfermedades { get; set; }
 
+        public DbSet<EnfermedadPaciente> enfermedadPacientes { get; set; }
+
         public DbSet<Medicamento> medicamentos { get; set; }
 
         public DbSet<Medico> medicos { get; set; }

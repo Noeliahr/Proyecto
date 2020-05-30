@@ -12,6 +12,8 @@
 
         public const string Pages_CitasPaciente = "Pages.Citas";
 
+        public const string Pages_Citas = "Pages.PacienteCita";
+
         public const string Pages_Direcciones = "Pages.Direcciones";
 
         public const string Pages_Enfermedades = "Pages.Enfermedades";

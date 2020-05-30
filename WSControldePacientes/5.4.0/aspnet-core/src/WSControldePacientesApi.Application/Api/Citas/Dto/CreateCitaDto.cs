@@ -1,14 +1,13 @@
-﻿using System;
+﻿using Abp.Application.Services.Dto;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace WSControldePacientesApi.Api.Citas.Dto
 {
-    public class AgendaDto
+    public class CreateCitaDto : EntityDto
     {
-        public string PacienteDatosPersonalesUserName { get; set; }
-        public string PacienteDatosPersonalesName { get; set; }
-        public string PacienteDatosPersonalesSurname { get; set; }
+        public int PacienteId { get; set; }
 
         public DateTime FechaHora { get; set; }
 

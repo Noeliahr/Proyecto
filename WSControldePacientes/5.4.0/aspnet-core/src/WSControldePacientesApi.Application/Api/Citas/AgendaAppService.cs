@@ -31,13 +31,13 @@ namespace WSControldePacientesApi.Api.Citas
 
         public async Task<ListResultDto<AgendaDto>> GetAll()
         {
-            var pacienteActual = await _userManager.GetUserByIdAsync(AbpSession.GetUserId());
+            var medicoActual = await _userManager.GetUserByIdAsync(AbpSession.GetUserId());
 
             var citas = await _citaRepository.GetAll()
                 .Include(c => c.Direccion)
-                .Include(c => c.Medico)
+                .Include(c => c.Paciente)
                     .ThenInclude(c => c.DatosPersonales)
-                .Where(c => c.Paciente.DatosPersonalesId == pacienteActual.Id)
+                .Where(c => c.Medico.DatosPersonalesId == medicoActual.Id)
                 .OrderByDescending(c => c.FechaHora)
                 .ToListAsync();
 
@@ -52,13 +52,13 @@ namespace WSControldePacientesApi.Api.Citas
 
         public async Task<ListResultDto<AgendaDto>> GetAllPorFecha(DateTime fecha)
         {
-            var pacienteActual = await _userManager.GetUserByIdAsync(AbpSession.GetUserId());
+            var medicoActual = await _userManager.GetUserByIdAsync(AbpSession.GetUserId());
 
             var citas = await _citaRepository.GetAll()
                 .Include(c => c.Direccion)
-                .Include(c => c.Medico)
+                .Include(c => c.Paciente)
                     .ThenInclude(c => c.DatosPersonales)
-                .Where(c => c.Paciente.DatosPersonalesId == pacienteActual.Id  && c.FechaHora.Equals(fecha))
+                .Where(c => c.Medico.DatosPersonalesId == medicoActual.Id  && c.FechaHora.Equals(fecha))
                 .OrderByDescending(c => c.FechaHora)
                 .ToListAsync();
 

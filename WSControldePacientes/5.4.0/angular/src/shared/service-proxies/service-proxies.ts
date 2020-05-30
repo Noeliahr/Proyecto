@@ -374,21 +374,21 @@ export class CitasServiceProxy {
     }
 
     /**
-     * @param body (optional) 
+     * @param input (optional) 
      * @return Success
      */
-    anularCita(body: Int32EntityDto | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/api/services/app/Citas/AnularCita";
+    anularCita(input: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Citas/AnularCita?";
+        if (input === null)
+            throw new Error("The parameter 'input' cannot be null.");
+        else if (input !== undefined)
+            url_ += "input=" + encodeURIComponent("" + input) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(body);
-
         let options_ : any = {
-            body: content_,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json-patch+json",
             })
         };
 
@@ -479,6 +479,58 @@ export class CitasServiceProxy {
             }));
         }
         return _observableOf<CitaDtoListResultDto>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    citar(body: CreateCitaDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Citas/Citar";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCitar(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCitar(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCitar(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
     }
 }
 
@@ -674,6 +726,244 @@ export class DatosPacienteServiceProxy {
             }));
         }
         return _observableOf<PacienteCompletoDtoListResultDto>(<any>null);
+    }
+}
+
+@Injectable()
+export class EnfermedadPacienteServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @param id (optional) 
+     * @param body (optional) 
+     * @return Success
+     */
+    addEnfermedad(id: number | undefined, body: EnfermedadDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/EnfermedadPaciente/AddEnfermedad?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAddEnfermedad(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAddEnfermedad(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processAddEnfermedad(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param id (optional) 
+     * @param body (optional) 
+     * @return Success
+     */
+    eliminarEnfermedad(id: number | undefined, body: EnfermedadDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/EnfermedadPaciente/EliminarEnfermedad?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processEliminarEnfermedad(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processEliminarEnfermedad(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processEliminarEnfermedad(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getAll(id: number | undefined): Observable<EnfermedadPacienteDtoListResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/EnfermedadPaciente/GetAll?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAll(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAll(<any>response_);
+                } catch (e) {
+                    return <Observable<EnfermedadPacienteDtoListResultDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<EnfermedadPacienteDtoListResultDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAll(response: HttpResponseBase): Observable<EnfermedadPacienteDtoListResultDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = EnfermedadPacienteDtoListResultDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<EnfermedadPacienteDtoListResultDto>(<any>null);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getDatosPaciente(id: number | undefined): Observable<PacienteEnfermedadDto> {
+        let url_ = this.baseUrl + "/api/services/app/EnfermedadPaciente/getDatosPaciente?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetDatosPaciente(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetDatosPaciente(<any>response_);
+                } catch (e) {
+                    return <Observable<PacienteEnfermedadDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PacienteEnfermedadDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetDatosPaciente(response: HttpResponseBase): Observable<PacienteEnfermedadDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PacienteEnfermedadDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PacienteEnfermedadDto>(<any>null);
     }
 }
 
@@ -1583,6 +1873,126 @@ export class MisResponsablesServiceProxy {
     }
 
     protected processAsociarResponsables(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+}
+
+@Injectable()
+export class PacienteCitaServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getCitasByPaciente(id: number | undefined): Observable<CitaDtoListResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/PacienteCita/GetCitasByPaciente?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetCitasByPaciente(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetCitasByPaciente(<any>response_);
+                } catch (e) {
+                    return <Observable<CitaDtoListResultDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<CitaDtoListResultDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetCitasByPaciente(response: HttpResponseBase): Observable<CitaDtoListResultDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = CitaDtoListResultDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<CitaDtoListResultDto>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    citar(body: CreateCitaDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/PacienteCita/Citar";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCitar(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCitar(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCitar(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -4954,6 +5364,7 @@ export interface IRegisterOutput {
 }
 
 export class AgendaDto implements IAgendaDto {
+    pacienteDatosPersonalesUserName: string | undefined;
     pacienteDatosPersonalesName: string | undefined;
     pacienteDatosPersonalesSurname: string | undefined;
     fechaHora: moment.Moment;
@@ -4964,14 +5375,14 @@ export class AgendaDto implements IAgendaDto {
     direccionNombre: string | undefined;
     direccionNumero: number;
     direccionLetra: string | undefined;
-    direccionKm_en_la_via: number;
+    direccionKmenlavia: number;
     direccionBloque: string | undefined;
     direccionPortal: string | undefined;
     direccionEscalera: string | undefined;
     direccionPlanta: number;
     direccionPuerta: string;
-    direccionCodigo_Postal: string | undefined;
-    direccionEntidad_de_Poblacion: string | undefined;
+    direccionCodigoPostal: string | undefined;
+    direccionEntidaddePoblacion: string | undefined;
     direccionMunicipio: string | undefined;
     direccionProvincia: string | undefined;
     direccionPais: string | undefined;
@@ -4987,6 +5398,7 @@ export class AgendaDto implements IAgendaDto {
 
     init(_data?: any) {
         if (_data) {
+            this.pacienteDatosPersonalesUserName = _data["pacienteDatosPersonalesUserName"];
             this.pacienteDatosPersonalesName = _data["pacienteDatosPersonalesName"];
             this.pacienteDatosPersonalesSurname = _data["pacienteDatosPersonalesSurname"];
             this.fechaHora = _data["fechaHora"] ? moment(_data["fechaHora"].toString()) : <any>undefined;
@@ -4997,14 +5409,14 @@ export class AgendaDto implements IAgendaDto {
             this.direccionNombre = _data["direccionNombre"];
             this.direccionNumero = _data["direccionNumero"];
             this.direccionLetra = _data["direccionLetra"];
-            this.direccionKm_en_la_via = _data["direccionKm_en_la_via"];
+            this.direccionKmenlavia = _data["direccionKmenlavia"];
             this.direccionBloque = _data["direccionBloque"];
             this.direccionPortal = _data["direccionPortal"];
             this.direccionEscalera = _data["direccionEscalera"];
             this.direccionPlanta = _data["direccionPlanta"];
             this.direccionPuerta = _data["direccionPuerta"];
-            this.direccionCodigo_Postal = _data["direccionCodigo_Postal"];
-            this.direccionEntidad_de_Poblacion = _data["direccionEntidad_de_Poblacion"];
+            this.direccionCodigoPostal = _data["direccionCodigoPostal"];
+            this.direccionEntidaddePoblacion = _data["direccionEntidaddePoblacion"];
             this.direccionMunicipio = _data["direccionMunicipio"];
             this.direccionProvincia = _data["direccionProvincia"];
             this.direccionPais = _data["direccionPais"];
@@ -5020,6 +5432,7 @@ export class AgendaDto implements IAgendaDto {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["pacienteDatosPersonalesUserName"] = this.pacienteDatosPersonalesUserName;
         data["pacienteDatosPersonalesName"] = this.pacienteDatosPersonalesName;
         data["pacienteDatosPersonalesSurname"] = this.pacienteDatosPersonalesSurname;
         data["fechaHora"] = this.fechaHora ? this.fechaHora.toISOString() : <any>undefined;
@@ -5030,14 +5443,14 @@ export class AgendaDto implements IAgendaDto {
         data["direccionNombre"] = this.direccionNombre;
         data["direccionNumero"] = this.direccionNumero;
         data["direccionLetra"] = this.direccionLetra;
-        data["direccionKm_en_la_via"] = this.direccionKm_en_la_via;
+        data["direccionKmenlavia"] = this.direccionKmenlavia;
         data["direccionBloque"] = this.direccionBloque;
         data["direccionPortal"] = this.direccionPortal;
         data["direccionEscalera"] = this.direccionEscalera;
         data["direccionPlanta"] = this.direccionPlanta;
         data["direccionPuerta"] = this.direccionPuerta;
-        data["direccionCodigo_Postal"] = this.direccionCodigo_Postal;
-        data["direccionEntidad_de_Poblacion"] = this.direccionEntidad_de_Poblacion;
+        data["direccionCodigoPostal"] = this.direccionCodigoPostal;
+        data["direccionEntidaddePoblacion"] = this.direccionEntidaddePoblacion;
         data["direccionMunicipio"] = this.direccionMunicipio;
         data["direccionProvincia"] = this.direccionProvincia;
         data["direccionPais"] = this.direccionPais;
@@ -5053,6 +5466,7 @@ export class AgendaDto implements IAgendaDto {
 }
 
 export interface IAgendaDto {
+    pacienteDatosPersonalesUserName: string | undefined;
     pacienteDatosPersonalesName: string | undefined;
     pacienteDatosPersonalesSurname: string | undefined;
     fechaHora: moment.Moment;
@@ -5063,14 +5477,14 @@ export interface IAgendaDto {
     direccionNombre: string | undefined;
     direccionNumero: number;
     direccionLetra: string | undefined;
-    direccionKm_en_la_via: number;
+    direccionKmenlavia: number;
     direccionBloque: string | undefined;
     direccionPortal: string | undefined;
     direccionEscalera: string | undefined;
     direccionPlanta: number;
     direccionPuerta: string;
-    direccionCodigo_Postal: string | undefined;
-    direccionEntidad_de_Poblacion: string | undefined;
+    direccionCodigoPostal: string | undefined;
+    direccionEntidaddePoblacion: string | undefined;
     direccionMunicipio: string | undefined;
     direccionProvincia: string | undefined;
     direccionPais: string | undefined;
@@ -5174,6 +5588,7 @@ export class CitaDto implements ICitaDto {
     medicoDatosPersonalesName: string | undefined;
     medicoDatosPersonalesSurname: string | undefined;
     medicoDatosPersonalesEmailAddress: string | undefined;
+    medicoDatosPersonalesTelefono: string | undefined;
     fechaHora: moment.Moment;
     consulta: string | undefined;
     servicio_Especialidad: string | undefined;
@@ -5182,14 +5597,14 @@ export class CitaDto implements ICitaDto {
     direccionNombre: string | undefined;
     direccionNumero: number;
     direccionLetra: string | undefined;
-    direccionKm_en_la_via: number;
+    direccionKmenlavia: number;
     direccionBloque: string | undefined;
     direccionPortal: string | undefined;
     direccionEscalera: string | undefined;
     direccionPlanta: number;
     direccionPuerta: string;
-    direccionCodigo_Postal: string | undefined;
-    direccionEntidad_de_Poblacion: string | undefined;
+    direccionCodigoPostal: string | undefined;
+    direccionEntidaddePoblacion: string | undefined;
     direccionMunicipio: string | undefined;
     direccionProvincia: string | undefined;
     direccionPais: string | undefined;
@@ -5208,6 +5623,7 @@ export class CitaDto implements ICitaDto {
             this.medicoDatosPersonalesName = _data["medicoDatosPersonalesName"];
             this.medicoDatosPersonalesSurname = _data["medicoDatosPersonalesSurname"];
             this.medicoDatosPersonalesEmailAddress = _data["medicoDatosPersonalesEmailAddress"];
+            this.medicoDatosPersonalesTelefono = _data["medicoDatosPersonalesTelefono"];
             this.fechaHora = _data["fechaHora"] ? moment(_data["fechaHora"].toString()) : <any>undefined;
             this.consulta = _data["consulta"];
             this.servicio_Especialidad = _data["servicio_Especialidad"];
@@ -5216,14 +5632,14 @@ export class CitaDto implements ICitaDto {
             this.direccionNombre = _data["direccionNombre"];
             this.direccionNumero = _data["direccionNumero"];
             this.direccionLetra = _data["direccionLetra"];
-            this.direccionKm_en_la_via = _data["direccionKm_en_la_via"];
+            this.direccionKmenlavia = _data["direccionKmenlavia"];
             this.direccionBloque = _data["direccionBloque"];
             this.direccionPortal = _data["direccionPortal"];
             this.direccionEscalera = _data["direccionEscalera"];
             this.direccionPlanta = _data["direccionPlanta"];
             this.direccionPuerta = _data["direccionPuerta"];
-            this.direccionCodigo_Postal = _data["direccionCodigo_Postal"];
-            this.direccionEntidad_de_Poblacion = _data["direccionEntidad_de_Poblacion"];
+            this.direccionCodigoPostal = _data["direccionCodigoPostal"];
+            this.direccionEntidaddePoblacion = _data["direccionEntidaddePoblacion"];
             this.direccionMunicipio = _data["direccionMunicipio"];
             this.direccionProvincia = _data["direccionProvincia"];
             this.direccionPais = _data["direccionPais"];
@@ -5242,6 +5658,7 @@ export class CitaDto implements ICitaDto {
         data["medicoDatosPersonalesName"] = this.medicoDatosPersonalesName;
         data["medicoDatosPersonalesSurname"] = this.medicoDatosPersonalesSurname;
         data["medicoDatosPersonalesEmailAddress"] = this.medicoDatosPersonalesEmailAddress;
+        data["medicoDatosPersonalesTelefono"] = this.medicoDatosPersonalesTelefono;
         data["fechaHora"] = this.fechaHora ? this.fechaHora.toISOString() : <any>undefined;
         data["consulta"] = this.consulta;
         data["servicio_Especialidad"] = this.servicio_Especialidad;
@@ -5250,14 +5667,14 @@ export class CitaDto implements ICitaDto {
         data["direccionNombre"] = this.direccionNombre;
         data["direccionNumero"] = this.direccionNumero;
         data["direccionLetra"] = this.direccionLetra;
-        data["direccionKm_en_la_via"] = this.direccionKm_en_la_via;
+        data["direccionKmenlavia"] = this.direccionKmenlavia;
         data["direccionBloque"] = this.direccionBloque;
         data["direccionPortal"] = this.direccionPortal;
         data["direccionEscalera"] = this.direccionEscalera;
         data["direccionPlanta"] = this.direccionPlanta;
         data["direccionPuerta"] = this.direccionPuerta;
-        data["direccionCodigo_Postal"] = this.direccionCodigo_Postal;
-        data["direccionEntidad_de_Poblacion"] = this.direccionEntidad_de_Poblacion;
+        data["direccionCodigoPostal"] = this.direccionCodigoPostal;
+        data["direccionEntidaddePoblacion"] = this.direccionEntidaddePoblacion;
         data["direccionMunicipio"] = this.direccionMunicipio;
         data["direccionProvincia"] = this.direccionProvincia;
         data["direccionPais"] = this.direccionPais;
@@ -5276,6 +5693,7 @@ export interface ICitaDto {
     medicoDatosPersonalesName: string | undefined;
     medicoDatosPersonalesSurname: string | undefined;
     medicoDatosPersonalesEmailAddress: string | undefined;
+    medicoDatosPersonalesTelefono: string | undefined;
     fechaHora: moment.Moment;
     consulta: string | undefined;
     servicio_Especialidad: string | undefined;
@@ -5284,14 +5702,14 @@ export interface ICitaDto {
     direccionNombre: string | undefined;
     direccionNumero: number;
     direccionLetra: string | undefined;
-    direccionKm_en_la_via: number;
+    direccionKmenlavia: number;
     direccionBloque: string | undefined;
     direccionPortal: string | undefined;
     direccionEscalera: string | undefined;
     direccionPlanta: number;
     direccionPuerta: string;
-    direccionCodigo_Postal: string | undefined;
-    direccionEntidad_de_Poblacion: string | undefined;
+    direccionCodigoPostal: string | undefined;
+    direccionEntidaddePoblacion: string | undefined;
     direccionMunicipio: string | undefined;
     direccionProvincia: string | undefined;
     direccionPais: string | undefined;
@@ -5346,6 +5764,129 @@ export class CitaDtoListResultDto implements ICitaDtoListResultDto {
 
 export interface ICitaDtoListResultDto {
     items: CitaDto[] | undefined;
+}
+
+export class CreateCitaDto implements ICreateCitaDto {
+    pacienteId: number;
+    fechaHora: moment.Moment;
+    consulta: string | undefined;
+    servicio_Especialidad: string | undefined;
+    centro: string | undefined;
+    direccionTipo: string | undefined;
+    direccionNombre: string | undefined;
+    direccionNumero: number;
+    direccionLetra: string | undefined;
+    direccionKmenlavia: number;
+    direccionBloque: string | undefined;
+    direccionPortal: string | undefined;
+    direccionEscalera: string | undefined;
+    direccionPlanta: number;
+    direccionPuerta: string;
+    direccionCodigoPostal: string | undefined;
+    direccionEntidaddePoblacion: string | undefined;
+    direccionMunicipio: string | undefined;
+    direccionProvincia: string | undefined;
+    direccionPais: string | undefined;
+    id: number;
+
+    constructor(data?: ICreateCitaDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.pacienteId = _data["pacienteId"];
+            this.fechaHora = _data["fechaHora"] ? moment(_data["fechaHora"].toString()) : <any>undefined;
+            this.consulta = _data["consulta"];
+            this.servicio_Especialidad = _data["servicio_Especialidad"];
+            this.centro = _data["centro"];
+            this.direccionTipo = _data["direccionTipo"];
+            this.direccionNombre = _data["direccionNombre"];
+            this.direccionNumero = _data["direccionNumero"];
+            this.direccionLetra = _data["direccionLetra"];
+            this.direccionKmenlavia = _data["direccionKmenlavia"];
+            this.direccionBloque = _data["direccionBloque"];
+            this.direccionPortal = _data["direccionPortal"];
+            this.direccionEscalera = _data["direccionEscalera"];
+            this.direccionPlanta = _data["direccionPlanta"];
+            this.direccionPuerta = _data["direccionPuerta"];
+            this.direccionCodigoPostal = _data["direccionCodigoPostal"];
+            this.direccionEntidaddePoblacion = _data["direccionEntidaddePoblacion"];
+            this.direccionMunicipio = _data["direccionMunicipio"];
+            this.direccionProvincia = _data["direccionProvincia"];
+            this.direccionPais = _data["direccionPais"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): CreateCitaDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateCitaDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["pacienteId"] = this.pacienteId;
+        data["fechaHora"] = this.fechaHora ? this.fechaHora.toISOString() : <any>undefined;
+        data["consulta"] = this.consulta;
+        data["servicio_Especialidad"] = this.servicio_Especialidad;
+        data["centro"] = this.centro;
+        data["direccionTipo"] = this.direccionTipo;
+        data["direccionNombre"] = this.direccionNombre;
+        data["direccionNumero"] = this.direccionNumero;
+        data["direccionLetra"] = this.direccionLetra;
+        data["direccionKmenlavia"] = this.direccionKmenlavia;
+        data["direccionBloque"] = this.direccionBloque;
+        data["direccionPortal"] = this.direccionPortal;
+        data["direccionEscalera"] = this.direccionEscalera;
+        data["direccionPlanta"] = this.direccionPlanta;
+        data["direccionPuerta"] = this.direccionPuerta;
+        data["direccionCodigoPostal"] = this.direccionCodigoPostal;
+        data["direccionEntidaddePoblacion"] = this.direccionEntidaddePoblacion;
+        data["direccionMunicipio"] = this.direccionMunicipio;
+        data["direccionProvincia"] = this.direccionProvincia;
+        data["direccionPais"] = this.direccionPais;
+        data["id"] = this.id;
+        return data; 
+    }
+
+    clone(): CreateCitaDto {
+        const json = this.toJSON();
+        let result = new CreateCitaDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICreateCitaDto {
+    pacienteId: number;
+    fechaHora: moment.Moment;
+    consulta: string | undefined;
+    servicio_Especialidad: string | undefined;
+    centro: string | undefined;
+    direccionTipo: string | undefined;
+    direccionNombre: string | undefined;
+    direccionNumero: number;
+    direccionLetra: string | undefined;
+    direccionKmenlavia: number;
+    direccionBloque: string | undefined;
+    direccionPortal: string | undefined;
+    direccionEscalera: string | undefined;
+    direccionPlanta: number;
+    direccionPuerta: string;
+    direccionCodigoPostal: string | undefined;
+    direccionEntidaddePoblacion: string | undefined;
+    direccionMunicipio: string | undefined;
+    direccionProvincia: string | undefined;
+    direccionPais: string | undefined;
+    id: number;
 }
 
 export class ChangeUiThemeInput implements IChangeUiThemeInput {
@@ -5690,6 +6231,277 @@ export class PacienteCompletoDtoListResultDto implements IPacienteCompletoDtoLis
 
 export interface IPacienteCompletoDtoListResultDto {
     items: PacienteCompletoDto[] | undefined;
+}
+
+export class EnfermedadDto implements IEnfermedadDto {
+    nombre: string | undefined;
+    sintomas: string | undefined;
+    causas: string | undefined;
+    id: number;
+
+    constructor(data?: IEnfermedadDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.nombre = _data["nombre"];
+            this.sintomas = _data["sintomas"];
+            this.causas = _data["causas"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): EnfermedadDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new EnfermedadDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["nombre"] = this.nombre;
+        data["sintomas"] = this.sintomas;
+        data["causas"] = this.causas;
+        data["id"] = this.id;
+        return data; 
+    }
+
+    clone(): EnfermedadDto {
+        const json = this.toJSON();
+        let result = new EnfermedadDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IEnfermedadDto {
+    nombre: string | undefined;
+    sintomas: string | undefined;
+    causas: string | undefined;
+    id: number;
+}
+
+export class EnfermedadPacienteDto implements IEnfermedadPacienteDto {
+    enfermedad: EnfermedadDto;
+    id: number;
+
+    constructor(data?: IEnfermedadPacienteDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.enfermedad = _data["enfermedad"] ? EnfermedadDto.fromJS(_data["enfermedad"]) : <any>undefined;
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): EnfermedadPacienteDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new EnfermedadPacienteDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["enfermedad"] = this.enfermedad ? this.enfermedad.toJSON() : <any>undefined;
+        data["id"] = this.id;
+        return data; 
+    }
+
+    clone(): EnfermedadPacienteDto {
+        const json = this.toJSON();
+        let result = new EnfermedadPacienteDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IEnfermedadPacienteDto {
+    enfermedad: EnfermedadDto;
+    id: number;
+}
+
+export class EnfermedadPacienteDtoListResultDto implements IEnfermedadPacienteDtoListResultDto {
+    items: EnfermedadPacienteDto[] | undefined;
+
+    constructor(data?: IEnfermedadPacienteDtoListResultDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items.push(EnfermedadPacienteDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): EnfermedadPacienteDtoListResultDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new EnfermedadPacienteDtoListResultDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone(): EnfermedadPacienteDtoListResultDto {
+        const json = this.toJSON();
+        let result = new EnfermedadPacienteDtoListResultDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IEnfermedadPacienteDtoListResultDto {
+    items: EnfermedadPacienteDto[] | undefined;
+}
+
+export class PacienteDto implements IPacienteDto {
+    numSeguridadSocial: number;
+    datosPersonalesUserName: string | undefined;
+    datosPersonalesName: string | undefined;
+    datosPersonalesSurname: string | undefined;
+    datosPersonalesEmailAddress: string | undefined;
+    datosPersonalesTelefono: string | undefined;
+    fechaNacimiento: moment.Moment;
+    id: number;
+
+    constructor(data?: IPacienteDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.numSeguridadSocial = _data["numSeguridadSocial"];
+            this.datosPersonalesUserName = _data["datosPersonalesUserName"];
+            this.datosPersonalesName = _data["datosPersonalesName"];
+            this.datosPersonalesSurname = _data["datosPersonalesSurname"];
+            this.datosPersonalesEmailAddress = _data["datosPersonalesEmailAddress"];
+            this.datosPersonalesTelefono = _data["datosPersonalesTelefono"];
+            this.fechaNacimiento = _data["fechaNacimiento"] ? moment(_data["fechaNacimiento"].toString()) : <any>undefined;
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): PacienteDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PacienteDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["numSeguridadSocial"] = this.numSeguridadSocial;
+        data["datosPersonalesUserName"] = this.datosPersonalesUserName;
+        data["datosPersonalesName"] = this.datosPersonalesName;
+        data["datosPersonalesSurname"] = this.datosPersonalesSurname;
+        data["datosPersonalesEmailAddress"] = this.datosPersonalesEmailAddress;
+        data["datosPersonalesTelefono"] = this.datosPersonalesTelefono;
+        data["fechaNacimiento"] = this.fechaNacimiento ? this.fechaNacimiento.toISOString() : <any>undefined;
+        data["id"] = this.id;
+        return data; 
+    }
+
+    clone(): PacienteDto {
+        const json = this.toJSON();
+        let result = new PacienteDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IPacienteDto {
+    numSeguridadSocial: number;
+    datosPersonalesUserName: string | undefined;
+    datosPersonalesName: string | undefined;
+    datosPersonalesSurname: string | undefined;
+    datosPersonalesEmailAddress: string | undefined;
+    datosPersonalesTelefono: string | undefined;
+    fechaNacimiento: moment.Moment;
+    id: number;
+}
+
+export class PacienteEnfermedadDto implements IPacienteEnfermedadDto {
+    paciente: PacienteDto;
+    id: number;
+
+    constructor(data?: IPacienteEnfermedadDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.paciente = _data["paciente"] ? PacienteDto.fromJS(_data["paciente"]) : <any>undefined;
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): PacienteEnfermedadDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PacienteEnfermedadDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["paciente"] = this.paciente ? this.paciente.toJSON() : <any>undefined;
+        data["id"] = this.id;
+        return data; 
+    }
+
+    clone(): PacienteEnfermedadDto {
+        const json = this.toJSON();
+        let result = new PacienteEnfermedadDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IPacienteEnfermedadDto {
+    paciente: PacienteDto;
+    id: number;
 }
 
 export class MedicoDtoListResultDto implements IMedicoDtoListResultDto {
@@ -6332,77 +7144,6 @@ export interface IPacienteMiResponsableDtoListResultDto {
     items: PacienteMiResponsableDto[] | undefined;
 }
 
-export class PacienteDto implements IPacienteDto {
-    numSeguridadSocial: number;
-    datosPersonalesUserName: string | undefined;
-    datosPersonalesName: string | undefined;
-    datosPersonalesSurname: string | undefined;
-    datosPersonalesEmailAddress: string | undefined;
-    datosPersonalesTelefono: string | undefined;
-    fechaNacimiento: moment.Moment;
-    id: number;
-
-    constructor(data?: IPacienteDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.numSeguridadSocial = _data["numSeguridadSocial"];
-            this.datosPersonalesUserName = _data["datosPersonalesUserName"];
-            this.datosPersonalesName = _data["datosPersonalesName"];
-            this.datosPersonalesSurname = _data["datosPersonalesSurname"];
-            this.datosPersonalesEmailAddress = _data["datosPersonalesEmailAddress"];
-            this.datosPersonalesTelefono = _data["datosPersonalesTelefono"];
-            this.fechaNacimiento = _data["fechaNacimiento"] ? moment(_data["fechaNacimiento"].toString()) : <any>undefined;
-            this.id = _data["id"];
-        }
-    }
-
-    static fromJS(data: any): PacienteDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new PacienteDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["numSeguridadSocial"] = this.numSeguridadSocial;
-        data["datosPersonalesUserName"] = this.datosPersonalesUserName;
-        data["datosPersonalesName"] = this.datosPersonalesName;
-        data["datosPersonalesSurname"] = this.datosPersonalesSurname;
-        data["datosPersonalesEmailAddress"] = this.datosPersonalesEmailAddress;
-        data["datosPersonalesTelefono"] = this.datosPersonalesTelefono;
-        data["fechaNacimiento"] = this.fechaNacimiento ? this.fechaNacimiento.toISOString() : <any>undefined;
-        data["id"] = this.id;
-        return data; 
-    }
-
-    clone(): PacienteDto {
-        const json = this.toJSON();
-        let result = new PacienteDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IPacienteDto {
-    numSeguridadSocial: number;
-    datosPersonalesUserName: string | undefined;
-    datosPersonalesName: string | undefined;
-    datosPersonalesSurname: string | undefined;
-    datosPersonalesEmailAddress: string | undefined;
-    datosPersonalesTelefono: string | undefined;
-    fechaNacimiento: moment.Moment;
-    id: number;
-}
-
 export class PacienteDtoListResultDto implements IPacienteDtoListResultDto {
     items: PacienteDto[] | undefined;
 
@@ -6513,106 +7254,8 @@ export interface IMisResponsables {
     id: number;
 }
 
-export class EnfermedadDto implements IEnfermedadDto {
-    nombre: string | undefined;
-    sintomas: string | undefined;
-    id: number;
-
-    constructor(data?: IEnfermedadDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.nombre = _data["nombre"];
-            this.sintomas = _data["sintomas"];
-            this.id = _data["id"];
-        }
-    }
-
-    static fromJS(data: any): EnfermedadDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new EnfermedadDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["nombre"] = this.nombre;
-        data["sintomas"] = this.sintomas;
-        data["id"] = this.id;
-        return data; 
-    }
-
-    clone(): EnfermedadDto {
-        const json = this.toJSON();
-        let result = new EnfermedadDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IEnfermedadDto {
-    nombre: string | undefined;
-    sintomas: string | undefined;
-    id: number;
-}
-
-export class EnfermedadPacienteDto implements IEnfermedadPacienteDto {
-    enfermedad: EnfermedadDto;
-    id: number;
-
-    constructor(data?: IEnfermedadPacienteDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.enfermedad = _data["enfermedad"] ? EnfermedadDto.fromJS(_data["enfermedad"]) : <any>undefined;
-            this.id = _data["id"];
-        }
-    }
-
-    static fromJS(data: any): EnfermedadPacienteDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new EnfermedadPacienteDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["enfermedad"] = this.enfermedad ? this.enfermedad.toJSON() : <any>undefined;
-        data["id"] = this.id;
-        return data; 
-    }
-
-    clone(): EnfermedadPacienteDto {
-        const json = this.toJSON();
-        let result = new EnfermedadPacienteDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IEnfermedadPacienteDto {
-    enfermedad: EnfermedadDto;
-    id: number;
-}
-
 export class MisEnfermedades implements IMisEnfermedades {
-    numSeguridadSocial: number;
+    pacienteNumSeguridadSocial: number;
     enfermedadPacientes: EnfermedadPacienteDto[] | undefined;
     id: number;
 
@@ -6627,7 +7270,7 @@ export class MisEnfermedades implements IMisEnfermedades {
 
     init(_data?: any) {
         if (_data) {
-            this.numSeguridadSocial = _data["numSeguridadSocial"];
+            this.pacienteNumSeguridadSocial = _data["pacienteNumSeguridadSocial"];
             if (Array.isArray(_data["enfermedadPacientes"])) {
                 this.enfermedadPacientes = [] as any;
                 for (let item of _data["enfermedadPacientes"])
@@ -6646,7 +7289,7 @@ export class MisEnfermedades implements IMisEnfermedades {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["numSeguridadSocial"] = this.numSeguridadSocial;
+        data["pacienteNumSeguridadSocial"] = this.pacienteNumSeguridadSocial;
         if (Array.isArray(this.enfermedadPacientes)) {
             data["enfermedadPacientes"] = [];
             for (let item of this.enfermedadPacientes)
@@ -6665,7 +7308,7 @@ export class MisEnfermedades implements IMisEnfermedades {
 }
 
 export interface IMisEnfermedades {
-    numSeguridadSocial: number;
+    pacienteNumSeguridadSocial: number;
     enfermedadPacientes: EnfermedadPacienteDto[] | undefined;
     id: number;
 }

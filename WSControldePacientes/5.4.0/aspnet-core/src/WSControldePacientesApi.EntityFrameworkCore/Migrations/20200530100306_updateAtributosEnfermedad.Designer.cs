@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WSControldePacientesApi.EntityFrameworkCore;
 
 namespace WSControldePacientesApi.Migrations
 {
     [DbContext(typeof(WSControldePacientesApiDbContext))]
-    partial class WSControldePacientesApiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200530100306_updateAtributosEnfermedad")]
+    partial class updateAtributosEnfermedad
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1792,7 +1794,7 @@ namespace WSControldePacientesApi.Migrations
 
                     b.HasIndex("PacienteId");
 
-                    b.ToTable("enfermedadPacientes");
+                    b.ToTable("EnfermedadPaciente");
                 });
 
             modelBuilder.Entity("WSControldePacientesApi.ControlPacientes.Enfermedades.Enfermedad", b =>

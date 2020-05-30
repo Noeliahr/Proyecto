@@ -13,6 +13,8 @@ namespace WSControldePacientesApi.Api.Citas.Dto
             CreateMap<Cita, CitaDto>().ReverseMap();
 
             CreateMap<Cita, AgendaDto>().ReverseMap();
+
+            CreateMap<Cita, CreateCitaDto>().ReverseMap();
         }
     }
 }

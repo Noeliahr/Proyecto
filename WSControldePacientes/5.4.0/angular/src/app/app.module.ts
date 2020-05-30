@@ -41,13 +41,16 @@ import { ResetPasswordDialogComponent } from './users/reset-password/reset-passw
 
 // paciente
 import { PacientesComponent } from '@app/pacientes/pacientes.component';
-import { PacienteMedicoCabeceraServiceProxy, ResponsableServiceProxy, MisResponsablesServiceProxy, CitasServiceProxy } from '@shared/service-proxies/service-proxies';
+import { PacienteMedicoCabeceraServiceProxy, ResponsableServiceProxy, MisResponsablesServiceProxy, CitasServiceProxy, EnfermedadPacienteServiceProxy } from '@shared/service-proxies/service-proxies';
 import { CreatePacienteDialogComponent } from './pacientes/create-paciente/create-paciente-dialog.component';
 import {MoreDetailsDialogComponent} from './pacientes/moredetails/moredetails-paciente-dialog.component';
 import {ResponsablesDialogComponent} from './pacientes/responsables-paciente/responsables-paciente-dialog.component';
 import {AsociarResponsableDialogComponent} from './pacientes/responsables-paciente/asociar-responsable/asociar-responsables-paciente-dialog.component';
 import { EditPacienteDialogComponent } from './pacientes/edit-paciente/edit-paciente-dialog.component'; 
 import { CitaPacienteComponent } from './pacientes/citas-paciente/citas-paciente.component';
+import {CitarPacienteDialogComponent} from './pacientes/citas-paciente/citar/citarpaciente-dialog.component';
+import {EnfermedadesDialogComponent} from './pacientes/enfermedades-paciente/enfermedades-paciente-dialog.component';
+import { from } from 'rxjs';
 
 @NgModule({
   declarations: [
@@ -82,7 +85,9 @@ import { CitaPacienteComponent } from './pacientes/citas-paciente/citas-paciente
     ResponsablesDialogComponent,
     EditPacienteDialogComponent,
     AsociarResponsableDialogComponent,
-    CitaPacienteComponent
+    CitaPacienteComponent,
+    CitarPacienteDialogComponent,
+    EnfermedadesDialogComponent
   ],
   imports: [
     CommonModule,
@@ -97,7 +102,7 @@ import { CitaPacienteComponent } from './pacientes/citas-paciente/citas-paciente
     SharedModule,
     NgxPaginationModule
   ],
-  providers: [PacienteMedicoCabeceraServiceProxy, ResponsableServiceProxy, MisResponsablesServiceProxy,CitasServiceProxy],
+  providers: [PacienteMedicoCabeceraServiceProxy, ResponsableServiceProxy, MisResponsablesServiceProxy,CitasServiceProxy,EnfermedadPacienteServiceProxy],
   entryComponents: [
     // tenants
     CreateTenantDialogComponent,
@@ -115,7 +120,10 @@ import { CitaPacienteComponent } from './pacientes/citas-paciente/citas-paciente
     MoreDetailsDialogComponent,
     ResponsablesDialogComponent,
     EditPacienteDialogComponent,
-    AsociarResponsableDialogComponent
+    AsociarResponsableDialogComponent,
+    CitarPacienteDialogComponent,
+    EnfermedadesDialogComponent,
+    
   ]
 })
 export class AppModule {}

@@ -81,14 +81,14 @@
                                         <span>{{ "Sus Responsables" | localize }}</span>
                                     </button>
                                     <button mat-menu-item (click)="citas(paciente)">
-                                        <a [routerLink]="['/app/citas', paciente.id]" class="navbar-brand"> 
+                                        <a style="text-decoration: none; color:rgba(0,0,0,.87);" [routerLink]="['/app/citas', paciente.id]"> 
                                       <!--  <a routerLink="/app/home" class="navbar-brand"> -->
                                             <mat-icon>today</mat-icon>
                                             <span>{{ "Sus Citas" | localize }}</span> 
                                         </a>
                                         
                                     </button>
-                                    <button mat-menu-item (click)="delete(paciente)">
+                                    <button mat-menu-item (click)="misEnfermedades(paciente)">
                                         <mat-icon>announcement</mat-icon>
                                         <span>{{ "Sus Enfermedades" | localize }}</span>
                                     </button>

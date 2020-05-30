@@ -11,7 +11,8 @@ namespace WSControlPacientesApi.ControlPacienteApi.Enfermedades.Dto
         [Required]
         public string Nombre;
 
-        [Required]
         public string Sintomas;
+
+        public string Causas;
     }
 }
