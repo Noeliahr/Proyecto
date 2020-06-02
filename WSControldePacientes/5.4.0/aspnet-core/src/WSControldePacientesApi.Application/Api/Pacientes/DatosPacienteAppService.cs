@@ -2,6 +2,7 @@
 using Abp.Application.Services.Dto;
 using Abp.Authorization;
 using Abp.Domain.Repositories;
+using Abp.Runtime.Session;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -13,10 +14,11 @@ using WSControldePacientesApi.Api.Pacientes.Dto;
 using WSControldePacientesApi.Authorization;
 using WSControldePacientesApi.Authorization.Users;
 using WSControldePacientesApi.ControlPacientes.Pacientes;
+using WSControlPacientesApi.ControlPacienteApi.Pacientes.Dto;
 
 namespace WSControldePacientesApi.Api.Pacientes
 {
-    [AbpAuthorize(PermissionNames.Pages_Pacientes)]
+    [AbpAuthorize(PermissionNames.Pages_DatosPersonalesPaciente)]
     public class DatosPacienteAppService : ApplicationService
     {
         private readonly IRepository<Paciente> _pacienteRepository;
@@ -29,19 +31,78 @@ namespace WSControldePacientesApi.Api.Pacientes
             _userManager = userManager;
         }
 
-        public async Task<ListResultDto<PacienteCompletoDto>> Datos(int id)
+        public async Task<PacienteCompletoDto> Datos()
         {
+            var user= await _userManager.GetUserByIdAsync(AbpSession.GetUserId());
+
             var paciente = await _pacienteRepository.GetAll()
                 .Include(p => p.DatosPersonales)
                 .Include(p => p.DondeVive)
                 .Include(p => p.Termometro)
                 .Include(p => p.MiMedicoCabecera)
                     .ThenInclude(p => p.DatosPersonales)
-                .Where(p => p.Id == id)
-                .ToListAsync();
+                .Include(p=> p.MisResponsables)
+                .Where(p => p.DatosPersonales == user)
+                .FirstOrDefaultAsync();
 
-            return new ListResultDto<PacienteCompletoDto>(ObjectMapper.Map<List<PacienteCompletoDto>>(paciente));
+            return ObjectMapper.Map<PacienteCompletoDto>(paciente);
         }
+
+
+        public async Task<MisResponsables> GetMisResponsables()
+        {
+            var user = await _userManager.GetUserByIdAsync(AbpSession.GetUserId());
+
+            var pacientes = await _pacienteRepository.GetAll()
+                .Include(pacientes => pacientes.MisResponsables)
+                    .ThenInclude(pacientes => pacientes.Responsable)
+                        .ThenInclude(pacientes => pacientes.DatosPersonales)
+                .Where(pacientes => pacientes.DatosPersonales == user)
+                .FirstOrDefaultAsync();
+            return ObjectMapper.Map<MisResponsables>(pacientes);
+        }
+
+        public async Task<MisEnfermedades> GetMisEnfermedades()
+        {
+            var user = await _userManager.GetUserByIdAsync(AbpSession.GetUserId());
+            var medicos = await _pacienteRepository.GetAll()
+                .Include(p => p.MisEnfermedades)
+                    .ThenInclude(p => p.Enfermedad)
+                .Where(p => p.DatosPersonales== user)
+                .FirstOrDefaultAsync();
+
+            return ObjectMapper.Map<MisEnfermedades>(medicos);
+        }
+
+
+        public async Task<MisPrescripciones> GetMisPrescripciones()
+        {
+            var user = await _userManager.GetUserByIdAsync(AbpSession.GetUserId());
+            var prescripciones = await _pacienteRepository.GetAll()
+                .Include(p => p.MisPrescripciones)
+                    .ThenInclude(p => p.Medicamento)
+                .Where(p => p.DatosPersonales == user)
+                .FirstOrDefaultAsync();
+
+            return ObjectMapper.Map<MisPrescripciones>(prescripciones);
+        }
+
+
+
+        public async Task<MisRecordatorios> GetMisRecordatorios()
+        {
+            var user = await _userManager.GetUserByIdAsync(AbpSession.GetUserId());
+            var recordatorios = await _pacienteRepository.GetAll()
+                .Include(p => p.MisPrescripciones)
+                    .ThenInclude(p => p.recordatorios)
+                    .ThenInclude(p=> p.Prescripcion)
+                    .ThenInclude(p=> p.Medicamento)
+                .Where(p => p.DatosPersonales == user)
+                .FirstOrDefaultAsync();
+
+            return ObjectMapper.Map<MisRecordatorios>(recordatorios);
+        }
+
 
     }
 }

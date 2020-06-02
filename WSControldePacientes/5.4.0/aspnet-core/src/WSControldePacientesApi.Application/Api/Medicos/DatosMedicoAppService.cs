@@ -16,7 +16,7 @@ using WSControlPacientesApi.ControlPacienteApi.Medicos.Dto;
 
 namespace WSControldePacientesApi.Api.Medicos
 {
-    [AbpAuthorize(PermissionNames.Pages_DatosMedico)]
+    [AbpAuthorize(PermissionNames.Pages_DatosPersonalesMedico)]
     public class DatosMedicoAppService : ApplicationService
     {
         private IRepository<Medico> _medicoRepository;

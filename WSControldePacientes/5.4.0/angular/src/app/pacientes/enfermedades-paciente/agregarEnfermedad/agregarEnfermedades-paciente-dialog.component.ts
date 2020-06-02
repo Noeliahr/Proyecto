@@ -1,4 +1,4 @@
-/*import { Component, Injector, Optional, Inject, OnInit } from '@angular/core';
+import { Component, Injector, Optional, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA,
     MatDialogRef,
     MatCheckboxChange,
@@ -8,7 +8,8 @@ import { finalize } from 'rxjs/operators';
 import * as _ from 'lodash';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/app-component-base';
-import { EnfermedadPacienteServiceProxy, EnfermedadPacienteDto, PacienteEnfermedadDto, PacienteDto, EnfermedadDto } from '@shared/service-proxies/service-proxies';
+import { EnfermedadPacienteServiceProxy, EnfermedadPacienteDto, PacienteEnfermedadDto, PacienteDto, EnfermedadDto, EnfermedadServiceProxy } from '@shared/service-proxies/service-proxies';
+import { EnfermedadesDialogComponent } from '../enfermedades-paciente-dialog.component';
 
 
 
@@ -17,7 +18,7 @@ class PagedResponsablesRequestDto extends PagedRequestDto {
 }
 
 @Component({
-    templateUrl: 'asociar-responsables-paciente-dialog.component.html',
+    templateUrl: 'agregarEnfermedades-paciente-dialog.component.html',
     animations: [appModuleAnimation()],
     styles: [
         `
@@ -37,13 +38,15 @@ export class AgregarEnfermedadDialogComponent extends PagedListingComponentBase<
     constructor(
         injector: Injector,
         
-        private _enfermedadesService: EnfermedadPacienteServiceProxy,
+        private _enfermedadesPacienteService: EnfermedadPacienteServiceProxy,
+        private _enfermedadesService : EnfermedadServiceProxy,
         //private _misresponService: MisResponsablesServiceProxy,
         private _dialogRef: MatDialogRef<AgregarEnfermedadDialogComponent>,
         private _dialog: MatDialog,
-        @Optional() @Inject(MAT_DIALOG_DATA) private _paciente: PacienteDto
+        @Optional() @Inject(MAT_DIALOG_DATA) private _paciente: number
     ) {
         super(injector);
+        console.log("id de paciente vale " + this._paciente);
     }
 
     list(
@@ -53,7 +56,7 @@ export class AgregarEnfermedadDialogComponent extends PagedListingComponentBase<
     ): void {
 
         request.filter = this.filter;
-
+        console.log("id de paciente vale " + this._paciente);
         this._enfermedadesService
             .getAll()
             .pipe(
@@ -62,15 +65,15 @@ export class AgregarEnfermedadDialogComponent extends PagedListingComponentBase<
                 })
             )
             .subscribe(result  => {
-                this.responsables = result.items;
+                this.enfermedades = result.items;
             });
     }
 
     buscar(){
-        this._responsableService.buscarByUserNameOrName(this.filter)
+       /* this._enfermedadesService.buscarByUserNameOrName(this.filter)
         .subscribe(result  => {
-            this.responsables = result.items;
-        });
+            this.enfermedades = result.items;
+        });*/
     }
   
 
@@ -78,18 +81,19 @@ export class AgregarEnfermedadDialogComponent extends PagedListingComponentBase<
         this._dialogRef.close(result);
     }
 
-    save(responsable : ResponsableDto){
-        
+    save(enfermedad : EnfermedadDto){
+        console.log("id de paciente vale " + this._paciente);
         abp.message.confirm(
             this.l('¿Esta seguro que quiere asociarle?', this._paciente),
             undefined,
             (result: boolean) => {
                 if (result) {
-                    this._misresponService
-                        .asociarResponsables(this._paciente.id, responsable.id)
+                    console.log("id de paciente vale " + this._paciente);
+                    this._enfermedadesPacienteService
+                        .addEnfermedad(this._paciente, enfermedad)
                         .pipe(
                             finalize(() => {
-                                abp.notify.success(this.l('Responsable Asociado'));
+                                abp.notify.success(this.l('Enfermedades Añadida al Paciente'));
                                 this.close(result);
                             })
                         )
@@ -102,28 +106,28 @@ export class AgregarEnfermedadDialogComponent extends PagedListingComponentBase<
     saveyguardar(){
 
         this.saving = true;
-        const responsable_ = new CreateResponsableDto();
-        responsable_.init(this.responsable);
-        console.log(responsable_);
+        const enfermedad_ = new EnfermedadDto();
+        enfermedad_.init(this.enfermedad);
+        console.log(enfermedad_);
 
-        this._responsableService
-            .create(responsable_)
+        this._enfermedadesService
+            .create(enfermedad_)
             .pipe(
                 finalize(() => {
                     this.saving = false;
                 })
             )
             .subscribe(() => {
-                this.notify.info(this.l('Responsable Creado'));
+                this.notify.info(this.l('Enfermedad Creada'));
                 this.close(true);
                 result  => {
-                    this.responsable = result;
+                    this.enfermedad = result;
                 }
             });
 
-        this.save(this.responsable);
+        this.save(this.enfermedad);
     }
 
     delete(){}
 
-} */
+} 

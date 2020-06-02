@@ -9,7 +9,7 @@ import * as _ from 'lodash';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/app-component-base';
 import { PacienteMedicoCabeceraServiceProxy,EnfermedadPacienteServiceProxy, EnfermedadPacienteDto, PacienteEnfermedadDto, PacienteDto, EnfermedadDto } from '@shared/service-proxies/service-proxies';
-//import { AgregarEnfermedadDialogComponent } from './agregarEnfermedad/agregarEnfermedades-paciente-dialog.component';
+import { AgregarEnfermedadDialogComponent } from './agregarEnfermedad/agregarEnfermedades-paciente-dialog.component';
 
 class PagedPacientesRequestDto extends PagedRequestDto {
     filter: string;
@@ -64,7 +64,7 @@ export class EnfermedadesDialogComponent extends AppComponentBase  {
             (result: boolean) => {
                 if (result) {
                     this._pacienteService
-                        .eliminarEnfermedad(id, enfermedad)
+                        .eliminarEnfermedad(this._paciente.id, enfermedad)
                         .pipe(
                             finalize(() => {
                                 abp.notify.success(this.l('SuccessfullyDeleted'));
@@ -78,9 +78,11 @@ export class EnfermedadesDialogComponent extends AppComponentBase  {
     }
 
     asociar(){
-       /* this._dialog.open(AgregarEnfermedadDialogComponent, {
-            data: this._paciente
-        });*/
+        console.log("id de paciente vale " + this._paciente.id);
+        this._dialog.open(AgregarEnfermedadDialogComponent, {
+            data: this._paciente.id
+        });
+        this.ngOnInit();
     }
 
 

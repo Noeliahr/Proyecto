@@ -63,5 +63,7 @@ namespace WSControldePacientesApi.Api.Pacientes.Dto
         public string MiMedicoCabeceraEspecialidad { get; set; }
 
 
+        public int total_responsables { get; set;}
+
     }
 }

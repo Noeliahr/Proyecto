@@ -10,6 +10,6 @@ namespace WSControlPacientesApi.ControlPacienteApi.Pacientes.Dto
     {
         public long PacienteNumSeguridadSocial { get; set; }
 
-        public ICollection<EnfermedadPacienteDto> enfermedadPacientes { get; set;}
+        public ICollection<EnfermedadPacienteDto> misEnfermedades { get; set;}
     }
 }

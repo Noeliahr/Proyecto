@@ -22,7 +22,7 @@ using WSControlPacientesApi.ControlPacienteApi.PacientesResponsables.Dto;
 
 namespace WSControldePacientesApi.Api.PacientesResponsables
 {
-    [AbpAuthorize(PermissionNames.Pages_PacienteResponsables)]
+    [AbpAuthorize(PermissionNames.Pages_Responsables)]
     public class MisResponsablesAppService : ApplicationService
     {
         private readonly IRepository<PacienteResponsable> _pacienteRepository;

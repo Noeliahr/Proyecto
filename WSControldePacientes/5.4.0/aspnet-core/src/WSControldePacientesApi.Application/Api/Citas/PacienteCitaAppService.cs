@@ -18,7 +18,7 @@ using WSControlPacientesApi.ControlPacienteApi.Pacientes.Dto;
 
 namespace WSControldePacientesApi.Api.Citas
 {
-    [AbpAuthorize(PermissionNames.Pages_Citas)]
+    [AbpAuthorize(PermissionNames.Pages_MisCitas)]
     public class PacienteCitaAppService : ApplicationService
     {
         private IRepository<Cita> _citaRepository;
@@ -30,29 +30,19 @@ namespace WSControldePacientesApi.Api.Citas
             _userManager = userManager;
         }
 
-        public async Task<ListResultDto<CitaDto>> GetCitasByPaciente(int id)
+        public async Task<ListResultDto<CitaDto>> GetCitasByPaciente()
         {
+            var user = await _userManager.GetUserByIdAsync(AbpSession.GetUserId());
+
             var citas = await _citaRepository.GetAll()
                 .Include(c => c.Direccion)
                 .Include(c => c.Medico)
                     .ThenInclude(c => c.DatosPersonales)
-                .Where(c => c.PacienteId == id)
+                .Where(c => c.Paciente.DatosPersonales== user)
                 .OrderByDescending(c => c.FechaHora)
                 .ToListAsync();
 
             return new ListResultDto<CitaDto>(ObjectMapper.Map<List<CitaDto>>(citas));
-
-        }
-
-        public async Task Citar (CreateCitaDto cita)
-        {
-            var medicoActual = await _userManager.GetUserByIdAsync(AbpSession.GetUserId()); 
-            var citanueva = ObjectMapper.Map<Cita>(cita);
-
-            citanueva.Medico = medicoActual.medico;
-
-            await _citaRepository.InsertAsync(citanueva);
-            CurrentUnitOfWork.SaveChanges();
 
         }
     }

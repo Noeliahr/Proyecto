@@ -22,7 +22,7 @@ namespace WSControldePacientesApi.ControlPacientes.Prescripciones
         public int PacienteId { get; set; }
 
         [Required]
-        public decimal Dosis { get; set; }
+        public string Dosis { get; set; }
 
         [Required]
         public DateTime Fecha_Inicio { get; set; }

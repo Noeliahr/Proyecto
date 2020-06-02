@@ -17,7 +17,7 @@ using WSControldePacientesApi.ControlPacientes.Citas;
 
 namespace WSControldePacientesApi.Api.Citas
 {
-    [AbpAuthorize(PermissionNames.Pages_CitasMedico)]
+    [AbpAuthorize(PermissionNames.Pages_Agenda)]
     public class AgendaAppService : ApplicationService
     {
         private IRepository<Cita> _citaRepository;

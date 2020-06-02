@@ -31,9 +31,18 @@ namespace WSControlPacientesApi.ControlPacienteApi.Pacientes.Dto
 
             CreateMap<Paciente, MiEvolucionTemperatura>().ForMember(met => met.Control_de_Temperatura, opts => opts.MapFrom(pa => pa.ControlTemperatura));
         
-            CreateMap<Paciente,PacienteCompletoDto>().ReverseMap();
+            CreateMap<Paciente,PacienteCompletoDto>()
+                .ForMember(p=> p.total_responsables, opts=> opts.MapFrom(p=> p.MisResponsables.Count >0 ? p.MisResponsables.Count : 0))
+                .ReverseMap();
 
             CreateMap<User, UserNameMedicosCabecera>().ForMember(u => u.UserName, opts => opts.MapFrom(u => u.UserName)).ReverseMap();
+
+
+
+
+            CreateMap<Paciente, MisEnfermedades>().ReverseMap();
+            CreateMap<Paciente, MisPrescripciones>().ReverseMap();
+            CreateMap<Paciente, MisRecordatorios>().ReverseMap();
         }
     }
 }

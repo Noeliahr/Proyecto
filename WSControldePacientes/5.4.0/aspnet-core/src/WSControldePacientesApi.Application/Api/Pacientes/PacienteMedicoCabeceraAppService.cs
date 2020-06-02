@@ -28,7 +28,7 @@ using WSControlPacientesApi.ControlPacienteApi.Responsables.Dto;
 
 namespace WSControlPacientesApi.Authorization.ControlPacienteApi.Pacientes
 {
-    [AbpAuthorize(PermissionNames.Pages_PacientesMedicoCabecera)]
+    [AbpAuthorize(PermissionNames.Pages_PacienteMC)]
     public class PacienteMedicoCabeceraAppService : ApplicationService /*: AsyncCrudAppService<Paciente, PacienteDto, int, PagedPacienteResultRequestDto, CreatePacienteDto, EditPacienteDto>*/
     {
         private readonly IRepository<Paciente> _pacienteRepository;

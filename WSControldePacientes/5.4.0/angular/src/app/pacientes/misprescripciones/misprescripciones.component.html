@@ -1,0 +1,52 @@
+<div class="row clearfix" [@routerTransition]>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card main-content">
+            <div class="header">
+                <h2 style="display: inline;"><mat-icon>assignment</mat-icon> {{ " Mis Prescripciones" | localize }}</h2>
+                
+                <button style="float: right; border: none;  background-color: inherit;" (click)="ngOnInit()">
+                    <mat-icon>refresh</mat-icon>
+                </button>
+            
+            </div>
+            <div class="body table-responsive">
+                <table class="table table-hover table-striped" [busy]="isTableLoading">
+                    <thead>
+                        <tr>
+                            <th>{{ "Datos del Medicamento" | localize }}</th>
+                            <th>{{"Dosis" | localize}}</th>
+                            <th>{{ "Fecha de Inicio" | localize }}</th>
+                            <th>{{ "Fecha de Fin" | localize }}</th>
+                            <th>{{ "Como tomar" | localize }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="
+                let prescripcion of (prescripciones.misPrescripciones
+                  | paginate
+                    : {
+                        id: 'server',
+                        itemsPerPage: pageSize,
+                        currentPage: pageNumber,
+                        totalItems: totalItems
+                      })
+              ">
+                            <td>{{ prescripcion.medicamentoNombre}} {{ prescripcion.medicamentoGramaje}} <br>{{ prescripcion.medicamentoTipo}} <br> {{ prescripcion.medicamentoComponenteBase}} </td>
+                            <td> {{ prescripcion.dosis }} </td>
+                            <td> {{prescripcion.fecha_Inicio}}</td>
+                            <td> {{prescripcion.fecha_Final}}</td>
+                            <td> {{prescripcion.como_Tomar}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="abp-pagination-controls-wrapper" *ngIf="totalItems > pageSize">
+                    <abp-pagination-controls (pageChange)="getDataPage($event)" id="server">
+                    </abp-pagination-controls>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+

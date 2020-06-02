@@ -20,7 +20,7 @@ using WSControlPacientesApi.ControlPacienteApi.Pacientes.Dto;
 
 namespace WSControldePacientesApi.Api.EnfermedadesPacientes
 {
-    [AbpAuthorize(PermissionNames.Pages_EnfermedadesPacientes)]
+    [AbpAuthorize(PermissionNames.Pages_EnfermedadesPaciente)]
     public class EnfermedadPacienteAppService : ApplicationService
     {
         private readonly IRepository<EnfermedadPaciente> _enfermedadpacienteRepository;
@@ -36,7 +36,7 @@ namespace WSControldePacientesApi.Api.EnfermedadesPacientes
             EnfermedadPaciente nuevaEnfermedad = new EnfermedadPaciente();
 
             nuevaEnfermedad.PacienteId = id;
-            nuevaEnfermedad.Enfermedad = ObjectMapper.Map<Enfermedad>(enfermedad);
+            nuevaEnfermedad.EnfermedadId = enfermedad.Id;
 
             await _enfermedadpacienteRepository.InsertAsync(nuevaEnfermedad);
             CurrentUnitOfWork.SaveChanges();

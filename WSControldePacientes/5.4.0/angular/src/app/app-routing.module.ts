@@ -10,7 +10,13 @@ import { RolesComponent } from 'app/roles/roles.component';
 import { ChangePasswordComponent } from './users/change-password/change-password.component';
 import { PacientesComponent } from '@app/pacientes/pacientes.component';
 import { CitaPacienteComponent } from './pacientes/citas-paciente/citas-paciente.component';
-import { PacienteDto } from '@shared/service-proxies/service-proxies';
+import {PerfilPacienteComponent} from './pacientes/perfil-paciente/perfil-paciente.component';
+import {MisCitasComponent} from './pacientes/miscitas/miscitas.component';
+import {MisResponsablesComponent} from './pacientes/misresponsables/misrespnsables-dialog.component';
+import { from } from 'rxjs';
+import { MisEnfermedadesComponent } from './pacientes/misenfermedades/misenfermedades.component';
+import { MisPrescripcionesComponent } from './pacientes/misprescripciones/misprescripciones.component';
+import { MisRecordatoriosComponent } from './pacientes/misrecordatorios/misrecordatorios.component';
 
 @NgModule({
     imports: [
@@ -27,8 +33,17 @@ import { PacienteDto } from '@shared/service-proxies/service-proxies';
                     { path: 'update-password', component: ChangePasswordComponent },
 
                     { path: 'pacientesMedicoCabecera', component: PacientesComponent, data: { permission: 'Pages.PacientesMedicoCabecera' }},
+                    { path: 'paciente**', component: PerfilPacienteComponent, data: { permission: 'Pages.Pacientes' }},
 
-                    { path: 'citas/:id', component: CitaPacienteComponent, data: { permission: 'Pages.Citas' },}
+                    { path: 'citas/:id', component: CitaPacienteComponent, data: { permission: 'Pages.Citas'},},
+                    { path: 'miscitas', component: MisCitasComponent, data: { permission: 'Pages.PacienteCita'},},
+
+                    { path: 'misresponsables', component: MisResponsablesComponent, data: { permission: 'Pages.MisResponsables'},},
+
+                    { path: 'misenfermedades', component: MisEnfermedadesComponent, data: { permission: 'Pages.MisEnfermedades'},},
+
+                    { path: 'misprescripciones', component: MisPrescripcionesComponent, data: { permission: 'Pages.MisPrescripciones'},},
+                    { path: 'misrecordatorios', component: MisRecordatoriosComponent, data: { permission: 'Pages.MisRecordatorios'},},
                 ]
             }
         ])
