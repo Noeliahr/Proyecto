@@ -10,18 +10,18 @@ import { MenuItem } from '@shared/layout/menu-item';
 export class SideBarNavComponent extends AppComponentBase {
 
     menuItems: MenuItem[] = [
-        new MenuItem(this.l('Datos Personales'), 'Pages.Pacientes', 'person_pin', '/app/paciente**'),
-        new MenuItem(this.l('Responsables'), '','supervisor_account', '/app/misresponsables'),
-        new MenuItem(this.l('Citas'), '','today', '/app/miscitas'),
-        new MenuItem(this.l('Enfermedades'), '','announcement', '/app/misenfermedades'),
+        new MenuItem(this.l('Datos Personales'), 'Pages.DatosPersonalesPaciente', 'person_pin', '/app/paciente**'),
+        new MenuItem(this.l('Responsables'), 'Pages.DatosPersonalesPaciente','supervisor_account', '/app/misresponsables'),
+        new MenuItem(this.l('Citas'), 'Pages.DatosPersonalesPaciente','today', '/app/miscitas'),
+        new MenuItem(this.l('Enfermedades'), 'Pages.DatosPersonalesPaciente','announcement', '/app/misenfermedades'),
         new MenuItem(this.l('Control de Temperatura'), '','perm_contact_calendar', '/app/home'),
-        new MenuItem(this.l('Prescripciones'), '','assignment', '/app/misprescripciones'),
-        new MenuItem(this.l('Recordatorios'), '','event_note', '/app/misrecordatorios'),
-        new MenuItem(this.l('Chat'), '','chat', '/app/home'),
+        new MenuItem(this.l('Prescripciones'), 'Pages.DatosPersonalesPaciente','assignment', '/app/misprescripciones'),
+        new MenuItem(this.l('Recordatorios'), 'Pages.DatosPersonalesPaciente','event_note', '/app/misrecordatorios'),
+        new MenuItem(this.l('Chat'), 'Pages.Chat','chat', '/app/chat'),
 
         new MenuItem(this.l('Tenants'), 'Pages.Tenants', 'business', '/app/tenants'),
         new MenuItem(this.l('Users'), 'Pages.Users', 'people', '/app/users'),
-        new MenuItem(this.l('Pacientes'), 'Pages.PacientesMedicoCabecera', 'assignment_ind', '/app/pacientesMedicoCabecera'),
+        new MenuItem(this.l('Pacientes'), 'Pages.PacienteMC', 'assignment_ind', '/app/pacientesMedicoCabecera'),
         new MenuItem(this.l('Roles'), 'Pages.Roles', 'local_offer', '/app/roles'),
         //new MenuItem(this.l('About'), '', 'info', '/app/about'),
 

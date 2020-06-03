@@ -17,6 +17,7 @@ import { from } from 'rxjs';
 import { MisEnfermedadesComponent } from './pacientes/misenfermedades/misenfermedades.component';
 import { MisPrescripcionesComponent } from './pacientes/misprescripciones/misprescripciones.component';
 import { MisRecordatoriosComponent } from './pacientes/misrecordatorios/misrecordatorios.component';
+import { ChatsComponent } from './chats/chat.component';
 
 @NgModule({
     imports: [
@@ -44,6 +45,8 @@ import { MisRecordatoriosComponent } from './pacientes/misrecordatorios/misrecor
 
                     { path: 'misprescripciones', component: MisPrescripcionesComponent, data: { permission: 'Pages.MisPrescripciones'},},
                     { path: 'misrecordatorios', component: MisRecordatoriosComponent, data: { permission: 'Pages.MisRecordatorios'},},
+
+                    { path: 'chat', component: ChatsComponent, data: { permission: 'Pages.Chat'},},
                 ]
             }
         ])

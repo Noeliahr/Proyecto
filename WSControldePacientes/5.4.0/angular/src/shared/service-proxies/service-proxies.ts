@@ -1755,7 +1755,7 @@ export class MensajeServiceProxy {
     /**
      * @return Success
      */
-    getMensaje(): Observable<MensajeDtoListResultDto> {
+    getMensaje(): Observable<MensajeSimpleListResultDto> {
         let url_ = this.baseUrl + "/api/services/app/Mensaje/GetMensaje";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1774,14 +1774,14 @@ export class MensajeServiceProxy {
                 try {
                     return this.processGetMensaje(<any>response_);
                 } catch (e) {
-                    return <Observable<MensajeDtoListResultDto>><any>_observableThrow(e);
+                    return <Observable<MensajeSimpleListResultDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<MensajeDtoListResultDto>><any>_observableThrow(response_);
+                return <Observable<MensajeSimpleListResultDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetMensaje(response: HttpResponseBase): Observable<MensajeDtoListResultDto> {
+    protected processGetMensaje(response: HttpResponseBase): Observable<MensajeSimpleListResultDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1792,7 +1792,7 @@ export class MensajeServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = MensajeDtoListResultDto.fromJS(resultData200);
+            result200 = MensajeSimpleListResultDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -1800,7 +1800,7 @@ export class MensajeServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<MensajeDtoListResultDto>(<any>null);
+        return _observableOf<MensajeSimpleListResultDto>(<any>null);
     }
 
     /**
@@ -7428,6 +7428,112 @@ export interface IMensajeDto {
     isLeido: boolean;
     isRecibido: boolean;
     id: number;
+}
+
+export class MensajeSimple implements IMensajeSimple {
+    personaId: number;
+    personaUserName: string | undefined;
+    fechaHora: moment.Moment;
+    texto: string | undefined;
+
+    constructor(data?: IMensajeSimple) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.personaId = _data["personaId"];
+            this.personaUserName = _data["personaUserName"];
+            this.fechaHora = _data["fechaHora"] ? moment(_data["fechaHora"].toString()) : <any>undefined;
+            this.texto = _data["texto"];
+        }
+    }
+
+    static fromJS(data: any): MensajeSimple {
+        data = typeof data === 'object' ? data : {};
+        let result = new MensajeSimple();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["personaId"] = this.personaId;
+        data["personaUserName"] = this.personaUserName;
+        data["fechaHora"] = this.fechaHora ? this.fechaHora.toISOString() : <any>undefined;
+        data["texto"] = this.texto;
+        return data; 
+    }
+
+    clone(): MensajeSimple {
+        const json = this.toJSON();
+        let result = new MensajeSimple();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IMensajeSimple {
+    personaId: number;
+    personaUserName: string | undefined;
+    fechaHora: moment.Moment;
+    texto: string | undefined;
+}
+
+export class MensajeSimpleListResultDto implements IMensajeSimpleListResultDto {
+    items: MensajeSimple[] | undefined;
+
+    constructor(data?: IMensajeSimpleListResultDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items.push(MensajeSimple.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): MensajeSimpleListResultDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MensajeSimpleListResultDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone(): MensajeSimpleListResultDto {
+        const json = this.toJSON();
+        let result = new MensajeSimpleListResultDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IMensajeSimpleListResultDto {
+    items: MensajeSimple[] | undefined;
 }
 
 export class MensajeDtoListResultDto implements IMensajeDtoListResultDto {

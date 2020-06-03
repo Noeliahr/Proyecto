@@ -41,7 +41,7 @@ import { ResetPasswordDialogComponent } from './users/reset-password/reset-passw
 
 // paciente
 import { PacientesComponent } from '@app/pacientes/pacientes.component';
-import { PacienteMedicoCabeceraServiceProxy, ResponsableServiceProxy, MisResponsablesServiceProxy, CitasServiceProxy, EnfermedadPacienteServiceProxy, EnfermedadServiceProxy, DatosPacienteServiceProxy, PacienteCitaServiceProxy, MisPrescripciones } from '@shared/service-proxies/service-proxies';
+import { PacienteMedicoCabeceraServiceProxy, ResponsableServiceProxy, MisResponsablesServiceProxy, CitasServiceProxy, EnfermedadPacienteServiceProxy, EnfermedadServiceProxy, DatosPacienteServiceProxy, PacienteCitaServiceProxy, MisPrescripciones, MensajeServiceProxy } from '@shared/service-proxies/service-proxies';
 import { CreatePacienteDialogComponent } from './pacientes/create-paciente/create-paciente-dialog.component';
 import {MoreDetailsDialogComponent} from './pacientes/moredetails/moredetails-paciente-dialog.component';
 import {ResponsablesDialogComponent} from './pacientes/responsables-paciente/responsables-paciente-dialog.component';
@@ -59,6 +59,8 @@ import { MisEnfermedadesComponent } from './pacientes/misenfermedades/misenferme
 import { from } from 'rxjs';
 import { MisPrescripcionesComponent } from './pacientes/misprescripciones/misprescripciones.component';
 import { MisRecordatoriosComponent } from './pacientes/misrecordatorios/misrecordatorios.component';
+import { ChatsComponent } from './chats/chat.component';
+import { MostrarConversacionDialogComponent } from './chats/mostrarConversacion/mostrarConversacion-dialog.component';
 
 @NgModule({
   declarations: [
@@ -102,7 +104,9 @@ import { MisRecordatoriosComponent } from './pacientes/misrecordatorios/misrecor
     MisResponsablesComponent,
     MisEnfermedadesComponent,
     MisPrescripcionesComponent,
-    MisRecordatoriosComponent
+    MisRecordatoriosComponent,
+    ChatsComponent,
+    MostrarConversacionDialogComponent
 
 
   ],
@@ -119,7 +123,9 @@ import { MisRecordatoriosComponent } from './pacientes/misrecordatorios/misrecor
     SharedModule,
     NgxPaginationModule
   ],
-  providers: [PacienteMedicoCabeceraServiceProxy, ResponsableServiceProxy, MisResponsablesServiceProxy,CitasServiceProxy,EnfermedadPacienteServiceProxy, EnfermedadServiceProxy, DatosPacienteServiceProxy, PacienteCitaServiceProxy],
+  providers: [PacienteMedicoCabeceraServiceProxy, ResponsableServiceProxy, MisResponsablesServiceProxy,
+    CitasServiceProxy,EnfermedadPacienteServiceProxy, EnfermedadServiceProxy, DatosPacienteServiceProxy, 
+    PacienteCitaServiceProxy,MensajeServiceProxy],
   entryComponents: [
     // tenants
     CreateTenantDialogComponent,
@@ -140,7 +146,9 @@ import { MisRecordatoriosComponent } from './pacientes/misrecordatorios/misrecor
     AsociarResponsableDialogComponent,
     CitarPacienteDialogComponent,
     EnfermedadesDialogComponent,
-    AgregarEnfermedadDialogComponent
+    AgregarEnfermedadDialogComponent,
+    MostrarConversacionDialogComponent
+
     
   ]
 })

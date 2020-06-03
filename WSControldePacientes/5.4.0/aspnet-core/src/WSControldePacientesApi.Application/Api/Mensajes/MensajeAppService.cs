@@ -1,6 +1,7 @@
 ﻿using Abp.Application.Services;
 using Abp.Application.Services.Dto;
 using Abp.Domain.Repositories;
+using Abp.Extensions;
 using Abp.Runtime.Session;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -45,7 +46,7 @@ namespace WSControldePacientesApi.Api.Mensajes
             return MapToEntityDto(mensaje);
         }
 
-        public async Task<ListResultDto<MensajeDto>> GetMensaje()
+        public async Task<ListResultDto<MensajeSimple>> GetMensaje()
         {
 
             var personaOrigen = await _userManager.GetUserByIdAsync(AbpSession.GetUserId());
@@ -88,8 +89,32 @@ namespace WSControldePacientesApi.Api.Mensajes
                 }
             }
 
+            List<MensajeSimple> message = new List<MensajeSimple>();
 
-            return new ListResultDto<MensajeDto>(ObjectMapper.Map<List<MensajeDto>>(mensajesAgrupados));
+            for (int i=0; i<mensajesAgrupados.Count; i++)
+            {
+                if (!mensajes.ElementAt(i).PersonaOrigen.UserName.Equals(personaOrigen.UserName))
+                {
+                    MensajeSimple mensajeSimple = new MensajeSimple();
+                    mensajeSimple.personaId = mensajes.ElementAt(i).PersonaOrigenId;
+                    mensajeSimple.personaUserName = mensajes.ElementAt(i).PersonaOrigen.UserName;
+                    mensajeSimple.Texto = mensajes.ElementAt(i).Texto;
+                    mensajeSimple.fechaHora = mensajes.ElementAt(i).Fecha;
+                    message.Add(mensajeSimple);
+                }
+                else
+                {
+                    MensajeSimple mensajeSimple = new MensajeSimple();
+                    mensajeSimple.personaId = mensajes.ElementAt(i).PersonaDestinoId;
+                    mensajeSimple.personaUserName = mensajes.ElementAt(i).PersonaDestino.UserName;
+                    mensajeSimple.Texto = mensajes.ElementAt(i).Texto;
+                    mensajeSimple.fechaHora = mensajes.ElementAt(i).Fecha;
+                    message.Add(mensajeSimple);
+                }
+            }
+
+
+            return new ListResultDto<MensajeSimple>(ObjectMapper.Map<List<MensajeSimple>>(message));
         }
 
         public async Task<ListResultDto<MensajeDto>> GetChat(string userName)

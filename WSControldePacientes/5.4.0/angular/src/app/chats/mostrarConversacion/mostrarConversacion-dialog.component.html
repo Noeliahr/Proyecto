@@ -1,0 +1,56 @@
+<div class="row clearfix" [@routerTransition] style="widows: 100px; width: 700px;">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="header">
+            <h2><mat-icon>emoji_people</mat-icon> {{_username}}</h2>
+        </div>
+        
+        <div class="body table-responsive">
+                    <div class="scrollbar-near-moon" style=" height: 200px; overflow: auto;">
+                        <div *ngFor="
+                    let mensaje of mensajes">
+                            <p *ngIf="mensaje.personaOrigenUserName==_username" style="float: left;">
+                                    <span style="font-size: 18px;">{{mensaje.texto}}</span>
+                                    <span style="font-size: 10px; padding-left: 5px;">{{mensaje.fecha | date:'short'}}</span>
+                            </p>
+
+                            <p *ngIf="mensaje.personaOrigenUserName!=_username" style="float: right;">
+                                    <span style="font-size: 18px;">{{mensaje.texto}}</span>
+                                    <span style="font-size: 10px; padding-right: 10px;" >{{mensaje.fecha | date:'short'}}</span>
+                            </p>
+                            <br><br>
+                        </div>
+
+               <!-- <mat-dialog-content style="width:690px;height:200px;" id="messages" (pageScrollFinish)="onPageScrollFinish()">
+                    <div *ngFor="
+                    let mensaje of mensajes">
+                        <p *ngIf="mensaje.personaOrigenUserName==_username" style="float: left;">
+                                <span style="font-size: 18px;">{{mensaje.texto}}</span>
+                                <span style="font-size: 10px; padding-left: 5px;">{{mensaje.fecha | date:'short'}}</span>
+                        </p>
+
+                        <p *ngIf="mensaje.personaOrigenUserName!=_username" style="float: right;">
+                                <span style="font-size: 18px;">{{mensaje.texto}}</span>
+                                <span style="font-size: 10px; padding-left: 5px;" >{{mensaje.fecha | date:'short'}}</span>
+                        </p>
+
+                        <br><br>
+                    </div>
+                </mat-dialog-content> -->
+                </div>
+            <mat-form-field style="display: inline; width: 90%;">
+                <input matInput
+                       name="texto"
+                       [placeholder]="'Escribe algo' | localize"
+                       [(ngModel)]="texto"
+                       maxlength="120"/>
+            </mat-form-field>
+            <button mat-mini-fab class="pull-right"
+                color="primary"
+                style="display: inline-block; float: right; bottom: 50px;"
+                (click)="enviar()">
+                     <mat-icon>send</mat-icon>
+            </button>
+        </div>  
+    </div>
+</div>
+
