@@ -1,4 +1,4 @@
-import { Component, Injector, Optional, Inject, OnInit } from '@angular/core';
+import { Component, Injector, Optional, Inject, AfterViewChecked, ElementRef, ViewChild, OnInit } from '@angular/core';
 import * as moment from 'moment';
 import { MAT_DIALOG_DATA,
     MatDialogRef,
@@ -29,7 +29,8 @@ export class MostrarConversacionDialogComponent extends PagedListingComponentBas
     mensajes: MensajeDto[] = [];
     nuevoMensaje: CreateMensajeDto = new CreateMensajeDto();
     texto : string;
-      
+   // @ViewChild('scrollMe') private myScrollContainer: ElementRef;
+
     constructor(
         injector: Injector,
         private _mensajesService: MensajeServiceProxy,
@@ -39,11 +40,23 @@ export class MostrarConversacionDialogComponent extends PagedListingComponentBas
         super(injector);
     }
 
+   /* ngAfterViewChecked() {        
+        this.scrollToBottom();        
+    } 
+
+
+    scrollToBottom(): void {
+        try {
+            this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
+        } catch(err) { }                 
+    }*/
   
     list(): void {
         this._mensajesService.getChat(this._username)
             .subscribe(result =>
         this.mensajes = result.items);
+
+        //this.scrollToBottom();
                 
     }   
 

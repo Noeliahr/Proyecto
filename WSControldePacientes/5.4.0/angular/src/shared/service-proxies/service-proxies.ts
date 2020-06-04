@@ -599,6 +599,69 @@ export class ConfigurationServiceProxy {
 }
 
 @Injectable()
+export class ControldeTemperaturaServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @return Success
+     */
+    get(): Observable<ControlTemperaturaDtoListResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/ControldeTemperatura/Get";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGet(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGet(<any>response_);
+                } catch (e) {
+                    return <Observable<ControlTemperaturaDtoListResultDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ControlTemperaturaDtoListResultDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGet(response: HttpResponseBase): Observable<ControlTemperaturaDtoListResultDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ControlTemperaturaDtoListResultDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ControlTemperaturaDtoListResultDto>(<any>null);
+    }
+}
+
+@Injectable()
 export class DatosMedicoServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -5958,6 +6021,104 @@ export interface IChangeUiThemeInput {
     theme: string | undefined;
 }
 
+export class ControlTemperaturaDto implements IControlTemperaturaDto {
+    temperatura: number;
+    fecha: moment.Moment;
+
+    constructor(data?: IControlTemperaturaDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.temperatura = _data["temperatura"];
+            this.fecha = _data["fecha"] ? moment(_data["fecha"].toString()) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): ControlTemperaturaDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ControlTemperaturaDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["temperatura"] = this.temperatura;
+        data["fecha"] = this.fecha ? this.fecha.toISOString() : <any>undefined;
+        return data; 
+    }
+
+    clone(): ControlTemperaturaDto {
+        const json = this.toJSON();
+        let result = new ControlTemperaturaDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IControlTemperaturaDto {
+    temperatura: number;
+    fecha: moment.Moment;
+}
+
+export class ControlTemperaturaDtoListResultDto implements IControlTemperaturaDtoListResultDto {
+    items: ControlTemperaturaDto[] | undefined;
+
+    constructor(data?: IControlTemperaturaDtoListResultDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items.push(ControlTemperaturaDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): ControlTemperaturaDtoListResultDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ControlTemperaturaDtoListResultDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone(): ControlTemperaturaDtoListResultDto {
+        const json = this.toJSON();
+        let result = new ControlTemperaturaDtoListResultDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IControlTemperaturaDtoListResultDto {
+    items: ControlTemperaturaDto[] | undefined;
+}
+
 export class MedicoDto implements IMedicoDto {
     datosPersonalesId: number | undefined;
     datosPersonalesUserName: string | undefined;
@@ -7793,53 +7954,6 @@ export class MisEnfermedadesListResultDto implements IMisEnfermedadesListResultD
 
 export interface IMisEnfermedadesListResultDto {
     items: MisEnfermedades[] | undefined;
-}
-
-export class ControlTemperaturaDto implements IControlTemperaturaDto {
-    temperatura: number;
-    fecha: moment.Moment;
-
-    constructor(data?: IControlTemperaturaDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.temperatura = _data["temperatura"];
-            this.fecha = _data["fecha"] ? moment(_data["fecha"].toString()) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): ControlTemperaturaDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new ControlTemperaturaDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["temperatura"] = this.temperatura;
-        data["fecha"] = this.fecha ? this.fecha.toISOString() : <any>undefined;
-        return data; 
-    }
-
-    clone(): ControlTemperaturaDto {
-        const json = this.toJSON();
-        let result = new ControlTemperaturaDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IControlTemperaturaDto {
-    temperatura: number;
-    fecha: moment.Moment;
 }
 
 export class MiEvolucionTemperatura implements IMiEvolucionTemperatura {

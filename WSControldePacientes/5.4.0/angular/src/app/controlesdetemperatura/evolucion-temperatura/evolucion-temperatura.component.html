@@ -1,0 +1,9 @@
+<div class="flex-row">
+    <div class="flex-row-item uno">
+        <h4>Control de temperatura desde {{fechaInicio|date:'short'}}  hasta  {{fechaFinal| date:'short'}} </h4>
+        <mat-card>
+            <app-controlesde-temperatura [evolucion]="controles">
+            </app-controlesde-temperatura>
+        </mat-card>
+    </div>
+</div>

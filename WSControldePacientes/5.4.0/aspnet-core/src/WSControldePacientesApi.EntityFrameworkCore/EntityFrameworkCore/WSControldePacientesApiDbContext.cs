@@ -29,6 +29,7 @@ namespace WSControldePacientesApi.EntityFrameworkCore
         {
         }
 
+        public DbSet<ControlTemperatura> controlesTemperatura { get; set; }
         public DbSet<Cita> citas { get; set; }
 
         public DbSet<Direccion> direcciones { get; set; }

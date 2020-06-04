@@ -18,6 +18,7 @@ import { MisEnfermedadesComponent } from './pacientes/misenfermedades/misenferme
 import { MisPrescripcionesComponent } from './pacientes/misprescripciones/misprescripciones.component';
 import { MisRecordatoriosComponent } from './pacientes/misrecordatorios/misrecordatorios.component';
 import { ChatsComponent } from './chats/chat.component';
+import { EvolucionTemperaturaComponent } from './controlesdeTemperatura/evolucion-temperatura/evolucion-temperatura.component';
 
 @NgModule({
     imports: [
@@ -47,6 +48,8 @@ import { ChatsComponent } from './chats/chat.component';
                     { path: 'misrecordatorios', component: MisRecordatoriosComponent, data: { permission: 'Pages.MisRecordatorios'},},
 
                     { path: 'chat', component: ChatsComponent, data: { permission: 'Pages.Chat'},},
+
+                    {path: 'evolucion', component: EvolucionTemperaturaComponent, data: {permission: 'MiControldeTemperatura'},}
                 ]
             }
         ])

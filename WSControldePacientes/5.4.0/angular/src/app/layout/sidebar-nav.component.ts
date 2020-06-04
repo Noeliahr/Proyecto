@@ -14,7 +14,7 @@ export class SideBarNavComponent extends AppComponentBase {
         new MenuItem(this.l('Responsables'), 'Pages.DatosPersonalesPaciente','supervisor_account', '/app/misresponsables'),
         new MenuItem(this.l('Citas'), 'Pages.DatosPersonalesPaciente','today', '/app/miscitas'),
         new MenuItem(this.l('Enfermedades'), 'Pages.DatosPersonalesPaciente','announcement', '/app/misenfermedades'),
-        new MenuItem(this.l('Control de Temperatura'), '','perm_contact_calendar', '/app/home'),
+        new MenuItem(this.l('Control de Temperatura'), 'Pages.MiControldeTemperatura','perm_contact_calendar', '/app/evolucion'),
         new MenuItem(this.l('Prescripciones'), 'Pages.DatosPersonalesPaciente','assignment', '/app/misprescripciones'),
         new MenuItem(this.l('Recordatorios'), 'Pages.DatosPersonalesPaciente','event_note', '/app/misrecordatorios'),
         new MenuItem(this.l('Chat'), 'Pages.Chat','chat', '/app/chat'),

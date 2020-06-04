@@ -12,6 +12,8 @@ import { AppComponent } from './app.component';
 
 import { AbpModule } from '@abp/abp.module';
 
+import { ChartsModule } from 'ng2-charts';
+
 import { ServiceProxyModule } from '@shared/service-proxies/service-proxy.module';
 import { SharedModule } from '@shared/shared.module';
 
@@ -41,7 +43,7 @@ import { ResetPasswordDialogComponent } from './users/reset-password/reset-passw
 
 // paciente
 import { PacientesComponent } from '@app/pacientes/pacientes.component';
-import { PacienteMedicoCabeceraServiceProxy, ResponsableServiceProxy, MisResponsablesServiceProxy, CitasServiceProxy, EnfermedadPacienteServiceProxy, EnfermedadServiceProxy, DatosPacienteServiceProxy, PacienteCitaServiceProxy, MisPrescripciones, MensajeServiceProxy } from '@shared/service-proxies/service-proxies';
+import { PacienteMedicoCabeceraServiceProxy, ResponsableServiceProxy, MisResponsablesServiceProxy, CitasServiceProxy, EnfermedadPacienteServiceProxy, EnfermedadServiceProxy, DatosPacienteServiceProxy, PacienteCitaServiceProxy, MisPrescripciones, MensajeServiceProxy, ControldeTemperaturaServiceProxy } from '@shared/service-proxies/service-proxies';
 import { CreatePacienteDialogComponent } from './pacientes/create-paciente/create-paciente-dialog.component';
 import {MoreDetailsDialogComponent} from './pacientes/moredetails/moredetails-paciente-dialog.component';
 import {ResponsablesDialogComponent} from './pacientes/responsables-paciente/responsables-paciente-dialog.component';
@@ -61,6 +63,8 @@ import { MisPrescripcionesComponent } from './pacientes/misprescripciones/mispre
 import { MisRecordatoriosComponent } from './pacientes/misrecordatorios/misrecordatorios.component';
 import { ChatsComponent } from './chats/chat.component';
 import { MostrarConversacionDialogComponent } from './chats/mostrarConversacion/mostrarConversacion-dialog.component';
+import { ControlesdeTemperaturaComponent } from './controlesdetemperatura/controlesdetemperatura.component';
+import { EvolucionTemperaturaComponent } from './controlesdeTemperatura/evolucion-temperatura/evolucion-temperatura.component';
 
 @NgModule({
   declarations: [
@@ -106,7 +110,9 @@ import { MostrarConversacionDialogComponent } from './chats/mostrarConversacion/
     MisPrescripcionesComponent,
     MisRecordatoriosComponent,
     ChatsComponent,
-    MostrarConversacionDialogComponent
+    MostrarConversacionDialogComponent,
+    ControlesdeTemperaturaComponent,
+    EvolucionTemperaturaComponent
 
 
   ],
@@ -121,11 +127,12 @@ import { MostrarConversacionDialogComponent } from './chats/mostrarConversacion/
     AppRoutingModule,
     ServiceProxyModule,
     SharedModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    ChartsModule
   ],
   providers: [PacienteMedicoCabeceraServiceProxy, ResponsableServiceProxy, MisResponsablesServiceProxy,
     CitasServiceProxy,EnfermedadPacienteServiceProxy, EnfermedadServiceProxy, DatosPacienteServiceProxy, 
-    PacienteCitaServiceProxy,MensajeServiceProxy],
+    PacienteCitaServiceProxy,MensajeServiceProxy, ControldeTemperaturaServiceProxy],
   entryComponents: [
     // tenants
     CreateTenantDialogComponent,
