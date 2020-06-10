@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Text;
 using System.Threading.Tasks;
 using WSControldePacientesApi.Api.Prescripciones.Dto;
@@ -27,16 +28,58 @@ namespace WSControldePacientesApi.Api.Prescripciones
             _userManager = userManager;
         }
 
-        public async Task<ListResultDto<PrescripcionDto>> GetAll()
+        public async Task<ListResultDto<PrescripcionDto>> GetAll(int id)
         {
-            var pacienteActual = await _userManager.GetUserByIdAsync(AbpSession.GetUserId());
-
-            var citas = await _precripcionesRepository.GetAll()
+            var prescripcion = await _precripcionesRepository.GetAll()
                 .Include(c => c.Medicamento)
-                .Where(c => c.Paciente.DatosPersonalesId == pacienteActual.Id)
+                .Where(c => c.Paciente.Id== id)
                 .ToListAsync();
 
-            return new ListResultDto<PrescripcionDto>(ObjectMapper.Map<List<PrescripcionDto>>(citas));
+            return new ListResultDto<PrescripcionDto>(ObjectMapper.Map<List<PrescripcionDto>>(prescripcion));
         }
+
+        public async Task<PrescripcionDto> CreateAsync(PrescripcionDto input, int idPaciente)
+        {
+            var prescripcion = ObjectMapper.Map<Prescripcion>(input);
+
+            prescripcion.PacienteId = idPaciente;
+
+            await _precripcionesRepository.InsertAsync(prescripcion);
+            CurrentUnitOfWork.SaveChanges();
+
+            return ObjectMapper.Map<PrescripcionDto>(prescripcion);
+
+        }
+
+
+        public async Task<PrescripcionDto> UpdateAsync (PrescripcionDto input, int idPaciente)
+        {
+            var prescripcion = ObjectMapper.Map<Prescripcion>(input);
+            prescripcion.PacienteId = idPaciente;
+
+            await _precripcionesRepository.UpdateAsync(prescripcion);
+
+            return ObjectMapper.Map<PrescripcionDto>(prescripcion);
+
+        }
+
+        public async Task<PrescripcionDto> GetPrescripcion(int id)
+        {
+            var prescripcion = await _precripcionesRepository.GetAll()
+                .Include(p => p.Medicamento)
+                .Where(p => p.Id == id)
+                .FirstOrDefaultAsync();
+
+            return ObjectMapper.Map<PrescripcionDto>(prescripcion);
+        }
+
+        public async Task Delete (int id)
+        {
+            var prescripcion = _precripcionesRepository.Get(id);
+
+            await _precripcionesRepository.DeleteAsync(prescripcion);
+        }
+
+
     }
 }

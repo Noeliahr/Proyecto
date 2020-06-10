@@ -1,10 +1,11 @@
 import { Component,  Injector } from '@angular/core';
-import {PacienteMedicoCabeceraServiceProxy, PacienteDto, AuthenticateResultModel, DatosMedicoServiceProxy, MedicoDto } from 'shared/service-proxies/service-proxies';
+import { DatosMedicoServiceProxy, MedicoDto } from 'shared/service-proxies/service-proxies';
 import { finalize } from 'rxjs/operators';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import {PagedListingComponentBase,PagedRequestDto} from '@shared/paged-listing-component-base';
 import { MatDialog } from '@angular/material';
 import { AppComponentBase } from '@shared/app-component-base';
+import { EditMedicoDialogComponent } from './edit-medico/edit-medico-dialog.component';
 
 class PagedPacientesRequestDto extends PagedRequestDto {
     filter: string;
@@ -44,6 +45,17 @@ export class PerfilMedicoComponent extends AppComponentBase {
 
 
     delete(){}
+
+    modificar(){
+        let EditMedicoDialog;
+        EditMedicoDialog= this._dialog.open(EditMedicoDialogComponent);
+
+        EditMedicoDialog.afterClosed().subscribe(result => {
+            if (result) {
+                this.ngOnInit();
+            }
+        });
+    }
 
 
 

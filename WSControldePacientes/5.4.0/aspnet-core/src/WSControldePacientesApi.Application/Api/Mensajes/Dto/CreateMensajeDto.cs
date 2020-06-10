@@ -10,7 +10,7 @@ namespace WSControldePacientesApi.Api.Mensajes.Dto
         [Required]
         public string PersonaDestinoUserName { get; set; }
         [Required]
-        [MaxLength(120)]
+        [MaxLength(220)]
         public string Texto { get; set; }
         [Required]
         public DateTime Fecha { get; set; }

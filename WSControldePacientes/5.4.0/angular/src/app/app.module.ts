@@ -43,7 +43,7 @@ import { ResetPasswordDialogComponent } from './users/reset-password/reset-passw
 
 // paciente
 import { PacientesComponent } from '@app/pacientes/pacientes.component';
-import { PacienteMedicoCabeceraServiceProxy, ResponsableServiceProxy, MisResponsablesServiceProxy, CitasServiceProxy, EnfermedadPacienteServiceProxy, EnfermedadServiceProxy, DatosPacienteServiceProxy, PacienteCitaServiceProxy, MisPrescripciones, MensajeServiceProxy, ControldeTemperaturaServiceProxy } from '@shared/service-proxies/service-proxies';
+import { PacienteMedicoCabeceraServiceProxy, ResponsableServiceProxy, MisResponsablesServiceProxy, CitasServiceProxy, EnfermedadPacienteServiceProxy, EnfermedadServiceProxy, DatosPacienteServiceProxy, MiCitaMedicaServiceProxy, MensajeServiceProxy, ControldeTemperaturaServiceProxy, DatosMedicoServiceProxy, DatosResponsablesServiceProxy, AgendaServiceProxy, PrescripcionServiceProxy, MedicamentosServiceProxy } from '@shared/service-proxies/service-proxies';
 import { CreatePacienteDialogComponent } from './pacientes/create-paciente/create-paciente-dialog.component';
 import {MoreDetailsDialogComponent} from './pacientes/moredetails/moredetails-paciente-dialog.component';
 import {ResponsablesDialogComponent} from './pacientes/responsables-paciente/responsables-paciente-dialog.component';
@@ -65,6 +65,16 @@ import { ChatsComponent } from './chats/chat.component';
 import { MostrarConversacionDialogComponent } from './chats/mostrarConversacion/mostrarConversacion-dialog.component';
 import { ControlesdeTemperaturaComponent } from './controlesdetemperatura/controlesdetemperatura.component';
 import { EvolucionTemperaturaComponent } from './controlesdeTemperatura/evolucion-temperatura/evolucion-temperatura.component';
+import { PedirTemperaturaComponent } from './controlesdeTemperatura/evolucion-temperatura/pedirTemperatura/pedir-temperatura.component';
+import { AnularCitaComponent } from './pacientes/miscitas/anularCita/anularCita.component';
+import { PerfilMedicoComponent } from './perfil-medico/perfil-medico.component';
+import { PerfilResponsableComponent } from './perfil-responsable/perfil-responsable.component';
+import { EditMedicoDialogComponent } from './perfil-medico/edit-medico/edit-medico-dialog.component';
+import { EditResponsableDialogComponent } from './perfil-responsable/edit-responsable/edit-responsable-dialog.component';
+import { MiAgendaComponent } from './perfil-medico/agenda/miagenda.component';
+import { PrescripcionesComponent } from './pacientes/prescripciones/prescripciones.component';
+import { CreatePrescripcionDialogComponent } from './pacientes/prescripciones/create-prescripcion/create-prescripcion-dialog.component';
+
 
 @NgModule({
   declarations: [
@@ -105,6 +115,7 @@ import { EvolucionTemperaturaComponent } from './controlesdeTemperatura/evolucio
     AgregarEnfermedadDialogComponent,
     PerfilPacienteComponent,
     MisCitasComponent,
+    AnularCitaComponent,
     MisResponsablesComponent,
     MisEnfermedadesComponent,
     MisPrescripcionesComponent,
@@ -112,9 +123,15 @@ import { EvolucionTemperaturaComponent } from './controlesdeTemperatura/evolucio
     ChatsComponent,
     MostrarConversacionDialogComponent,
     ControlesdeTemperaturaComponent,
-    EvolucionTemperaturaComponent
-
-
+    EvolucionTemperaturaComponent,
+    PedirTemperaturaComponent,
+    PerfilMedicoComponent,
+    EditMedicoDialogComponent, 
+    PerfilResponsableComponent,
+    EditResponsableDialogComponent, 
+    MiAgendaComponent, 
+    PrescripcionesComponent,
+    CreatePrescripcionDialogComponent
   ],
   imports: [
     CommonModule,
@@ -132,7 +149,8 @@ import { EvolucionTemperaturaComponent } from './controlesdeTemperatura/evolucio
   ],
   providers: [PacienteMedicoCabeceraServiceProxy, ResponsableServiceProxy, MisResponsablesServiceProxy,
     CitasServiceProxy,EnfermedadPacienteServiceProxy, EnfermedadServiceProxy, DatosPacienteServiceProxy, 
-    PacienteCitaServiceProxy,MensajeServiceProxy, ControldeTemperaturaServiceProxy],
+    MiCitaMedicaServiceProxy,MensajeServiceProxy, ControldeTemperaturaServiceProxy,DatosMedicoServiceProxy,
+    DatosResponsablesServiceProxy, AgendaServiceProxy, PrescripcionServiceProxy, MedicamentosServiceProxy],
   entryComponents: [
     // tenants
     CreateTenantDialogComponent,
@@ -154,9 +172,16 @@ import { EvolucionTemperaturaComponent } from './controlesdeTemperatura/evolucio
     CitarPacienteDialogComponent,
     EnfermedadesDialogComponent,
     AgregarEnfermedadDialogComponent,
-    MostrarConversacionDialogComponent
-
+    MostrarConversacionDialogComponent,
+    PedirTemperaturaComponent,
     
+    AnularCitaComponent,
+
+    EditMedicoDialogComponent,
+    EditResponsableDialogComponent,
+    PrescripcionesComponent,
+    CreatePrescripcionDialogComponent
+
   ]
 })
 export class AppModule {}

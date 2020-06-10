@@ -9,11 +9,12 @@ namespace WSControldePacientesApi.Api.Recordatorios.Dto
 {
     public class RecordatorioDto : EntityDto
     {
-        public PrescripcionDto prescripcion { get; set; }
+        public DateTime FechaHora { get; set; }
 
         [Required]
         public string Texto { get; set; }
 
+        public int idPaciente { get; set; }
 
     }
 }

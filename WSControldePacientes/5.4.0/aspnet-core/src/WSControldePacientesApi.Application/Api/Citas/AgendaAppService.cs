@@ -29,28 +29,30 @@ namespace WSControldePacientesApi.Api.Citas
             _userManager = userManager;
         }
 
-        public async Task<ListResultDto<AgendaDto>> GetAll()
+        public async Task<ListResultDto<CitaDto>> GetAll()
         {
             var medicoActual = await _userManager.GetUserByIdAsync(AbpSession.GetUserId());
 
             var citas = await _citaRepository.GetAll()
                 .Include(c => c.Direccion)
                 .Include(c => c.Paciente)
+                    .ThenInclude(c => c.DatosPersonales)
+                .Include(c => c.Medico)
                     .ThenInclude(c => c.DatosPersonales)
                 .Where(c => c.Medico.DatosPersonalesId == medicoActual.Id)
                 .OrderByDescending(c => c.FechaHora)
                 .ToListAsync();
 
-            return new ListResultDto<AgendaDto>(ObjectMapper.Map<List<AgendaDto>>(citas));
+            return new ListResultDto<CitaDto>(ObjectMapper.Map<List<CitaDto>>(citas));
         }
 
-        public async Task AnularCita(EntityDto<int> input)
+        public async Task AnularCita(int input)
         {
-            var cita = _citaRepository.Get(input.Id);
+            var cita = _citaRepository.Get(input);
             await _citaRepository.DeleteAsync(cita);
         }
 
-        public async Task<ListResultDto<AgendaDto>> GetAllPorFecha(DateTime fecha)
+        public async Task<ListResultDto<CitaDto>> GetAllPorFecha(DateTime fecha)
         {
             var medicoActual = await _userManager.GetUserByIdAsync(AbpSession.GetUserId());
 
@@ -58,12 +60,36 @@ namespace WSControldePacientesApi.Api.Citas
                 .Include(c => c.Direccion)
                 .Include(c => c.Paciente)
                     .ThenInclude(c => c.DatosPersonales)
+                .Include(c => c.Medico)
+                    .ThenInclude(c => c.DatosPersonales)
                 .Where(c => c.Medico.DatosPersonalesId == medicoActual.Id  && c.FechaHora.Equals(fecha))
                 .OrderByDescending(c => c.FechaHora)
                 .ToListAsync();
 
-            return new ListResultDto<AgendaDto>(ObjectMapper.Map<List<AgendaDto>>(citas));
+            return new ListResultDto<CitaDto>(ObjectMapper.Map<List<CitaDto>>(citas));
         }
+
+
+        public async Task<ListResultDto<CitaDto>> GetAllToday()
+        {
+            var medicoActual = await _userManager.GetUserByIdAsync(AbpSession.GetUserId());
+
+            DateTime today = DateTime.Now;
+
+            var citas = await _citaRepository.GetAll()
+                .Include(c => c.Direccion)
+                .Include(c => c.Paciente)
+                    .ThenInclude(c => c.DatosPersonales)
+                .Include(c => c.Medico)
+                    .ThenInclude(c => c.DatosPersonales)
+                .Where(c => c.Medico.DatosPersonalesId == medicoActual.Id && c.FechaHora.Date==today.Date)
+                .OrderByDescending(c => c.FechaHora)
+                .ToListAsync();
+
+            return new ListResultDto<CitaDto>(ObjectMapper.Map<List<CitaDto>>(citas));
+        }
+
+
 
     }
 

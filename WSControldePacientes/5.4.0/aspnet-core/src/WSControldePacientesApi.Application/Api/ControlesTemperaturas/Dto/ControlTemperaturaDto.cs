@@ -9,5 +9,7 @@ namespace WSControlPacientesApi.ControlPacienteApi.ControlesTemperaturas.Dto
         public decimal Temperatura { get; set; }
 
         public DateTime Fecha { get; set; }
+
+        public int PacienteId { get; set; }
     }
 }

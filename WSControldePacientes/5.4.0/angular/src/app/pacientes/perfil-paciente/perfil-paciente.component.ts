@@ -5,6 +5,7 @@ import { appModuleAnimation } from '@shared/animations/routerTransition';
 import {PagedListingComponentBase,PagedRequestDto} from '@shared/paged-listing-component-base';
 import { MatDialog } from '@angular/material';
 import { AppComponentBase } from '@shared/app-component-base';
+import { MostrarConversacionDialogComponent } from '@app/chats/mostrarConversacion/mostrarConversacion-dialog.component';
 
 class PagedPacientesRequestDto extends PagedRequestDto {
     filter: string;
@@ -38,12 +39,16 @@ export class PerfilPacienteComponent extends AppComponentBase {
 
     ngOnInit() {
         this._pacienteService.datos()
-            .subscribe(result =>
-            this.paciente = result);
+            .subscribe(result => this.paciente = result);
     }
 
 
     delete(){}
+
+
+    contactar(){
+        this._dialog.open(MostrarConversacionDialogComponent, {data : this.paciente.miMedicoCabeceraDatosPersonalesUserName});
+    }
 
 
 

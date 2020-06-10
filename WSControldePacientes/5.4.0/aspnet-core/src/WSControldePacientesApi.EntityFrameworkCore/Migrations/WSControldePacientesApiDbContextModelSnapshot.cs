@@ -2174,6 +2174,9 @@ namespace WSControldePacientesApi.Migrations
                     b.Property<DateTime?>("DeletionTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("FechaHora")
+                        .HasColumnType("datetime2");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -2183,7 +2186,7 @@ namespace WSControldePacientesApi.Migrations
                     b.Property<long?>("LastModifierUserId")
                         .HasColumnType("bigint");
 
-                    b.Property<int>("PrescripcionId")
+                    b.Property<int>("PacienteId")
                         .HasColumnType("int");
 
                     b.Property<string>("Texto")
@@ -2192,7 +2195,7 @@ namespace WSControldePacientesApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PrescripcionId");
+                    b.HasIndex("PacienteId");
 
                     b.ToTable("recordatorios");
                 });
@@ -2627,9 +2630,9 @@ namespace WSControldePacientesApi.Migrations
 
             modelBuilder.Entity("WSControldePacientesApi.ControlPacientes.Recordatorios.Recordatorio", b =>
                 {
-                    b.HasOne("WSControldePacientesApi.ControlPacientes.Prescripciones.Prescripcion", "Prescripcion")
-                        .WithMany("recordatorios")
-                        .HasForeignKey("PrescripcionId")
+                    b.HasOne("WSControldePacientesApi.ControlPacientes.Pacientes.Paciente", "Paciente")
+                        .WithMany("MisRecordatorios")
+                        .HasForeignKey("PacienteId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

@@ -35,7 +35,6 @@ export class EnfermedadesDialogComponent extends AppComponentBase  {
     constructor(
         injector: Injector,
         private _pacienteService: EnfermedadPacienteServiceProxy,
-        private _paciente1Service : PacienteMedicoCabeceraServiceProxy,
         private _dialogRef: MatDialogRef<EnfermedadesDialogComponent>,
         private _dialog: MatDialog,
         @Optional() @Inject(MAT_DIALOG_DATA) private _paciente: PacienteDto
@@ -78,7 +77,6 @@ export class EnfermedadesDialogComponent extends AppComponentBase  {
     }
 
     asociar(){
-        console.log("id de paciente vale " + this._paciente.id);
         this._dialog.open(AgregarEnfermedadDialogComponent, {
             data: this._paciente.id
         });

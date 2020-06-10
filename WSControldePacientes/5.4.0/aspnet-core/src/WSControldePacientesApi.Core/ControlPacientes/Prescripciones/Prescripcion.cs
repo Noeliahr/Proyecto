@@ -34,8 +34,5 @@ namespace WSControldePacientesApi.ControlPacientes.Prescripciones
         public string Como_Tomar { get; set; }
 
 
-        public ICollection<Recordatorio> recordatorios { get; set; }
-
-
     }
 }

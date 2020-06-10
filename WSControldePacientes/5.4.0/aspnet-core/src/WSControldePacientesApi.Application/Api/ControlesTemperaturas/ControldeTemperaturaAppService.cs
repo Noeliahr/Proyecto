@@ -39,5 +39,47 @@ namespace WSControldePacientesApi.Api.ControlesTemperaturas
             return new ListResultDto<ControlTemperaturaDto>(ObjectMapper.Map<List<ControlTemperaturaDto>>(evolucion));
         }
 
+        public async Task<ListResultDto<ControlTemperaturaDto>> GetByToday()
+        {
+            var user = await _userManager.GetUserByIdAsync(AbpSession.GetUserId());
+
+            DateTime today = DateTime.Now;
+
+            var evolucion = await _controlTemperaturaRepository.GetAll()
+                .Include(c => c.Paciente)
+                .Where(c => c.Paciente.DatosPersonales == user && c.Fecha.Date==today.Date)
+                .OrderBy(c => c.Fecha)
+                .ToListAsync();
+
+            return new ListResultDto<ControlTemperaturaDto>(ObjectMapper.Map<List<ControlTemperaturaDto>>(evolucion));
+        }
+
+        public async Task<ListResultDto<ControlTemperaturaDto>> GetByFecha(DateTime fecha)
+        {
+            var user = await _userManager.GetUserByIdAsync(AbpSession.GetUserId());
+
+            var evolucion = await _controlTemperaturaRepository.GetAll()
+                .Include(c => c.Paciente)
+                .Where(c => c.Paciente.DatosPersonales == user && c.Fecha.Date == fecha.Date)
+                .OrderBy(c => c.Fecha)
+                .ToListAsync();
+
+            return new ListResultDto<ControlTemperaturaDto>(ObjectMapper.Map<List<ControlTemperaturaDto>>(evolucion));
+        }
+
+        public async Task AddNuevaTemperatura (int idPaciente,decimal temp)
+        {
+            DateTime today = DateTime.Now;
+
+            ControlTemperatura controlTemperatura = new ControlTemperatura();
+            controlTemperatura.PacienteId = idPaciente;
+            controlTemperatura.Temperatura = temp;
+            controlTemperatura.Fecha = today;
+
+            await _controlTemperaturaRepository.InsertAsync(controlTemperatura);
+            CurrentUnitOfWork.SaveChanges();
+
+        }
+
     }
 }

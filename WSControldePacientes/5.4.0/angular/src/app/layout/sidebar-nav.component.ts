@@ -10,9 +10,12 @@ import { MenuItem } from '@shared/layout/menu-item';
 export class SideBarNavComponent extends AppComponentBase {
 
     menuItems: MenuItem[] = [
-        new MenuItem(this.l('Datos Personales'), 'Pages.DatosPersonalesPaciente', 'person_pin', '/app/paciente**'),
+        new MenuItem(this.l('Datos Personales'), 'Pages.DatosPersonalesPaciente', 'person_pin', '/app/DatosPersonales'),
+        new MenuItem(this.l('Datos Personales'), 'Pages.DatosPersonalesMedico', 'person_pin', '/app/DatosPersonales*'),
+        new MenuItem(this.l('Datos Personales'), 'Pages.DatosPersonalesResponsable', 'person_pin', '/app/DatosPersonales**'),
         new MenuItem(this.l('Responsables'), 'Pages.DatosPersonalesPaciente','supervisor_account', '/app/misresponsables'),
         new MenuItem(this.l('Citas'), 'Pages.DatosPersonalesPaciente','today', '/app/miscitas'),
+        new MenuItem(this.l('Agenda'), 'Pages.Agenda','today', '/app/miagenda'),
         new MenuItem(this.l('Enfermedades'), 'Pages.DatosPersonalesPaciente','announcement', '/app/misenfermedades'),
         new MenuItem(this.l('Control de Temperatura'), 'Pages.MiControldeTemperatura','perm_contact_calendar', '/app/evolucion'),
         new MenuItem(this.l('Prescripciones'), 'Pages.DatosPersonalesPaciente','assignment', '/app/misprescripciones'),

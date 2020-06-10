@@ -10,9 +10,6 @@ namespace WSControldePacientesApi.Api.Responsables.Dto
 {
     public class ResponsableDto : EntityDto
     {
-        //DatosPersonales(User)
-        //public string Login { get; set; }
-        // public MiCrearUserDto DatosPersonales { get; set; }
         [StringLength(AbpUserBase.MaxUserNameLength)]
         public string DatosPersonalesUserName { get; set; }
 
@@ -29,6 +26,5 @@ namespace WSControldePacientesApi.Api.Responsables.Dto
         [MaxLength(15)]
         public string DatosPersonalesTelefono { get; set; }
 
-        public bool DatosPersonalesIsActive { get; set; }
     }
 }

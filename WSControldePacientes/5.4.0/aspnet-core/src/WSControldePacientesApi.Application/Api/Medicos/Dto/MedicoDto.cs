@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
+using WSControldePacientesApi.Api.Citas.Dto;
 
 namespace WSControlPacientesApi.ControlPacienteApi.Medicos.Dto
 {
@@ -18,7 +19,16 @@ namespace WSControlPacientesApi.ControlPacienteApi.Medicos.Dto
 
         public string DatosPersonalesEmailAddress { get; set; }
 
+        public string DatosPersonalesTelefono { get; set; }
+
         [Required]
         public string Especialidad { get; set; }
+
+        public int TotalPacientes { get; set; }
+
+        public int TotalCitasHoy { get; set; }
+
+
+        public ICollection<CitaDto> Agenda { get; set; }
     }
 }

@@ -15,13 +15,13 @@
 
                 <div style="margin-top: 5%;">
                     <p><span><h4 style="display: inline-block; margin-right: 10%;">Total de Responsables que tengo</h4> {{paciente.total_responsables}}</span> 
-                    <button style="margin-left: 16%; color:#B64D57; border: none; background-color: inherit;"><i class="fa fa-eye"></i>Ver datos de los Responsables</button>
+                    <button (click)="location.href='./app/misresponsables'" style="margin-left: 16%; color:#B64D57; border: none; background-color: inherit;"><i class="fa fa-eye"></i>Ver datos de los Responsables</button>
                     </p>
                 </div>
 
                 <div style="margin-top: 5%;">
                     <p><span><h4 style="display: inline-block; margin-right: 162px;">Mi Medico de Cabecera</h4> {{paciente.miMedicoCabeceraDatosPersonalesName}}  {{paciente.miMedicoCabeceraDatosPersonalesSurname}}</span> 
-                    <button style="margin-left: 12%; text-align: center; color:#B64D57; border: none; background-color: inherit;"><i class="fa fa-eye"></i> Ver datos del Medico</button>
+                    <button (click)="contactar()" style="margin-left: 12%; text-align: center; color:#B64D57; border: none; background-color: inherit;"><i class="fa fa-weixin" aria-hidden="true"></i> Contactar</button>
                     </p>
                 </div>
             </div>

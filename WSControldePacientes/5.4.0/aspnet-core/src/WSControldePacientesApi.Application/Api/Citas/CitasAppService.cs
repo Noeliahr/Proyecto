@@ -31,20 +31,6 @@ namespace WSControldePacientesApi.Api.Citas
             _userManager = userManager;
         }
 
-        public async Task<ListResultDto<CitaDto>> GetAll() { 
-            var pacienteActual= await _userManager.GetUserByIdAsync(AbpSession.GetUserId());
-
-            var citas = await _citaRepository.GetAll()
-                .Include(c => c.Direccion)
-                .Include(c => c.Medico)
-                    .ThenInclude(c => c.DatosPersonales)
-                .Where(c=>c.Paciente.DatosPersonalesId== pacienteActual.Id)
-                .OrderByDescending(c=> c.FechaHora)
-                .ToListAsync();
-
-            return new ListResultDto<CitaDto>(ObjectMapper.Map<List<CitaDto>>(citas));
-        }
-
         public async Task AnularCita(int input)
         {
             var cita = _citaRepository.Get(input);

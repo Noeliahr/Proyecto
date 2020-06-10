@@ -5,8 +5,13 @@ using System.Text;
 
 namespace WSControldePacientesApi.Api.Citas.Dto
 {
-    public class CitaDto
+    public class CitaDto : EntityDto
     {
+        public string PacienteDatosPersonalesUserName { get; set; }
+        public string PacienteDatosPersonalesName { get; set; }
+        public string PacienteDatosPersonalesSurname { get; set; }
+
+        public string MedicoDatosPersonalesUserName { get; set; }
         public string MedicoDatosPersonalesName { get; set; }
         public string MedicoDatosPersonalesSurname { get; set; }
         public string MedicoDatosPersonalesEmailAddress { get; set; }

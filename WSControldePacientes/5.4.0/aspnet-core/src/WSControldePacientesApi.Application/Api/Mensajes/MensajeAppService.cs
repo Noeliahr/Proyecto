@@ -131,5 +131,26 @@ namespace WSControldePacientesApi.Api.Mensajes
             return new ListResultDto<MensajeDto>(ObjectMapper.Map<List<MensajeDto>>(mensajes));
 
         }
+
+
+        public async Task<MensajeDto> AnularCitaDarMotivo(CreateMensajeDto input)
+        {
+            CheckCreatePermission();
+            var personaOrigen = await _userManager.FindByNameOrEmailAsync("Sistema");
+
+            var personaDestino = await _userManager.FindByNameOrEmailAsync(input.PersonaDestinoUserName);
+
+            var mensaje = ObjectMapper.Map<Mensaje>(input);
+
+            mensaje.PersonaOrigen = personaOrigen;
+            mensaje.PersonaDestino = personaDestino;
+            mensaje.Fecha = DateTime.Now;
+
+            await _mensajeRepository.InsertAsync(mensaje);
+
+            CurrentUnitOfWork.SaveChanges();
+
+            return MapToEntityDto(mensaje);
+        }
     }
 }

@@ -9,14 +9,11 @@ namespace WSControldePacientesApi.Api.Prescripciones.Dto
     public class PrescripcionDto : EntityDto
     {
         [Required]
+        public int MedicamentoId { get; set; }
         public string MedicamentoNombre { get; set; }
-        [Required]
         public string MedicamentoTipo { get; set; }
-        [Required]
         public string MedicamentoGramaje { get; set; }
-        [Required]
         public string MedicamentoFuncionalidad { get; set; }
-        [Required]
         public string MedicamentoComponenteBase { get; set; }
 
         [Required]
@@ -30,5 +27,8 @@ namespace WSControldePacientesApi.Api.Prescripciones.Dto
 
         [Required]
         public string Como_Tomar { get; set; }
+
+
+        public int PacienteId { get; set; }
     }
 }

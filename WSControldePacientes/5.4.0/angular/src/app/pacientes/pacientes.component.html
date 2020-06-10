@@ -1,6 +1,6 @@
-<div class="row clearfix" [@routerTransition]>
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <div class="card main-content">
+<div class="row clearfix" [@routerTransition] >
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
+        <div class="card main-content" style="background-color:  #D3ECEA;">
             <div class="header">
                 <h2><i class="fa fa-address-card-o" aria-hidden="true"></i> {{ "Pacientes" | localize }}</h2>
                 <ul class="header-dropdown m-r--5">
@@ -17,7 +17,7 @@
                     </li>
                 </ul>
             </div>
-            <div class="body table-responsive">
+            <div class="body table-responsive" >
                 <!--query start-->
                 <div class="row clearfix">
                     <form>
@@ -33,79 +33,85 @@
                     </form>
                 </div>
                 <!--query end-->
-                <table class="table table-hover table-striped" [busy]="isTableLoading">
-                    <thead>
-                        <tr>
-                            <th>{{ "Login" | localize }}</th>
-                            <th>{{ "Nombre" | localize }}</th>
-                            <th>{{ "Apellidos" | localize }}</th>
-                            <th>{{ "Telefono" | localize }}</th>
-                            <th>{{ "Num SS" | localize }}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="
-                let paciente of (pacientes
-                  | paginate
-                    : {
-                        id: 'server',
-                        itemsPerPage: pageSize,
-                        currentPage: pageNumber,
-                        totalItems: totalItems
-                      })
-              ">
-                            <td>{{ paciente.datosPersonalesUserName }}</td>
-                            <td>{{ paciente.datosPersonalesName }}</td>
-                            <td>{{ paciente.datosPersonalesSurname }}</td>
-                            <td>{{ paciente.datosPersonalesTelefono }}</td>
-                            <td>{{ paciente.numSeguridadSocial }}</td>
-                            <td>
-                                <button class="action-button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
-                                    <mat-icon>menu</mat-icon>
-                                </button>
-                                <mat-menu #actionsMenu="matMenu">
-                                    <button mat-menu-item (click)="editPaciente(paciente)">
-                                        <mat-icon>edit</mat-icon>
-                                        <span>{{ "Edit" | localize }}</span>
+                <div *ngFor="let paciente of (pacientes)" class="card main-content" >
+                    <div style="padding: 30px 20px 3px;">
+                        <div >
+                            <div> 
+                                    <div class="datos"> <h4>Nombre del Paciente</h4> {{paciente.datosPersonalesName}} {{paciente.datosPersonalesSurname}} </div>
+                                    <div class="datos1"> <h4>¿Cómo localizarlo?</h4> {{ paciente.datosPersonalesUserName }} </div>
+                            </div>
+                            <div>
+                                    <div class="datos"> <h4>Telefono</h4> {{ paciente.datosPersonalesTelefono }} </div>
+                                    <div class="datos1"> <h4>Numero de la seguridad Social</h4> {{ paciente.numSeguridadSocial }} </div>
+                            </div> 
+                        </div>
+                        <table align="center">
+                            <tr>
+                                <td>
+                                    <button class="funcionalidades" (click)="editPaciente(paciente)">
+                                        <i class="fa fa-pencil" aria-hidden="true"></i> 
+                                        <span> {{"Edit" | localize }}</span>
                                     </button>
-                                    <button mat-menu-item (click)="delete(paciente)">
-                                        <mat-icon>delete</mat-icon>
-                                        <span>{{ "Delete" | localize }}</span>
-                                    </button>
-                                    <button mat-menu-item (click)="masDetalles(paciente)">
-                                        <mat-icon>zoom_in</mat-icon>
-                                        <span>{{ "Mas Detalles" | localize }}</span>
-                                    </button>
-                                    <button mat-menu-item (click)="misResponsables(paciente)">
-                                        <mat-icon>supervisor_account</mat-icon>
-                                        <span>{{ "Sus Responsables" | localize }}</span>
-                                    </button>
-                                    <button mat-menu-item (click)="citas(paciente)">
-                                        <a style="text-decoration: none; color:rgba(0,0,0,.87);" [routerLink]="['/app/citas', paciente.id]"> 
-                                      <!--  <a routerLink="/app/home" class="navbar-brand"> -->
-                                            <mat-icon>today</mat-icon>
-                                            <span>{{ "Sus Citas" | localize }}</span> 
-                                        </a>
-                                        
-                                    </button>
-                                    <button mat-menu-item (click)="misEnfermedades(paciente)">
-                                        <mat-icon>announcement</mat-icon>
-                                        <span>{{ "Sus Enfermedades" | localize }}</span>
+                                
+                                    <button class="funcionalidades" (click)="delete(paciente)">
+                                        <i class="fa fa-trash" aria-hidden="true"></i><span> {{"Delete" | localize }}</span>
                                     </button>
 
-                                </mat-menu>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div class="abp-pagination-controls-wrapper" *ngIf="totalItems > pageSize">
-                    <abp-pagination-controls (pageChange)="getDataPage($event)" id="server">
-                    </abp-pagination-controls>
+                                    <button class="funcionalidades" (click)="contactar(paciente)">
+                                        <i class="fa fa-comments" aria-hidden="true"></i><span> {{"Contactar" | localize }}</span>
+                                    </button>
+                                
+                                    <button class="funcionalidades" (click)="masDetalles(paciente)">
+                                        <i class="fa fa-search-plus" aria-hidden="true"></i><span> {{"Mas Detalles" | localize }}</span>
+                                    </button>
+                                
+                                    <button class="funcionalidades" (click)="misResponsables(paciente)">
+                                        <i class="fa fa-users" aria-hidden="true"></i>
+                                        <span> {{"Sus Responsables" | localize }}</span>
+                                    </button>
+                                
+                                    <button class="funcionalidades" (click)="citas(paciente)">
+                                        <a style="text-decoration: none; color:rgba(0,0,0,.87);" [routerLink]="['/app/citas', paciente.id]"> 
+                                        <!--  <a routerLink="/app/home" class="navbar-brand"> -->
+                                            <i class="fa fa-calendar-o" aria-hidden="true"></i>
+                                            <span> {{"Sus Citas" | localize }}</span> 
+                                        </a>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <button class="funcionalidades"  (click)="misEnfermedades(paciente)">
+                                        <i class="fa fa-heartbeat" aria-hidden="true"></i>
+                                        <span> {{"Sus Enfermedades" | localize }}</span>
+                                    </button>
+                               
+                                    <button class="funcionalidades"  (click)="micontrolTemperatura(paciente)">
+                                        <i class="fa fa-heartbeat" aria-hidden="true"></i>
+                                        <span> {{"Su Control de Temperatura" | localize }}</span>
+                                    </button>
+                                
+                                    <button class="funcionalidades"  (click)="misPrescripciones(paciente)">
+                                        <i class="fa fa-stethoscope" aria-hidden="true"></i>
+                                        <span> {{"Sus Prescripciones" | localize }}</span>
+                                    </button>
+                                
+                                    <button class="funcionalidades"  (click)="misRecordatorios(paciente)">
+                                        <i class="fa fa-bell-o" aria-hidden="true"></i>
+                                        <span> {{"Sus Recordatorios" | localize }}</span>
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>  
+                    </div>
+                    <hr style="margin-bottom: 40px;">
                 </div>
-                <button mat-mini-fab color="primary" class="pull-right" (click)="createPaciente()">
+                <button  align="end" mat-mini-fab color="primary" class="pull-right" (click)="createPaciente()">
                     <mat-icon>add</mat-icon>
                 </button>
             </div>
+            
         </div>
     </div>
 </div>
+

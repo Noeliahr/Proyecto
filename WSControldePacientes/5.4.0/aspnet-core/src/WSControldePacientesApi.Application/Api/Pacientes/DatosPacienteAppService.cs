@@ -93,10 +93,7 @@ namespace WSControldePacientesApi.Api.Pacientes
         {
             var user = await _userManager.GetUserByIdAsync(AbpSession.GetUserId());
             var recordatorios = await _pacienteRepository.GetAll()
-                .Include(p => p.MisPrescripciones)
-                    .ThenInclude(p => p.recordatorios)
-                    .ThenInclude(p=> p.Prescripcion)
-                    .ThenInclude(p=> p.Medicamento)
+                .Include(p => p.MisRecordatorios)
                 .Where(p => p.DatosPersonales == user)
                 .FirstOrDefaultAsync();
 

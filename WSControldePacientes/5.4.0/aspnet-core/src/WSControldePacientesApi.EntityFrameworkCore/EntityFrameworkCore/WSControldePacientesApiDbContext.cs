@@ -134,11 +134,10 @@ namespace WSControldePacientesApi.EntityFrameworkCore
                 .HasForeignKey(pr=> pr.PacienteId);
 
 
-            //Relacion de Recordatorios => Prescripcion
             modelBuilder.Entity<Recordatorio>()
-                .HasOne(r => r.Prescripcion)
-                .WithMany(pr => pr.recordatorios)
-                .HasForeignKey(r => r.PrescripcionId);
+                .HasOne(r => r.Paciente)
+                .WithMany(pr => pr.MisRecordatorios)
+                .HasForeignKey(r => r.PacienteId);
 
 
             //Relacion de ControlTemperaturas => Paciente

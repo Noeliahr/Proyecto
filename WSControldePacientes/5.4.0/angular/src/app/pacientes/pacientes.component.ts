@@ -9,6 +9,9 @@ import { EditPacienteDialogComponent } from './edit-paciente/edit-paciente-dialo
 import {MoreDetailsDialogComponent} from './moredetails/moredetails-paciente-dialog.component'; 
 import {ResponsablesDialogComponent} from './responsables-paciente/responsables-paciente-dialog.component';
 import { EnfermedadesDialogComponent } from './enfermedades-paciente/enfermedades-paciente-dialog.component';
+import { style } from '@angular/animations';
+import { MostrarConversacionDialogComponent } from '@app/chats/mostrarConversacion/mostrarConversacion-dialog.component';
+import { PrescripcionesComponent } from './prescripciones/prescripciones.component';
 
 class PagedPacientesRequestDto extends PagedRequestDto {
     filter: string;
@@ -18,13 +21,7 @@ class PagedPacientesRequestDto extends PagedRequestDto {
   //selector: 'app-pacientes',
     templateUrl: './pacientes.component.html',
     animations: [appModuleAnimation()],
-    styles: [
-        `
-          mat-form-field {
-            padding: 10px;
-          }
-        `
-    ]
+    styleUrls: ['./pacientes.component.css']
 })
 
 
@@ -123,5 +120,12 @@ export class PacientesComponent extends PagedListingComponentBase<PacienteDto> {
         this._dialog.open(EnfermedadesDialogComponent, {data : paciente});
     }
 
+    contactar(paciente:PacienteDto){
+        this._dialog.open(MostrarConversacionDialogComponent, {data:paciente.datosPersonalesUserName});
+    }
+
+    misPrescripciones(paciente:PacienteDto){
+        this._dialog.open(PrescripcionesComponent, {data: paciente.id});
+    }
 
 }

@@ -1,11 +1,12 @@
 import { Component,  Injector, Optional, Inject } from '@angular/core';
-import {PacienteCitaServiceProxy, PacienteDto, AuthenticateResultModel, CitaDto, DatosPacienteServiceProxy } from 'shared/service-proxies/service-proxies';
+import {MiCitaMedicaServiceProxy, PacienteDto, AuthenticateResultModel, CitaDto, DatosPacienteServiceProxy } from 'shared/service-proxies/service-proxies';
 import { finalize } from 'rxjs/operators';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import {PagedListingComponentBase,PagedRequestDto} from '@shared/paged-listing-component-base';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material';
 import { ActivatedRoute, Params } from '@angular/router';
 import { from } from 'rxjs';
+import { AnularCitaComponent } from './anularCita/anularCita.component';
 
 class PagedPacientesRequestDto extends PagedRequestDto {
     filter: string;
@@ -31,10 +32,12 @@ export class MisCitasComponent extends PagedListingComponentBase<PacienteDto> {
     filterText = '';
     idPaciente : number;
 
+    parametros : string [] = [];
+
     paciente : PacienteDto = new PacienteDto();
         constructor(
         injector: Injector,
-        private _citasService: PacienteCitaServiceProxy,
+        private _citasService: MiCitaMedicaServiceProxy,
         private _pacienteService : DatosPacienteServiceProxy,
         private _dialog: MatDialog,
     ) {
@@ -53,7 +56,7 @@ export class MisCitasComponent extends PagedListingComponentBase<PacienteDto> {
             this.paciente = result);
 
         this._citasService
-            .getCitasByPaciente()
+            .getMisCitas()
             .pipe(
                 finalize(() => {
                     finishedCallback();
@@ -72,5 +75,20 @@ export class MisCitasComponent extends PagedListingComponentBase<PacienteDto> {
     
 
     delete(){}
+
+    cancelar(cita: CitaDto){
+        this.parametros[0]= cita.fechaHora.toLocaleString();
+        this.parametros[1]= "Paciente";
+        this.parametros[2]= cita.medicoDatosPersonalesUserName;
+
+
+        this._citasService.anularCita(cita.id)
+        .subscribe(()=> {
+            this._dialog.open(AnularCitaComponent, { data: this.parametros });
+            this.refresh();
+        });
+
+        
+    }
 
 }

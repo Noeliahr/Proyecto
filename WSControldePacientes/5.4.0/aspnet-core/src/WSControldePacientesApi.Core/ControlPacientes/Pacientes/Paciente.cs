@@ -13,6 +13,7 @@ using WSControldePacientesApi.ControlPacientes.Medicos;
 using WSControldePacientesApi.ControlPacientes.PacientesResponsables;
 using WSControldePacientesApi.ControlPacientes.Prescripciones;
 using WSControldePacientesApi.ControlPacientes.ControlTemperaturas;
+using WSControldePacientesApi.ControlPacientes.Recordatorios;
 
 namespace WSControldePacientesApi.ControlPacientes.Pacientes
 {
@@ -55,6 +56,8 @@ namespace WSControldePacientesApi.ControlPacientes.Pacientes
         public ICollection<PacienteResponsable> MisResponsables { get; set; }
 
         public ICollection<Prescripcion> MisPrescripciones { get; set; }
+
+        public ICollection<Recordatorio> MisRecordatorios { get; set; }
 
         public ICollection<ControlTemperatura> ControlTemperatura { get; set; }
 

@@ -1,0 +1,33 @@
+<form>
+    <mat-dialog-content style="width:900px;height:400px;">
+        <mat-tab-group>
+            <mat-tab [label]="'Motivo por el que anulas la cita' | localize">
+                <br />
+                <div class="row-fluid">
+                    <div class="col-md-6">
+                      <mat-form-field>
+                        <input
+                          matInput
+                          name="motivo"
+                          [placeholder]="'Motivo' | localize"
+                          [(ngModel)]="motivo"
+                          required
+                        />
+                      </mat-form-field>
+                    </div>
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+    </mat-dialog-content>
+    <div mat-dialog-actions align="end">
+        <button mat-button type="button" [disabled]="saving" (click)="close(false)">
+            {{ "Cancel" | localize }}
+        </button>
+        <button mat-flat-button
+                flex="15"
+                color="primary"
+                (click)="save()">
+            {{ "Confirmar" | localize }}
+        </button>
+    </div>
+</form>             

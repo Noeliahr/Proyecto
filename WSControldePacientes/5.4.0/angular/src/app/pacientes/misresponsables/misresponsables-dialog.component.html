@@ -27,6 +27,13 @@
                             <td>{{ respon.responsable.datosPersonalesName }} {{ respon.responsable.datosPersonalesSurname }}</td>
                             <td> {{ respon.responsable.datosPersonalesTelefono }} </td>
                             <td> {{respon.responsable.datosPersonalesEmailAddress }}</td>
+
+                            <td>
+                                <button class="action-button" mat-icon-button (click)="chat(respon.responsable.datosPersonalesUserName)">
+                                    <mat-icon>textsms</mat-icon>
+                                    <span>{{ "Contactar" | localize }}</span>
+                                </button>
+                            </td>
                         </tr>
                     </tbody>
                 </table>

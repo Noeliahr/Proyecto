@@ -1,0 +1,83 @@
+<form autocomplete="off" #editPacienteForm="ngForm" (ngSubmit)="save()">
+    <h1 mat-dialog-title>{{ "Modificar" | localize }}</h1>
+    <mat-dialog-content style="width:900px;height:400px;">
+        <mat-tab-group>
+            <mat-tab [label]="'Tus Datos' | localize">
+                <br />
+                <div class="row-fluid">
+                    <div class="col-md-6">
+                      <mat-form-field>
+                        <input
+                          matInput
+                          name="UserName"
+                          [placeholder]="'UserName' | localize"
+                          [(ngModel)]="medico.datosPersonalesUserName"
+                          minlength="2"
+                          maxlength="32"
+                          readonly
+                        />
+                      </mat-form-field>
+                      <mat-form-field>
+                        <input
+                          matInput
+                          name="Name"
+                          [placeholder]="'Name' | localize"
+                          [(ngModel)]="medico.datosPersonalesName"
+                          maxlength="32"
+                        />
+                      </mat-form-field>
+                      <mat-form-field>
+                        <input
+                          matInput
+                          name="Surname"
+                          [placeholder]="'Surname' | localize"
+                          [(ngModel)]="medico.datosPersonalesSurname"
+                          maxlength="32"
+                        />
+                      </mat-form-field>
+                    </div>
+                    <div class="col-md-6">
+                      <mat-form-field>
+                        <input
+                          matInput
+                          name="EmailAddress"
+                          [placeholder]="'EmailAddress' | localize"
+                          [(ngModel)]="medico.datosPersonalesEmailAddress"
+                          type="email"
+                          maxlength="256"
+                          pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{1,})+$"
+                        />
+                      </mat-form-field>
+                      <mat-form-field>
+                        <input
+                          matInput
+                          name="Telefono"
+                          [placeholder]="'Telefono' | localize"
+                          [(ngModel)]="medico.datosPersonalesTelefono"
+                          maxlength="15"/>
+                      </mat-form-field>
+                      <mat-form-field>
+                        <input
+                          matInput
+                          name="Especialidad"
+                          [placeholder]="'Especialidad' | localize"
+                          [(ngModel)]="medico.especialidad" />
+                      </mat-form-field>
+                    </div>
+                  </div>                  
+            </mat-tab>
+        </mat-tab-group>
+    </mat-dialog-content>
+    <div mat-dialog-actions align="end">
+        <button mat-button type="button" [disabled]="saving" (click)="close(false)">
+            {{ "Cancel" | localize }}
+        </button>
+        <button mat-flat-button
+                type="submit"
+                flex="15"
+                color="primary"
+                [disabled]="!editPacienteForm.form.valid || saving">
+            {{ "Save" | localize }}
+        </button>
+    </div>
+</form>

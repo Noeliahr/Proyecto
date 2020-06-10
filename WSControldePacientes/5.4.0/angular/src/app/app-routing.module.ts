@@ -19,6 +19,9 @@ import { MisPrescripcionesComponent } from './pacientes/misprescripciones/mispre
 import { MisRecordatoriosComponent } from './pacientes/misrecordatorios/misrecordatorios.component';
 import { ChatsComponent } from './chats/chat.component';
 import { EvolucionTemperaturaComponent } from './controlesdeTemperatura/evolucion-temperatura/evolucion-temperatura.component';
+import { PerfilMedicoComponent } from './perfil-medico/perfil-medico.component';
+import { PerfilResponsableComponent } from './perfil-responsable/perfil-responsable.component';
+import { MiAgendaComponent } from './perfil-medico/agenda/miagenda.component';
 
 @NgModule({
     imports: [
@@ -35,10 +38,14 @@ import { EvolucionTemperaturaComponent } from './controlesdeTemperatura/evolucio
                     { path: 'update-password', component: ChangePasswordComponent },
 
                     { path: 'pacientesMedicoCabecera', component: PacientesComponent, data: { permission: 'Pages.PacientesMedicoCabecera' }},
-                    { path: 'paciente**', component: PerfilPacienteComponent, data: { permission: 'Pages.Pacientes' }},
+                    { path: 'DatosPersonales', component: PerfilPacienteComponent, data: { permission: 'Pages.DatosPersonalesPaciente' }},
+                    { path: 'DatosPersonales*', component: PerfilMedicoComponent, data: { permission: 'Pages.DatosPersonalesMedico' }},
+                    { path: 'DatosPersonales**', component: PerfilResponsableComponent, data: { permission: 'Pages.DatosPersonalesResponsable' }},
+
 
                     { path: 'citas/:id', component: CitaPacienteComponent, data: { permission: 'Pages.Citas'},},
                     { path: 'miscitas', component: MisCitasComponent, data: { permission: 'Pages.PacienteCita'},},
+                    { path: 'miagenda', component: MiAgendaComponent, data: { permission: 'Pages.Agenda'},},
 
                     { path: 'misresponsables', component: MisResponsablesComponent, data: { permission: 'Pages.MisResponsables'},},
 

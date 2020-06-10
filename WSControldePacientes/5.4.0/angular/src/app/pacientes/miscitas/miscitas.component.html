@@ -19,15 +19,7 @@
             </div>
             <br/>
             <div class="card main-content"  *ngFor="
-            let cita of (citas
-              | paginate
-                : {
-                    id: 'server',
-                    itemsPerPage: pageSize,
-                    currentPage: pageNumber,
-                    totalItems: totalItems
-                  })
-          ">
+            let cita of (citas)">
                 <div  class="body table-responsive" style="padding-bottom: 2px;">
                   <div style="width: auto; height: auto; display: inline; float: left;">
                       <h4> <i class="fa fa-user-md" aria-hidden="true"></i> {{"Medico" | localize}}</h4>
@@ -36,7 +28,11 @@
                      <p> {{cita.medicoDatosPersonalesTelefono}} </p>
                   </div>
 
-                <div style="display: inline;float: right;">
+                <div style="display: inline;float: right; width: 260px;">
+                    <button style=" margin-left: 160px;" class="action-button" mat-icon-button (click)="cancelar(cita)">
+                        <mat-icon>cancel</mat-icon>
+                        <span>{{ "Cancelar Cita" | localize }}</span>
+                    </button>
                     <h4> <i class="fa fa-hospital-o" aria-hidden="true"></i> {{"Centro" | localize}}</h4> {{cita.centro}} <br/>
                     <h4> <i class="fa fa-home" aria-hidden="true"></i> {{"Direccion" | localize}}</h4> <span>{{cita.direccionTipo}} </span>  <span>{{cita.direccionNombre}}</span> {{cita.direccionNumero}} {{cita.direccionLetra}} <span *ngIf="cita.direccionKm_en_la_via > 0 ">{{cita.direccionKmenlavia}}</span> {{cita.direccionBloque}} {{cita.direccionPortal}} {{cita.direccionEscalera}} <span *ngIf="cita.direccionPlanta>0">{{cita.direccionPlanta}}</span> {{cita.direccionPuerta}} {{cita.direccionCodigo_Postal}} 
                     <br/> 
@@ -47,7 +43,7 @@
 
                 <div style="display: inline-block; margin-left: 100px; ">
                     <h4> <i class="fa fa-calendar" aria-hidden="true"></i> Fecha y Hora</h4>
-                    {{cita.fechaHora}}
+                    {{cita.fechaHora| date:'short'}}
                 </div>    
                 <div style="display: inline-block; margin-left: 90px; ">
                     <h4> <i class="fa fa-medkit" aria-hidden="true"></i> Servicio</h4>

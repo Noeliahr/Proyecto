@@ -9,6 +9,7 @@ import * as _ from 'lodash';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/app-component-base';
 import {DatosPacienteServiceProxy, PacienteCompletoDto, MisResponsables, ResponsableDto, PacienteDto } from '@shared/service-proxies/service-proxies';
+import { MostrarConversacionDialogComponent } from '@app/chats/mostrarConversacion/mostrarConversacion-dialog.component';
 
 class PagedPacientesRequestDto extends PagedRequestDto {
     filter: string;
@@ -44,7 +45,11 @@ export class MisResponsablesComponent extends AppComponentBase  {
         this._pacienteService.getMisResponsables()
             .subscribe(result =>
         this.responsables = result);
-    }   
+    }  
+    
+    chat(user: string){
+        this._dialog.open(MostrarConversacionDialogComponent, {data : user});
+    }
 
 
 }

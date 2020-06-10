@@ -19,8 +19,10 @@ namespace WSControlPacientesApi.ControlPacienteApi.Responsables.Dto
                 .ReverseMap();
 
             CreateMap<Responsable, DatosResponsableDto>()
-                .ForMember(rspdto => rspdto.DatosPersonales, opts => opts.MapFrom(rsp => rsp.DatosPersonales))
+                .ForMember(r=> r.totalPacientes, opts=> opts.MapFrom(r=> r.MisPacientes.Count>0 ? r.MisPacientes.Count :0))
                 .ReverseMap();
+
+            CreateMap<Responsable, EditResponsableDto>().ReverseMap();
 
   
         }

@@ -4,6 +4,7 @@ using Abp.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WSControldePacientesApi.ControlPacientes.Enfermedades;
@@ -34,6 +35,27 @@ namespace WSControldePacientesApi.Api.Enfermedades
             CurrentUnitOfWork.SaveChanges();
 
             return ObjectMapper.Map<EnfermedadDto>(enfer);
+        }
+
+        public async Task<EnfermedadDto> Get(int id)
+        {
+            var enfer = await _enfermedadrepository.GetAll()
+                .Where(e => e.Id == id).FirstOrDefaultAsync();
+
+            return ObjectMapper.Map<EnfermedadDto>(enfer);       
+        }
+
+        public async Task<EnfermedadDto> Update (EnfermedadDto input)
+        {
+            var enfer = ObjectMapper.Map<Enfermedad>(input);
+            await _enfermedadrepository.UpdateAsync(enfer);
+
+            return ObjectMapper.Map<EnfermedadDto>(enfer);
+        }
+
+        public async Task Delete(int id)
+        {
+            await _enfermedadrepository.DeleteAsync(id);
         }
     }
 }

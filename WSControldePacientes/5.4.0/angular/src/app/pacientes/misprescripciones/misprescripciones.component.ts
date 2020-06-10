@@ -8,7 +8,7 @@ import { finalize } from 'rxjs/operators';
 import * as _ from 'lodash';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/app-component-base';
-import { DatosPacienteServiceProxy, EnfermedadPacienteDto, PacienteEnfermedadDto, PacienteDto, EnfermedadDto, MisEnfermedades, MisPrescripciones } from '@shared/service-proxies/service-proxies';
+import { DatosPacienteServiceProxy, PacienteDto, MisPrescripciones } from '@shared/service-proxies/service-proxies';
 
 class PagedPacientesRequestDto extends PagedRequestDto {
     filter: string;
@@ -42,8 +42,13 @@ export class MisPrescripcionesComponent extends AppComponentBase  {
 
   
     ngOnInit() {
+
+        
         this._pacienteService.getMisPrescripciones()
-                .subscribe(result=> this.prescripciones= result);
+            .subscribe(result=> this.prescripciones= result);
+        
+
+        
     }   
 
     

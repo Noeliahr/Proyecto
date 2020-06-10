@@ -46,7 +46,7 @@ export class ControlesdeTemperaturaComponent implements OnInit {
             new Date(Date.parse(f.fecha.toString())) >= fechaInicial);*/
 
         this.lineChartData[0].data = datos.map(m => m.temperatura);
-        this.lineChartLabels = datos.map(m => `${m.temperatura}  ${new Date(Date.parse(m.fecha.toString())).toDateString()}`);
+        this.lineChartLabels = datos.map(m => `${m.temperatura}  ${new Date(Date.parse(m.fecha.toString())).toLocaleString()}`);
     }
 
 }

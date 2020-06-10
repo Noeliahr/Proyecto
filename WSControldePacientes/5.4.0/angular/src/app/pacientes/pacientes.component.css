@@ -1,0 +1,40 @@
+.funcionalidades{
+    border: none;
+    background-color: #E2AEBF;
+    padding: 9px;
+    font-size: 16px;
+    cursor: pointer;
+    display: inline-block;
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+h4{
+    width: auto;
+    display: inline;
+}
+
+.datos{
+    display: inline-block;
+    width: auto;
+    margin-bottom: 10px;
+    
+}
+
+.datos1{
+    display: inline-block;
+    float: right;
+    width: auto;
+    margin-bottom: 10px;
+}
+
+
+p{
+    align-content: center;
+    margin-left: 30px;
+    margin-right: 100px;
+}
+
+td{
+    align-content: center;
+}
