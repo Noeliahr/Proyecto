@@ -14,7 +14,5 @@ namespace WSControldePacientesApi.Api.Recordatorios.Dto
         [Required]
         public string Texto { get; set; }
 
-        public int idPaciente { get; set; }
-
     }
 }

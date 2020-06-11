@@ -8,15 +8,15 @@ import { finalize } from 'rxjs/operators';
 import * as _ from 'lodash';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/app-component-base';
-import { DatosPacienteServiceProxy, PacienteDto, MisPrescripciones, PrescripcionServiceProxy, PrescripcionDto } from '@shared/service-proxies/service-proxies';
-import { CreatePrescripcionDialogComponent } from './create-prescripcion/create-prescripcion-dialog.component';
+import { DatosPacienteServiceProxy, PacienteDto, RecordatorioDto, RecordatorioServiceProxy } from '@shared/service-proxies/service-proxies';
+import { CreateRecordatorioDialogComponent } from './create-recordatorios/create-recordatorio-dialog.component';
 
 class PagedPacientesRequestDto extends PagedRequestDto {
     filter: string;
 }
 
 @Component({
-    templateUrl: './prescripciones.component.html',
+    templateUrl: './recordatorio.component.html',
     animations: [appModuleAnimation()],
     styles: [
         `
@@ -27,15 +27,15 @@ class PagedPacientesRequestDto extends PagedRequestDto {
         `
     ]
 })
-export class PrescripcionesComponent  extends AppComponentBase  {
+export class RecordatorioComponent  extends AppComponentBase  {
     saving = false;
-    prescripciones: PrescripcionDto[] = [];
-    paciente: PacienteDto= new PacienteDto();
+    recordatorios: RecordatorioDto[] = [];
+    //paciente: PacienteDto= new PacienteDto();
       
     constructor(
         injector: Injector,
-        private _prescripcionesService: PrescripcionServiceProxy,
-        private _dialogRef: MatDialogRef<PrescripcionesComponent>,
+        private _recordatorioesService: RecordatorioServiceProxy,
+        private _dialogRef: MatDialogRef<RecordatorioComponent>,
         @Optional() @Inject(MAT_DIALOG_DATA) private _id: number,
         private _dialog: MatDialog,
     ) {
@@ -44,21 +44,21 @@ export class PrescripcionesComponent  extends AppComponentBase  {
 
   
     ngOnInit(){ 
-        this._prescripcionesService.getAll(this._id)
-            .subscribe(result=> this.prescripciones= result.items);
+        this._recordatorioesService.getAll(this._id)
+            .subscribe(result=> this.recordatorios= result.items);
     }   
 
     close(result: any): void {
         this._dialogRef.close(result);
     }
 
-    delete(prescripcion: PrescripcionDto): void {
+    delete(recordatorio: RecordatorioDto): void {
         abp.message.confirm(
-            this.l('¿Seguro que quiere borrar la prescripcion?',),
+            this.l('¿Seguro que quiere borrar la recordatorio?',),
             undefined,
             (result: boolean) => {
                 if (result) {
-                    this._prescripcionesService.delete(prescripcion.id).subscribe(() => {
+                    this._recordatorioesService.delete(recordatorio.id).subscribe(() => {
                         abp.notify.success(this.l('SuccessfullyDeleted'));
                         this.ngOnInit();
                     });
@@ -67,12 +67,12 @@ export class PrescripcionesComponent  extends AppComponentBase  {
         );
     }
 
-    edit(prescripcion: PrescripcionDto){
+    edit(recordatorio: RecordatorioDto){
 
     }
 
     create(){
-        let createDialog= this._dialog.open(CreatePrescripcionDialogComponent, {data: this._id});
+        let createDialog= this._dialog.open(CreateRecordatorioDialogComponent, {data: this._id});
         createDialog.afterClosed().subscribe(result => {
             if (result) {
                 this.ngOnInit();

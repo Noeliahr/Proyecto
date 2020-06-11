@@ -12,6 +12,7 @@ import { EnfermedadesDialogComponent } from './enfermedades-paciente/enfermedade
 import { style } from '@angular/animations';
 import { MostrarConversacionDialogComponent } from '@app/chats/mostrarConversacion/mostrarConversacion-dialog.component';
 import { PrescripcionesComponent } from './prescripciones/prescripciones.component';
+import { RecordatorioComponent } from './recordatorios/recordatorio.component';
 
 class PagedPacientesRequestDto extends PagedRequestDto {
     filter: string;
@@ -126,6 +127,10 @@ export class PacientesComponent extends PagedListingComponentBase<PacienteDto> {
 
     misPrescripciones(paciente:PacienteDto){
         this._dialog.open(PrescripcionesComponent, {data: paciente.id});
+    }
+
+    misRecordatorios(paciente:PacienteDto){
+        this._dialog.open(RecordatorioComponent, {data: paciente.id});
     }
 
 }

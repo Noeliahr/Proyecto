@@ -43,7 +43,7 @@ import { ResetPasswordDialogComponent } from './users/reset-password/reset-passw
 
 // paciente
 import { PacientesComponent } from '@app/pacientes/pacientes.component';
-import { PacienteMedicoCabeceraServiceProxy, ResponsableServiceProxy, MisResponsablesServiceProxy, CitasServiceProxy, EnfermedadPacienteServiceProxy, EnfermedadServiceProxy, DatosPacienteServiceProxy, MiCitaMedicaServiceProxy, MensajeServiceProxy, ControldeTemperaturaServiceProxy, DatosMedicoServiceProxy, DatosResponsablesServiceProxy, AgendaServiceProxy, PrescripcionServiceProxy, MedicamentosServiceProxy } from '@shared/service-proxies/service-proxies';
+import { PacienteMedicoCabeceraServiceProxy, ResponsableServiceProxy, MisResponsablesServiceProxy, CitasServiceProxy, EnfermedadPacienteServiceProxy, EnfermedadServiceProxy, DatosPacienteServiceProxy, MiCitaMedicaServiceProxy, MensajeServiceProxy, ControldeTemperaturaServiceProxy, DatosMedicoServiceProxy, DatosResponsablesServiceProxy, AgendaServiceProxy, PrescripcionServiceProxy, MedicamentosServiceProxy, RecordatorioServiceProxy } from '@shared/service-proxies/service-proxies';
 import { CreatePacienteDialogComponent } from './pacientes/create-paciente/create-paciente-dialog.component';
 import {MoreDetailsDialogComponent} from './pacientes/moredetails/moredetails-paciente-dialog.component';
 import {ResponsablesDialogComponent} from './pacientes/responsables-paciente/responsables-paciente-dialog.component';
@@ -74,6 +74,8 @@ import { EditResponsableDialogComponent } from './perfil-responsable/edit-respon
 import { MiAgendaComponent } from './perfil-medico/agenda/miagenda.component';
 import { PrescripcionesComponent } from './pacientes/prescripciones/prescripciones.component';
 import { CreatePrescripcionDialogComponent } from './pacientes/prescripciones/create-prescripcion/create-prescripcion-dialog.component';
+import { RecordatorioComponent } from './pacientes/recordatorios/recordatorio.component';
+import { CreateRecordatorioDialogComponent } from './pacientes/recordatorios/create-recordatorios/create-recordatorio-dialog.component';
 
 
 @NgModule({
@@ -131,7 +133,9 @@ import { CreatePrescripcionDialogComponent } from './pacientes/prescripciones/cr
     EditResponsableDialogComponent, 
     MiAgendaComponent, 
     PrescripcionesComponent,
-    CreatePrescripcionDialogComponent
+    CreatePrescripcionDialogComponent,
+    RecordatorioComponent,
+    CreateRecordatorioDialogComponent
   ],
   imports: [
     CommonModule,
@@ -150,7 +154,7 @@ import { CreatePrescripcionDialogComponent } from './pacientes/prescripciones/cr
   providers: [PacienteMedicoCabeceraServiceProxy, ResponsableServiceProxy, MisResponsablesServiceProxy,
     CitasServiceProxy,EnfermedadPacienteServiceProxy, EnfermedadServiceProxy, DatosPacienteServiceProxy, 
     MiCitaMedicaServiceProxy,MensajeServiceProxy, ControldeTemperaturaServiceProxy,DatosMedicoServiceProxy,
-    DatosResponsablesServiceProxy, AgendaServiceProxy, PrescripcionServiceProxy, MedicamentosServiceProxy],
+    DatosResponsablesServiceProxy, AgendaServiceProxy, PrescripcionServiceProxy, MedicamentosServiceProxy, RecordatorioServiceProxy],
   entryComponents: [
     // tenants
     CreateTenantDialogComponent,
@@ -180,7 +184,9 @@ import { CreatePrescripcionDialogComponent } from './pacientes/prescripciones/cr
     EditMedicoDialogComponent,
     EditResponsableDialogComponent,
     PrescripcionesComponent,
-    CreatePrescripcionDialogComponent
+    CreatePrescripcionDialogComponent,
+    RecordatorioComponent,
+    CreateRecordatorioDialogComponent
 
   ]
 })

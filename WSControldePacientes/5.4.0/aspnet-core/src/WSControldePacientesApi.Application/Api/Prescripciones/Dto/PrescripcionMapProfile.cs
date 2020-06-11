@@ -11,7 +11,7 @@ namespace WSControldePacientesApi.Api.Prescripciones.Dto
         public PrescripcionMapProfile()
         {
             CreateMap<Prescripcion, PrescripcionDto>().ReverseMap();
-            CreateMap<Prescripcion, PrescripcionRecordatorio>().ReverseMap();
+            CreateMap<Prescripcion, CreatePrescripcionDto>().ReverseMap();
         }
     }
 }

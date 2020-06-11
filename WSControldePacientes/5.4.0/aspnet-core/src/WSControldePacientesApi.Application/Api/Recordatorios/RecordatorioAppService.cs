@@ -63,7 +63,7 @@ namespace WSControldePacientesApi.Api.Recordatorios
             for (DateTime dateTime = input.Fecha_Inicio; dateTime<= input.Fecha_Final; dateTime=dateTime.AddHours(cuantoSumar))
             {
                 Recordatorio nuevo_recordatorio = new Recordatorio();
-                nuevo_recordatorio.Texto = "Tomar " + input.MedicamentoNombre;
+                nuevo_recordatorio.Texto = "Tomar " + input.medicamento.Nombre;
                 nuevo_recordatorio.PacienteId = input.PacienteId;
                 nuevo_recordatorio.FechaHora = dateTime;
 

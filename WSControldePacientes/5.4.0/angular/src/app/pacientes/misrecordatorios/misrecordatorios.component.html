@@ -7,30 +7,16 @@
                     <mat-icon>refresh</mat-icon>
                 </button>
             </div>
-            <div class="body table-responsive" *ngFor="
-            let prescripcion of (recordatorios.misprescripciones
-              | paginate
-                : {
-                    id: 'server',
-                    itemsPerPage: pageSize,
-                    currentPage: pageNumber,
-                    totalItems: totalItems
-                  })
-          ">
                 <table class="table table-hover table-striped" [busy]="isTableLoading">
                     <thead>
                         <tr>
-                            <th>{{ "Datos del Medicamento" | localize }}</th>
-                            <th>{{"Dosis" | localize}}</th>
-                            <th>{{ "Fecha de Inicio" | localize }}</th>
-                            <th>{{ "Fecha de Fin" | localize }}</th>
-                            <th>{{ "Como tomar" | localize }}</th>
                             <th> {{"Texto" | localize}}</th>
+                            <th>{{"Fecha" | localize}}</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr *ngFor="
-                        let recordatorio of (prescripcion.recordatorios
+                        let recordatorio of (recordatorios.recordatorios
                           | paginate
                             : {
                                 id: 'server',
@@ -39,12 +25,8 @@
                                 totalItems: totalItems
                               })
                       ">
-                            <td>{{recordatorio.prescripcion.medicamentoNombre}} {{ recordatorio.prescripcion.medicamentoGramaje}} <br>{{ recordatorio.prescripcion.medicamentoTipo}} <br> {{ recordatorio.prescripcion.medicamentoComponenteBase}} </td>
-                            <td> {{recordatorio.prescripcion.dosis }} </td>
-                            <td> {{recordatorio.prescripcion.fecha_Inicio}}</td>
-                            <td> {{recordatorio.prescripcion.fecha_Final}}</td>
-                            <td> {{recordatorio.prescripcion.como_Tomar}}</td>
                             <td> {{recordatorio.texto}}</td>
+                            <td> {{recordatorio.fechaHora}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -52,7 +34,6 @@
                     <abp-pagination-controls (pageChange)="getDataPage($event)" id="server">
                     </abp-pagination-controls>
                 </div>
-            </div>
         </div>
     </div>
 </div>

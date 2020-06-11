@@ -720,7 +720,7 @@ export class ControldeTemperaturaServiceProxy {
         if (fecha === null)
             throw new Error("The parameter 'fecha' cannot be null.");
         else if (fecha !== undefined)
-            url_ += "fecha=" + encodeURIComponent(fecha ? "" + fecha.toLocaleString() : "") + "&";
+            url_ += "fecha=" + encodeURIComponent(fecha ? "" + fecha.toJSON() : "") + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -3546,7 +3546,7 @@ export class PacienteMedicoCabeceraServiceProxy {
         if (fecha === null)
             throw new Error("The parameter 'fecha' cannot be null.");
         else if (fecha !== undefined)
-            url_ += "fecha=" + encodeURIComponent(fecha ? "" + fecha.toLocaleString() : "") + "&";
+            url_ += "fecha=" + encodeURIComponent(fecha ? "" + fecha.toJSON() : "") + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -4226,7 +4226,7 @@ export class PacienteparaMedicoServiceProxy {
         if (fecha === null)
             throw new Error("The parameter 'fecha' cannot be null.");
         else if (fecha !== undefined)
-            url_ += "fecha=" + encodeURIComponent(fecha ? "" + fecha.toLocaleString() : "") + "&";
+            url_ += "fecha=" + encodeURIComponent(fecha ? "" + fecha.toJSON() : "") + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -4402,7 +4402,7 @@ export class PrescripcionServiceProxy {
      * @param body (optional) 
      * @return Success
      */
-    create(idPaciente: number | undefined, body: PrescripcionDto | undefined): Observable<PrescripcionDto> {
+    create(idPaciente: number | undefined, body: CreatePrescripcionDto | undefined): Observable<PrescripcionDto> {
         let url_ = this.baseUrl + "/api/services/app/Prescripcion/Create?";
         if (idPaciente === null)
             throw new Error("The parameter 'idPaciente' cannot be null.");
@@ -8007,13 +8007,71 @@ export interface IMisEnfermedades {
     id: number;
 }
 
+export class MedicamentoDto implements IMedicamentoDto {
+    nombre: string | undefined;
+    tipo: string | undefined;
+    gramaje: string | undefined;
+    funcionalidad: string | undefined;
+    componenteBase: string | undefined;
+    id: number;
+
+    constructor(data?: IMedicamentoDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.nombre = _data["nombre"];
+            this.tipo = _data["tipo"];
+            this.gramaje = _data["gramaje"];
+            this.funcionalidad = _data["funcionalidad"];
+            this.componenteBase = _data["componenteBase"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): MedicamentoDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MedicamentoDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["nombre"] = this.nombre;
+        data["tipo"] = this.tipo;
+        data["gramaje"] = this.gramaje;
+        data["funcionalidad"] = this.funcionalidad;
+        data["componenteBase"] = this.componenteBase;
+        data["id"] = this.id;
+        return data; 
+    }
+
+    clone(): MedicamentoDto {
+        const json = this.toJSON();
+        let result = new MedicamentoDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IMedicamentoDto {
+    nombre: string | undefined;
+    tipo: string | undefined;
+    gramaje: string | undefined;
+    funcionalidad: string | undefined;
+    componenteBase: string | undefined;
+    id: number;
+}
+
 export class PrescripcionDto implements IPrescripcionDto {
-    medicamentoId: number;
-    medicamentoNombre: string | undefined;
-    medicamentoTipo: string | undefined;
-    medicamentoGramaje: string | undefined;
-    medicamentoFuncionalidad: string | undefined;
-    medicamentoComponenteBase: string | undefined;
+    medicamento: MedicamentoDto;
     dosis: string | undefined;
     fecha_Inicio: moment.Moment;
     fecha_Final: moment.Moment;
@@ -8028,16 +8086,14 @@ export class PrescripcionDto implements IPrescripcionDto {
                     (<any>this)[property] = (<any>data)[property];
             }
         }
+        if (!data) {
+            this.medicamento = new MedicamentoDto();
+        }
     }
 
     init(_data?: any) {
         if (_data) {
-            this.medicamentoId = _data["medicamentoId"];
-            this.medicamentoNombre = _data["medicamentoNombre"];
-            this.medicamentoTipo = _data["medicamentoTipo"];
-            this.medicamentoGramaje = _data["medicamentoGramaje"];
-            this.medicamentoFuncionalidad = _data["medicamentoFuncionalidad"];
-            this.medicamentoComponenteBase = _data["medicamentoComponenteBase"];
+            this.medicamento = _data["medicamento"] ? MedicamentoDto.fromJS(_data["medicamento"]) : new MedicamentoDto();
             this.dosis = _data["dosis"];
             this.fecha_Inicio = _data["fecha_Inicio"] ? moment(_data["fecha_Inicio"].toString()) : <any>undefined;
             this.fecha_Final = _data["fecha_Final"] ? moment(_data["fecha_Final"].toString()) : <any>undefined;
@@ -8056,15 +8112,10 @@ export class PrescripcionDto implements IPrescripcionDto {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["medicamentoId"] = this.medicamentoId;
-        data["medicamentoNombre"] = this.medicamentoNombre;
-        data["medicamentoTipo"] = this.medicamentoTipo;
-        data["medicamentoGramaje"] = this.medicamentoGramaje;
-        data["medicamentoFuncionalidad"] = this.medicamentoFuncionalidad;
-        data["medicamentoComponenteBase"] = this.medicamentoComponenteBase;
+        data["medicamento"] = this.medicamento ? this.medicamento.toJSON() : <any>undefined;
         data["dosis"] = this.dosis;
-        data["fecha_Inicio"] = this.fecha_Inicio ? this.fecha_Inicio.toLocaleString() : <any>undefined;
-        data["fecha_Final"] = this.fecha_Final ? this.fecha_Final.toLocaleString() : <any>undefined;
+        data["fecha_Inicio"] = this.fecha_Inicio ? this.fecha_Inicio.toISOString() : <any>undefined;
+        data["fecha_Final"] = this.fecha_Final ? this.fecha_Final.toISOString() : <any>undefined;
         data["como_Tomar"] = this.como_Tomar;
         data["pacienteId"] = this.pacienteId;
         data["id"] = this.id;
@@ -8080,12 +8131,7 @@ export class PrescripcionDto implements IPrescripcionDto {
 }
 
 export interface IPrescripcionDto {
-    medicamentoId: number;
-    medicamentoNombre: string | undefined;
-    medicamentoTipo: string | undefined;
-    medicamentoGramaje: string | undefined;
-    medicamentoFuncionalidad: string | undefined;
-    medicamentoComponenteBase: string | undefined;
+    medicamento: MedicamentoDto;
     dosis: string | undefined;
     fecha_Inicio: moment.Moment;
     fecha_Final: moment.Moment;
@@ -8152,7 +8198,6 @@ export interface IMisPrescripciones {
 export class RecordatorioDto implements IRecordatorioDto {
     fechaHora: moment.Moment;
     texto: string | undefined;
-    idPaciente: number;
     id: number;
 
     constructor(data?: IRecordatorioDto) {
@@ -8168,7 +8213,6 @@ export class RecordatorioDto implements IRecordatorioDto {
         if (_data) {
             this.fechaHora = _data["fechaHora"] ? moment(_data["fechaHora"].toString()) : <any>undefined;
             this.texto = _data["texto"];
-            this.idPaciente = _data["idPaciente"];
             this.id = _data["id"];
         }
     }
@@ -8182,9 +8226,8 @@ export class RecordatorioDto implements IRecordatorioDto {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["fechaHora"] = this.fechaHora ? this.fechaHora.toISOString() : <any>undefined;
+        data["fechaHora"] = this.fechaHora ? this.fechaHora.toLocaleString() : <any>undefined;
         data["texto"] = this.texto;
-        data["idPaciente"] = this.idPaciente;
         data["id"] = this.id;
         return data; 
     }
@@ -8200,15 +8243,14 @@ export class RecordatorioDto implements IRecordatorioDto {
 export interface IRecordatorioDto {
     fechaHora: moment.Moment;
     texto: string | undefined;
-    idPaciente: number;
     id: number;
 }
 
-export class PrescripcionRecordatorio implements IPrescripcionRecordatorio {
+export class MisRecordatorios implements IMisRecordatorios {
     recordatorios: RecordatorioDto[] | undefined;
     id: number;
 
-    constructor(data?: IPrescripcionRecordatorio) {
+    constructor(data?: IMisRecordatorios) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -8228,9 +8270,9 @@ export class PrescripcionRecordatorio implements IPrescripcionRecordatorio {
         }
     }
 
-    static fromJS(data: any): PrescripcionRecordatorio {
+    static fromJS(data: any): MisRecordatorios {
         data = typeof data === 'object' ? data : {};
-        let result = new PrescripcionRecordatorio();
+        let result = new MisRecordatorios();
         result.init(data);
         return result;
     }
@@ -8246,61 +8288,6 @@ export class PrescripcionRecordatorio implements IPrescripcionRecordatorio {
         return data; 
     }
 
-    clone(): PrescripcionRecordatorio {
-        const json = this.toJSON();
-        let result = new PrescripcionRecordatorio();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IPrescripcionRecordatorio {
-    recordatorios: RecordatorioDto[] | undefined;
-    id: number;
-}
-
-export class MisRecordatorios implements IMisRecordatorios {
-    misprescripciones: PrescripcionRecordatorio[] | undefined;
-    id: number;
-
-    constructor(data?: IMisRecordatorios) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            if (Array.isArray(_data["misprescripciones"])) {
-                this.misprescripciones = [] as any;
-                for (let item of _data["misprescripciones"])
-                    this.misprescripciones.push(PrescripcionRecordatorio.fromJS(item));
-            }
-            this.id = _data["id"];
-        }
-    }
-
-    static fromJS(data: any): MisRecordatorios {
-        data = typeof data === 'object' ? data : {};
-        let result = new MisRecordatorios();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        if (Array.isArray(this.misprescripciones)) {
-            data["misprescripciones"] = [];
-            for (let item of this.misprescripciones)
-                data["misprescripciones"].push(item.toJSON());
-        }
-        data["id"] = this.id;
-        return data; 
-    }
-
     clone(): MisRecordatorios {
         const json = this.toJSON();
         let result = new MisRecordatorios();
@@ -8310,7 +8297,7 @@ export class MisRecordatorios implements IMisRecordatorios {
 }
 
 export interface IMisRecordatorios {
-    misprescripciones: PrescripcionRecordatorio[] | undefined;
+    recordatorios: RecordatorioDto[] | undefined;
     id: number;
 }
 
@@ -8661,69 +8648,6 @@ export class PacienteEnfermedadDto implements IPacienteEnfermedadDto {
 
 export interface IPacienteEnfermedadDto {
     paciente: PacienteDto;
-    id: number;
-}
-
-export class MedicamentoDto implements IMedicamentoDto {
-    nombre: string | undefined;
-    tipo: string | undefined;
-    gramaje: string | undefined;
-    funcionalidad: string | undefined;
-    componenteBase: string | undefined;
-    id: number;
-
-    constructor(data?: IMedicamentoDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.nombre = _data["nombre"];
-            this.tipo = _data["tipo"];
-            this.gramaje = _data["gramaje"];
-            this.funcionalidad = _data["funcionalidad"];
-            this.componenteBase = _data["componenteBase"];
-            this.id = _data["id"];
-        }
-    }
-
-    static fromJS(data: any): MedicamentoDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new MedicamentoDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["nombre"] = this.nombre;
-        data["tipo"] = this.tipo;
-        data["gramaje"] = this.gramaje;
-        data["funcionalidad"] = this.funcionalidad;
-        data["componenteBase"] = this.componenteBase;
-        data["id"] = this.id;
-        return data; 
-    }
-
-    clone(): MedicamentoDto {
-        const json = this.toJSON();
-        let result = new MedicamentoDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IMedicamentoDto {
-    nombre: string | undefined;
-    tipo: string | undefined;
-    gramaje: string | undefined;
-    funcionalidad: string | undefined;
-    componenteBase: string | undefined;
     id: number;
 }
 
@@ -10185,6 +10109,69 @@ export class PrescripcionDtoListResultDto implements IPrescripcionDtoListResultD
 
 export interface IPrescripcionDtoListResultDto {
     items: PrescripcionDto[] | undefined;
+}
+
+export class CreatePrescripcionDto implements ICreatePrescripcionDto {
+    medicamentoId: number;
+    dosis: string | undefined;
+    fecha_Inicio: moment.Moment;
+    fecha_Final: moment.Moment;
+    como_Tomar: string | undefined;
+    id: number;
+
+    constructor(data?: ICreatePrescripcionDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.medicamentoId = _data["medicamentoId"];
+            this.dosis = _data["dosis"];
+            this.fecha_Inicio = _data["fecha_Inicio"] ? moment(_data["fecha_Inicio"].toString()) : <any>undefined;
+            this.fecha_Final = _data["fecha_Final"] ? moment(_data["fecha_Final"].toString()) : <any>undefined;
+            this.como_Tomar = _data["como_Tomar"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): CreatePrescripcionDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreatePrescripcionDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["medicamentoId"] = this.medicamentoId;
+        data["dosis"] = this.dosis;
+        data["fecha_Inicio"] = this.fecha_Inicio ? this.fecha_Inicio.toISOString() : <any>undefined;
+        data["fecha_Final"] = this.fecha_Final ? this.fecha_Final.toISOString() : <any>undefined;
+        data["como_Tomar"] = this.como_Tomar;
+        data["id"] = this.id;
+        return data; 
+    }
+
+    clone(): CreatePrescripcionDto {
+        const json = this.toJSON();
+        let result = new CreatePrescripcionDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICreatePrescripcionDto {
+    medicamentoId: number;
+    dosis: string | undefined;
+    fecha_Inicio: moment.Moment;
+    fecha_Final: moment.Moment;
+    como_Tomar: string | undefined;
+    id: number;
 }
 
 export class RecordatorioDtoListResultDto implements IRecordatorioDtoListResultDto {

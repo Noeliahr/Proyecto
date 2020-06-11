@@ -38,7 +38,7 @@ namespace WSControldePacientesApi.Api.Prescripciones
             return new ListResultDto<PrescripcionDto>(ObjectMapper.Map<List<PrescripcionDto>>(prescripcion));
         }
 
-        public async Task<PrescripcionDto> CreateAsync(PrescripcionDto input, int idPaciente)
+        public async Task<PrescripcionDto> CreateAsync(CreatePrescripcionDto input, int idPaciente)
         {
             var prescripcion = ObjectMapper.Map<Prescripcion>(input);
 
@@ -47,7 +47,11 @@ namespace WSControldePacientesApi.Api.Prescripciones
             await _precripcionesRepository.InsertAsync(prescripcion);
             CurrentUnitOfWork.SaveChanges();
 
-            return ObjectMapper.Map<PrescripcionDto>(prescripcion);
+            var nuevaPrescripcion = await _precripcionesRepository.GetAll()
+                .Include(p=>p.Medicamento)
+                .ToListAsync();
+
+            return ObjectMapper.Map<PrescripcionDto>(nuevaPrescripcion.ElementAt(nuevaPrescripcion.Count-1));
 
         }
 

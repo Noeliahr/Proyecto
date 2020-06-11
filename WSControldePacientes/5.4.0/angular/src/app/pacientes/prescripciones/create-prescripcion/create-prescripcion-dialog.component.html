@@ -1,22 +1,21 @@
-<div class="row clearfix" [@routerTransition] style="width:900px;height:400px;">
+<div class="row clearfix" [@routerTransition] style="width: 1000px; height: 450px;">
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
       <div class="card main-content">
           <div class="header">
-              <h2><i class="fa fa-stethoscope" aria-hidden="true"></i>{{ "Nueva Prescripcion" | localize }}</h2>
+              <h2><i class="fa fa-stethoscope" aria-hidden="true"></i> {{"Nueva Prescripcion" | localize }}</h2>
           </div>
           <div class="body table-responsive">
               <mat-dialog-content>
                   <mat-tab-group>
                       <mat-tab [label]="'Elegir Medicamento' | localize">
-                          
                               <form>
-                                  <div class="row">
-                                      <div class="col-md-6">
+                                  <div class="row col-md-6">
+                                      <div>
                                           <mat-form-field>
                                               <input matInput [placeholder]="l('Nombre del Medicamento')" [(ngModel)]="filter" name="filter">
                                           </mat-form-field>
                                       </div>
-                                      <div class="col-md-6 text-right p-r-25">
+                                      <div>
                                           <button mat-raised-button color="primary" (click)="buscar()">{{ 'Search' | localize }}</button>
                                       </div>
                                   </div>
@@ -24,8 +23,8 @@
                         <div class="row-fluid">
                             <div class="col-md-12">
                               <mat-form-field>
-                                <mat-label>Login del userName</mat-label>
-                                <mat-select matNativeControl>
+                                <mat-label>Medicamento </mat-label>
+                                <mat-select matNativeControl [(value)]="medicamento.id">
                                   <mat-option *ngFor="let medicamento of medicamentos" value="{{medicamento.id}}">{{medicamento.nombre}} {{medicamento.tipo}} {{medicamento.gramaje}}</mat-option>
                                 </mat-select>
                               </mat-form-field>
@@ -52,6 +51,9 @@
                                    [(ngModel)]="prescripcion.fecha_Final"
                                    required />
                           </mat-form-field>
+                        </div>
+                        <div class="col-md-6">
+                          <h4>¿Cuando lo toma?</h4>
                           <div class="checkbox-wrapper">
                             <mat-checkbox name="manana" [(ngModel)]="manana">
                               {{ "Mañana" | localize }}
@@ -67,23 +69,131 @@
                               {{ "Noche" | localize }}
                             </mat-checkbox>
                           </div>
+                          <div class="checkbox-wrapper">
+                            <mat-checkbox name="recordatorio" [(ngModel)]="recordatorio">
+                              {{ "Añadir los recordatorios automaticamente" | localize }}
+                            </mat-checkbox>
+                          </div>
                         </div>
                       </div>
+                      <div style="float: right; margin-top: 30px;">
+                        <button mat-button type="button" [disabled]="saving" (click)="close(false)">
+                            {{ "Cancel" | localize }}
+                        </button>
+                        <button mat-flat-button
+                                type="submit"
+                                flex="15"
+                                color="primary"
+                                (click)="save(prescripcion)">
+                            {{ "Save" | localize }}
+                        </button>
+                    </div>
                       </mat-tab>
+                      <mat-tab [label]="'Nuevo Medicamento' | localize">
+                        <div class="row-fluid">
+                          <div class="col-md-12">
+                            <h3>Datos De Medicamento</h3>
+                              <mat-form-field>
+                                <input matInput
+                                    name="Nombre"
+                                    [placeholder]="'Nombre' | localize"
+                                    [(ngModel)]="medicamento.nombre"
+                                    />
+                              </mat-form-field>
+                              <mat-form-field>
+                                <input matInput
+                                    name="Tipo"
+                                    [placeholder]="'Tipo' | localize"
+                                    [(ngModel)]="medicamento.tipo"
+                                    />
+                              </mat-form-field>
+                              <mat-form-field>
+                                <input matInput
+                                    name="Gramaje"
+                                    [placeholder]="'Gramaje' | localize"
+                                    [(ngModel)]="medicamento.gramaje"
+                                    />
+                              </mat-form-field>
+                              <mat-form-field>
+                                <input matInput
+                                    name="ComponenteBase"
+                                    [placeholder]="'Componente Base' | localize"
+                                    [(ngModel)]="medicamento.componenteBase"
+                                    />
+                              </mat-form-field>
+                              <mat-form-field>
+                                <input matInput
+                                    name="Funcionalidad"
+                                    [placeholder]="'Funcionalidad' | localize"
+                                    [(ngModel)]="medicamento.funcionalidad"
+                                    />
+                              </mat-form-field>
+                          </div>
+                          <div class="col-md-6">
+                              <h3>Datos de la Prescripcion</h3>
+                              <mat-form-field>
+                                <input matInput
+                                    name="Dosis"
+                                    [placeholder]="'Dosis' | localize"
+                                    [(ngModel)]="prescripcion.dosis"
+                                    />
+                              </mat-form-field>
+                              <mat-form-field>
+                                <input matInput
+                                      type="datetime-local"
+                                      name="fecha_Inicio"
+                                      [placeholder]="'¿Desde cuando?' | localize"
+                                      [(ngModel)]="prescripcion.fecha_Inicio"
+                                      required />
+                            </mat-form-field>
+                            <mat-form-field>
+                              <input matInput
+                                    type="datetime-local"
+                                    name="fecha_Final"
+                                    [placeholder]="'¿Hasta cuando? ' | localize"
+                                    [(ngModel)]="prescripcion.fecha_Final"
+                                    required />
+                            </mat-form-field>
+                          </div>
+                          <div class="col-md-6" style="margin-top: 50px;">
+                            <h4>¿Cuando lo toma?</h4>
+                            <div class="checkbox-wrapper">
+                              <mat-checkbox name="manana" [(ngModel)]="manana">
+                                {{ "Mañana" | localize }}
+                              </mat-checkbox>
+                            </div>
+                            <div class="checkbox-wrapper">
+                              <mat-checkbox name="Tarde" [(ngModel)]="tarde">
+                                {{ "Tarde" | localize }}
+                              </mat-checkbox>
+                            </div>
+                            <div class="checkbox-wrapper">
+                              <mat-checkbox name="noche" [(ngModel)]="noche">
+                                {{ "Noche" | localize }}
+                              </mat-checkbox>
+                            </div>
+                            <div class="checkbox-wrapper">
+                              <mat-checkbox name="recordatorio" [(ngModel)]="recordatorio">
+                                {{ "Añadir los recordatorios automaticamente" | localize }}
+                              </mat-checkbox>
+                            </div>
+                          </div>
+                        </div>
+                      <div style="float: right; margin-top: 30px;">
+                        <button mat-button type="button" [disabled]="saving" (click)="close(false)">
+                            {{ "Cancel" | localize }}
+                        </button>
+                        <button mat-flat-button
+                                type="submit"
+                                flex="15"
+                                color="primary"
+                                (click)="saveyguardar()">
+                            {{ "Save" | localize }}
+                        </button>
+                    </div>
+                    </mat-tab>
                   </mat-tab-group>
               </mat-dialog-content>
-              <div align="end">
-                <button mat-button type="button" [disabled]="saving" (click)="close(false)">
-                    {{ "Cancel" | localize }}
-                </button>
-                <button mat-flat-button
-                        type="submit"
-                        flex="15"
-                        color="primary"
-                        (click)="save(prescripcion)">
-                    {{ "Save" | localize }}
-                </button>
-            </div>
           </div>
       </div>
   </div>
