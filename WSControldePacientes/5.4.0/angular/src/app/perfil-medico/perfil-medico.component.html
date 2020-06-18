@@ -17,18 +17,18 @@
                 </div>
                 <div style="margin-top: 5%;" *ngIf="medico.totalPacientes > 0">
                     <p><span><h4 style="display: inline-block; margin-right: 6%;">Total de Pacientes que tengo</h4> {{medico.totalPacientes}}</span> 
-                    <button [routerLink] = "['/app/pacientesMedicoCabecera']" style="margin-left: 16%; color:#B64D57; border: none; background-color: inherit;"><i class="fa fa-eye"></i>Ver datos de los Pacientes</button>
+                    <button [routerLink] = "['/app/pacientes']" style="margin-left: 16%; color:#B64D57; border: none; background-color: inherit;"><i class="fa fa-eye"></i>Ver datos de los Pacientes</button>
                     </p>
                 </div>
 
                 <div style="margin-top: 5%;" *ngIf="medico.totalCitasHoy > 0; else nocitas">
                     <p><span><h4 style="display: inline-block; margin-right: 162px;">Total de Citas de Hoy</h4> {{medico.totalCitasHoy}}</span> 
-                    <button [routerLink] = "['/app/agenda']" style="margin-left: 12%; text-align: center; color:#B64D57; border: none; background-color: inherit;"><i class="fa fa-eye" aria-hidden="true"></i> Ver Agenda</button>
+                    <button [routerLink] = "['/app/miagenda']" style="margin-left: 12%; text-align: center; color:#B64D57; border: none; background-color: inherit;"><i class="fa fa-eye" aria-hidden="true"></i> Ver Agenda</button>
                     </p>
                 </div>
                 <ng-template style="margin-top: 5%;"  #nocitas>
                     <p><span><h4 style="display: inline-block; margin-left: 12%; margin-right: 162px;">Hoy no tienes citas</h4></span> 
-                    <button [routerLink] = "['/app/agenda']" style="margin-left: 4%; text-align: center; color:#B64D57; border: none; background-color: inherit;"><i class="fa fa-eye" aria-hidden="true"></i> Ver Agenda</button>
+                    <button [routerLink] = "['/app/miagenda']" style="margin-left: 4%; text-align: center; color:#B64D57; border: none; background-color: inherit;"><i class="fa fa-eye" aria-hidden="true"></i> Ver Agenda</button>
                     </p>
                 </ng-template>
             </div>

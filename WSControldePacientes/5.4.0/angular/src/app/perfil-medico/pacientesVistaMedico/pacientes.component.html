@@ -1,0 +1,141 @@
+<div class="row clearfix" [@routerTransition] >
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
+        <div class="card main-content" style="background-color:  #D3ECEA;">
+            <div class="header">
+                <h2><i class="fa fa-address-card-o" aria-hidden="true"></i> {{ "Pacientes" | localize }}</h2>
+                <ul class="header-dropdown m-r--5">
+                    <li>
+                        <button mat-icon-button [matMenuTriggerFor]="headerMenu" class="header-dropdown-mat-icon-button">
+                            <mat-icon>more_vert</mat-icon>
+                        </button>
+                        <mat-menu #headerMenu="matMenu">
+                            <button mat-menu-item (click)="refresh()">
+                                <mat-icon>refresh</mat-icon>
+                                <span>{{ "Refresh" | localize }}</span>
+                            </button>
+                        </mat-menu>
+                    </li>
+                </ul>
+            </div>
+            <div class="body table-responsive" >
+                <!--query start-->
+                <div class="row clearfix">
+                    <form>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <mat-form-field>
+                                    <mat-select [placeholder]="l('Buscar Por')" [(ngModel)]="buscar" name="buscar">
+                                        <mat-option value="nombre">{{ 'Nombre' | localize }}</mat-option>
+                                        <mat-option value="login">{{ 'Login' | localize }}</mat-option>
+                                        <mat-option value="numSeguridadSocial">{{ 'Num SS' | localize }}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-6">
+                                <mat-form-field>
+                                    <input matInput [placeholder]="l('Escribe el valor')" [(ngModel)]="valor" name="valor">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-12 text-right p-r-25">
+                                <button mat-raised-button color="primary" (click)="search()">{{ 'Search' | localize }}</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!--query end-->
+                <div *ngFor="let paciente of (pacientes)" class="card main-content" >
+                    <div style="padding: 30px 20px 3px;">
+                        <div >
+                            <div> 
+                                    <div class="datos"> <h4>Nombre del Paciente</h4> {{paciente.datosPersonalesName}} {{paciente.datosPersonalesSurname}} </div>
+                                    <div class="datos1"> <h4>¿Cómo localizarlo?</h4> {{ paciente.datosPersonalesUserName }} </div>
+                            </div>
+                            <div>
+                                    <div class="datos"> <h4>Telefono</h4> {{ paciente.datosPersonalesTelefono }} </div>
+                                    <div class="datos1"> <h4>Numero de la seguridad Social</h4> {{ paciente.numSeguridadSocial }} </div>
+                            </div> 
+                        </div>
+                        <table align="center">
+                            <tr>
+                                <td>
+                                    <button  *ngIf="isMedicoCabecera==true" class="funcionalidades" (click)="editPaciente(paciente)">
+                                        <i class="fa fa-pencil" aria-hidden="true"></i> 
+                                        <span> {{"Edit" | localize }}</span>
+                                    </button>
+                                
+                                    <button  *ngIf="isMedicoCabecera==true" class="funcionalidades" (click)="delete(paciente)">
+                                        <i class="fa fa-trash" aria-hidden="true"></i><span> {{"Delete" | localize }}</span>
+                                    </button>
+
+                                    <button class="funcionalidades" (click)="contactar(paciente)">
+                                        <i class="fa fa-comments" aria-hidden="true"></i><span> {{"Contactar" | localize }}</span>
+                                    </button>
+                                
+                                    <button class="funcionalidades" >
+                                        <a style="text-decoration: none; color: inherit;" [routerLink]="['/app/detalles', paciente.id]">
+                                            <i class="fa fa-search-plus" aria-hidden="true"></i><span> {{"Mas Detalles" | localize }}</span>
+                                        </a>
+                                    </button>
+                                
+                                    <button class="funcionalidades">
+                                        <a style="text-decoration: none; color: inherit;" [routerLink]="['/app/responsables', paciente.id]"> 
+                                            <i class="fa fa-users" aria-hidden="true"></i>
+                                            <span> {{"Sus Responsables" | localize }}</span>
+                                        </a>
+                                    </button>
+                                    
+                                    <button class="funcionalidades" (click)="citas(paciente)">
+                                        <a style="text-decoration: none; color: inherit;" [routerLink]="['/app/citas', paciente.id]"> 
+                                        <!--  <a routerLink="/app/home" class="navbar-brand"> -->
+                                            <i class="fa fa-calendar-o" aria-hidden="true"></i>
+                                            <span> {{"Sus Citas" | localize }}</span> 
+                                        </a>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <button class="funcionalidades"  (click)="misEnfermedades(paciente)">
+                                        <a style="text-decoration: none; color: inherit;" [routerLink]="['/app/enfermedades', paciente.id]"> 
+                                        <i class="fa fa-heartbeat" aria-hidden="true"></i>
+                                        <span> {{"Sus Enfermedades" | localize }}</span>
+                                        </a>
+                                    </button>
+                               
+                                    <button class="funcionalidades">
+                                        <a style="text-decoration: none; color: inherit;" [routerLink]="['/app/controlTemp', paciente.id]">
+                                            <i class="fa fa-thermometer-three-quarters" aria-hidden="true"></i>
+                                            <span> {{"Su Control de Temperatura" | localize }}</span>
+                                        </a>
+                                    </button>
+                                
+                                    <button class="funcionalidades">
+                                        <a style="text-decoration: none; color: inherit;" [routerLink]="['/app/prescripciones', paciente.id]">
+                                            <i class="fa fa-stethoscope" aria-hidden="true"></i>
+                                            <span> {{"Sus Prescripciones" | localize }}</span>
+                                        </a>
+                                    </button>
+                                
+                                    <button class="funcionalidades">
+                                        <a style="text-decoration: none; color: inherit;" [routerLink]="['/app/recordatorios', paciente.id]">
+                                            <i class="fa fa-bell-o" aria-hidden="true"></i>
+                                            <span> {{"Sus Recordatorios" | localize }}</span>
+                                        </a>
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>  
+                    </div>
+                    <hr style="margin-bottom: 40px;">
+                </div>
+                <div *ngIf="isMedicoCabecera==true">
+                    <button align="end" mat-mini-fab color="primary" class="pull-right" (click)="createPaciente()">
+                        <mat-icon>add</mat-icon>
+                    </button>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+

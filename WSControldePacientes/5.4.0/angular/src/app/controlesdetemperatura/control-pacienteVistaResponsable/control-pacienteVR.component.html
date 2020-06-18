@@ -1,0 +1,30 @@
+<div class="flex-row">
+    <div class="flex-row-item uno">
+        <div class="row">
+            <h4 style="display: inline;">Control de temperatura desde {{fechaInicio|date:'short'}}  hasta  {{fechaFinal| date:'short'}} </h4>
+        </div>    
+        <mat-card>
+            <app-controlesde-temperatura [evolucion]="controles">
+            </app-controlesde-temperatura>
+        </mat-card>
+        <form  style="margin: 7px;">
+            <mat-form-field >
+                <input
+                    matInput
+                    type="date"
+                    name="Fecha"
+                    [placeholder]="'Fecha' | localize"
+                    [(ngModel)]="fecha" />
+            </mat-form-field>
+            <div class="row">
+                <div class="col-md-12 text-right p-r-25">
+                    <button style="float:right;" mat-raised-button color="primary" (click)="search()"><i class="fa fa-search" aria-hidden="true"></i> {{ 'Search' | localize }}</button>
+                </div>
+            </div>
+        </form>
+        <mat-card>
+            <app-controlesde-temperatura [evolucion]="evolucion">
+            </app-controlesde-temperatura>
+        </mat-card>
+    </div>
+</div>

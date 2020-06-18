@@ -1,5 +1,7 @@
 ﻿using Abp.Application.Services.Dto;
+using Abp.Authorization.Users;
 using Abp.AutoMapper;
+using System.Collections.Generic;
 using WSControldePacientesApi.Authorization.Users;
 
 namespace WSControldePacientesApi.Sessions.Dto
@@ -14,5 +16,8 @@ namespace WSControldePacientesApi.Sessions.Dto
         public string UserName { get; set; }
 
         public string EmailAddress { get; set; }
+
+        public string Roles { get; set; }
+
     }
 }

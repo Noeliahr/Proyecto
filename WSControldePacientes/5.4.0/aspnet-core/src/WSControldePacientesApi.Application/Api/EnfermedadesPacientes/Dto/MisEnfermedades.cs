@@ -9,6 +9,7 @@ namespace WSControlPacientesApi.ControlPacienteApi.Pacientes.Dto
     public class MisEnfermedades : EntityDto
     {
         public long PacienteNumSeguridadSocial { get; set; }
+        public string PacienteDatosPersonalesFullName { get; set; }
 
         public ICollection<EnfermedadPacienteDto> misEnfermedades { get; set;}
     }

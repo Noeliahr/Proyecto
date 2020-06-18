@@ -28,6 +28,7 @@ export class ChatsComponent extends PagedListingComponentBase<PacienteDto> {
 
     mensajes: MensajeSimple[] = [];
     filterText = '';
+    persona:string;
     constructor(
         injector: Injector,
         private _mensajeService: MensajeServiceProxy,

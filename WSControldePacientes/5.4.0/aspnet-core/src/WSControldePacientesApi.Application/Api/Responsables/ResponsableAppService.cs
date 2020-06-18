@@ -81,19 +81,12 @@ namespace WSControldePacientesApi.Api.Responsables
 
         public async Task<ListResultDto<ResponsableDto>> BuscarByUserNameOrName(string name)
         {
-            var responsables = await _responsableRepository.GetAll().Include(r=> r.DatosPersonales).ToListAsync();
+            var responsables = await _responsableRepository.GetAll()
+                .Include(r=> r.DatosPersonales)
+                .Where(r=> r.DatosPersonales.UserName==name)
+                .ToListAsync();
 
-            string nombre;  
-            for(int i=0; i<responsables.Count; i++)
-            {
-                nombre = responsables.ElementAt(i).DatosPersonales.Name + " "+responsables.ElementAt(i).DatosPersonales.Surname;
-                if (!responsables.ElementAt(i).DatosPersonales.UserName.Equals(name) && !nombre.Contains(name))
-                {
-                    responsables.RemoveAt(i);
-                    i = i - 1;
-                }
-                
-            }
+            
 
             return new ListResultDto<ResponsableDto>(ObjectMapper.Map<List<ResponsableDto>>(responsables));
         }

@@ -28,14 +28,50 @@ namespace WSControldePacientesApi.Api.Prescripciones
             _userManager = userManager;
         }
 
-        public async Task<ListResultDto<PrescripcionDto>> GetAll(int id)
+        public async Task<List<PrescripcionDto>> GetAll(int id)
         {
             var prescripcion = await _precripcionesRepository.GetAll()
                 .Include(c => c.Medicamento)
                 .Where(c => c.Paciente.Id== id)
                 .ToListAsync();
+            var prescripciones = new List<PrescripcionDto>(ObjectMapper.Map<List<PrescripcionDto>>(prescripcion));
 
-            return new ListResultDto<PrescripcionDto>(ObjectMapper.Map<List<PrescripcionDto>>(prescripcion));
+            for(int i=0; i<prescripcion.Count; i++)
+            {
+                string trocear = prescripcion.ElementAt(i).Como_Tomar;
+                string[] cadena = trocear.Split("-");
+
+                if (cadena[0] == "1")
+                {
+                    prescripciones.ElementAt(i).isManana = true;
+                }
+                else
+                {
+                    prescripciones.ElementAt(i).isManana = false;
+                }
+
+                if (cadena[1] == "1")
+                {
+                    prescripciones.ElementAt(i).isTarde = true;
+                }
+                else
+                {
+                    prescripciones.ElementAt(i).isTarde = false;
+                }
+
+                if (cadena[2] == "1")
+                {
+                    prescripciones.ElementAt(i).isNoche = true;
+                }
+                else
+                {
+                    prescripciones.ElementAt(i).isNoche = false;
+                }
+            }
+
+            
+
+            return prescripciones;
         }
 
         public async Task<PrescripcionDto> CreateAsync(CreatePrescripcionDto input, int idPaciente)
@@ -51,7 +87,39 @@ namespace WSControldePacientesApi.Api.Prescripciones
                 .Include(p=>p.Medicamento)
                 .ToListAsync();
 
-            return ObjectMapper.Map<PrescripcionDto>(nuevaPrescripcion.ElementAt(nuevaPrescripcion.Count-1));
+            var pres = ObjectMapper.Map<PrescripcionDto>(nuevaPrescripcion.ElementAt(nuevaPrescripcion.Count - 1));
+
+            string trocear = nuevaPrescripcion.ElementAt(nuevaPrescripcion.Count - 1).Como_Tomar;
+            string [] cadena = trocear.Split("-");
+
+            if (cadena[0] == "1")
+            {
+                pres.isManana = true;
+            }else
+            {
+                pres.isManana = false;
+            }
+
+            if (cadena[1] == "1"){
+                pres.isTarde = true;
+            }
+            else
+            {
+                pres.isTarde = false;
+            }
+
+            if (cadena[2] == "1")
+            {
+                pres.isNoche = true;
+            }
+            else
+            {
+                pres.isNoche = false;
+            }
+
+
+
+            return pres;
 
         }
 

@@ -70,8 +70,6 @@ export class MostrarConversacionDialogComponent extends PagedListingComponentBas
         this.nuevoMensaje.personaDestinoUserName= this._username;
         this.nuevoMensaje.texto= this.texto;
 
-        console.log(this.nuevoMensaje.texto);
-
         this._mensajesService.create(this.nuevoMensaje).pipe(
             finalize(() => {
                 this.saving = false;

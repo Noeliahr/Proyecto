@@ -10,7 +10,11 @@ namespace WSControldePacientesApi.Api.Prescripciones.Dto
     {
         public PrescripcionMapProfile()
         {
-            CreateMap<Prescripcion, PrescripcionDto>().ReverseMap();
+            CreateMap<Prescripcion, PrescripcionDto>()
+                .ForMember(p=> p.isManana, opts=> opts.Ignore())
+                .ForMember(p => p.isTarde, opts => opts.Ignore())
+                .ForMember(p => p.isNoche, opts => opts.Ignore())
+                .ReverseMap();
             CreateMap<Prescripcion, CreatePrescripcionDto>().ReverseMap();
         }
     }

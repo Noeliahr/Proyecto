@@ -56,11 +56,6 @@ namespace WSControldePacientesApi.Api.Pacientes.Dto
         public string DondeViveProvincia { get; set; }
         public string DondeVivePais { get; set; }
 
-        //Datos del termometro
-        public int TermometroId { get; set; }
-        public string TermometroFabricante { get; set; }
-
-        public decimal Temperatura_Media { get; set; }
 
         public string MedicoCabeceraUserName { get; set; }
     }

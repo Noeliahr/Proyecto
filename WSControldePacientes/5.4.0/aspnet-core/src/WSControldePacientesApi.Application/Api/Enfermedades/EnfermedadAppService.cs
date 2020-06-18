@@ -57,5 +57,14 @@ namespace WSControldePacientesApi.Api.Enfermedades
         {
             await _enfermedadrepository.DeleteAsync(id);
         }
+
+        public async Task<ListResultDto<EnfermedadDto>> BuscarporNombre(string nombre)
+        {
+            var enfermedades = await _enfermedadrepository.GetAll()
+                .Where(e=>e.Nombre==nombre)
+                .ToListAsync();
+
+            return new ListResultDto<EnfermedadDto>(ObjectMapper.Map<List<EnfermedadDto>>(enfermedades));
+        }
     }
 }

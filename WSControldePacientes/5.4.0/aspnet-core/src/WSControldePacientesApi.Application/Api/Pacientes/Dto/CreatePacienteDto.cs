@@ -9,7 +9,6 @@ using WSControldePacientesApi.Users.Dto;
 using WSControlPacientesApi.ControlPacienteApi.Direcciones.Dto;
 using WSControlPacientesApi.ControlPacienteApi.EnfermedadesPacientes.Dto;
 using WSControlPacientesApi.ControlPacienteApi.Medicos.Dto;
-using WSControlPacientesApi.ControlPacienteApi.Termometros.Dto;
 using WSControlPacientesApi.ControlPacienteApi.Ubicaciones.Dto;
 
 namespace WSControlPacientesApi.ControlPacienteApi.Pacientes.Dto
@@ -71,11 +70,7 @@ namespace WSControlPacientesApi.ControlPacienteApi.Pacientes.Dto
         public string DondeViveProvincia { get; set; }
         public string DondeVivePais { get; set; }
 
-        //Datos del termometro
-        public int TermometroId { get; set; }
-        public string TermometroFabricante { get; set; }
-
-        public decimal Temperatura_Media { get; set; }
+       
 
 
 

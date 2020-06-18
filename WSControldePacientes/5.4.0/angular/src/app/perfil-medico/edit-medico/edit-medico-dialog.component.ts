@@ -49,7 +49,6 @@ export class EditMedicoDialogComponent extends AppComponentBase  {
         this.saving = true;
         const medico_ = new EditMedicoDto();
         medico_.init(this.medico);
-        console.log(medico_);
 
         
         this._medicoService

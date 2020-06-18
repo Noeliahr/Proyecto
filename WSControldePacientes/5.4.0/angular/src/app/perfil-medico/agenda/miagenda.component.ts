@@ -6,7 +6,7 @@ import {PagedListingComponentBase,PagedRequestDto} from '@shared/paged-listing-c
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material';
 import { ActivatedRoute, Params } from '@angular/router';
 import { from } from 'rxjs';
-import { AnularCitaComponent } from 'app/pacientes/miscitas/anularCita/anularCita.component';
+import { AnularCitaComponent } from '@app/perfil-paciente/miscitas/anularCita/anularCita.component';
 
 class PagedPacientesRequestDto extends PagedRequestDto {
     filter: string;

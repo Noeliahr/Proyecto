@@ -1,0 +1,74 @@
+<div class="row clearfix" [@routerTransition]>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card main-content">
+            <div class="header">
+                <h2 style="display: inline;"><mat-icon>event_note</mat-icon> {{ " Mis Recordatorios" | localize }}</h2>
+                <button style="float: right; border: none;  background-color: inherit;" (click)="ngOnInit()">
+                    <mat-icon>refresh</mat-icon>
+                </button>
+            </div>
+            <div class="body table-responsive">
+                <h3>Recordar Hoy</h3>
+                <div *ngFor=" let recordatorio of (recordatoriosHoy.recordatorios)">
+                    <div style="background-color:#F6F1E8; padding: 10px;">
+                        <div style="width: 30%; display: inline;"><h5 style="width: max-content; display: inline;">Fecha</h5>   {{recordatorio.fechaHora | date:'short'}} </div>
+                        <div style="width: 30%; float:right; display: inline-block;"> <i class="fa fa-file-text-o" aria-hidden="true"></i>  {{ recordatorio.texto }} </div>
+                    </div>
+                    <hr>
+                </div>
+
+                <h3>Todos los Recordatorios</h3>
+                <div *ngFor=" let recordatorio of (recordatorios.recordatorios)">
+                    <!--{{hoy |  date:'short'}} <br> -->
+                    <!--{{hoy.getMinutes()+30}}-->
+
+                    <div *ngIf="recordatorio.fechaHora > hoy; else igual" style="background-color:#F0E8F6; padding: 10px;">
+                        <button style="float:right;" class="action-button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
+                            <mat-icon>menu</mat-icon>
+                        </button>
+                        <mat-menu #actionsMenu="matMenu">
+                            <button mat-menu-item (click)="delete(recordatorio)">
+                                <mat-icon>delete</mat-icon>
+                                <span>{{ "Delete" | localize }}</span>
+                            </button>
+                        </mat-menu>
+                        <div style="width: 30%; display: inline;"><h5 style="width: max-content; display: inline;">Fecha</h5>   {{recordatorio.fechaHora | date:'short'}} </div>
+                        <div style="width: 30%; float:right; display: inline-block;"> <i class="fa fa-file-text-o" aria-hidden="true"></i>  {{ recordatorio.texto }} </div>
+                    </div>
+                    <ng-template #igual>
+                        <div *ngIf=" recordatorio.fechaHora >= hoy_menos_10m && recordatorio.fechaHora < hoy_mas_10m; else menor" style="background-color:#E8F6F1; padding: 10px;">
+                            <button style="float:right;" class="action-button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
+                                <mat-icon>menu</mat-icon>
+                            </button>
+                            <mat-menu #actionsMenu="matMenu">
+                                <button mat-menu-item (click)="delete(recordatorio)">
+                                    <mat-icon>delete</mat-icon>
+                                    <span>{{ "Delete" | localize }}</span>
+                                </button>
+                            </mat-menu>
+                            <div style="width: 30%; display: inline;"><h5 style="width: max-content; display: inline;">Fecha</h5>   {{recordatorio.fechaHora | date:'short'}} </div>
+                            <div style="width: 30%; float:right; display: inline-block;"> <i class="fa fa-file-text-o" aria-hidden="true"></i>  {{ recordatorio.texto }} </div>
+                        </div>
+                    </ng-template>
+                    <ng-template #menor>
+                        <div style="background-color:#F6E8ED; padding: 10px;">
+                            <button style="float:right;" class="action-button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
+                                <mat-icon>menu</mat-icon>
+                            </button>
+                            <mat-menu #actionsMenu="matMenu">
+                                <button mat-menu-item (click)="delete(recordatorio)">
+                                    <mat-icon>delete</mat-icon>
+                                    <span>{{ "Delete" | localize }}</span>
+                                </button>
+                            </mat-menu>
+                            <div style="width: 30%; display: inline;"><h5 style="width: max-content; display: inline;">Fecha</h5>   {{recordatorio.fechaHora | date:'short'}} </div>
+                            <div style="width: 30%; float:right; display: inline-block;"> <i class="fa fa-file-text-o" aria-hidden="true"></i>  {{ recordatorio.texto }} </div>
+                        </div>
+                    </ng-template>
+                    
+                    <hr>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

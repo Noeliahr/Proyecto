@@ -1,5 +1,4 @@
 ﻿using Abp.Domain.Entities.Auditing;
-using ApiControldePacientes.ControlPacientes.Termometros;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -35,15 +34,6 @@ namespace WSControldePacientesApi.ControlPacientes.Pacientes
         public int DondeViveId { get; set; }
         [Required]
         public Direccion DondeVive { get; set; }
-
-        [Required]
-        public Termometro Termometro { get; set; }
-
-        [Required]
-        public int TermometroId { get; set; }
-       
-        [Required]
-        public decimal Temperatura_Media { get; set; }
 
         public int MiMedicoCabeceraId { get; set; }
 

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Abp.Auditing;
+using Nito.AsyncEx;
 using WSControldePacientesApi.Sessions.Dto;
 
 namespace WSControldePacientesApi.Sessions
@@ -27,7 +28,10 @@ namespace WSControldePacientesApi.Sessions
 
             if (AbpSession.UserId.HasValue)
             {
+
                 output.User = ObjectMapper.Map<UserLoginInfoDto>(await GetCurrentUserAsync());
+
+
             }
 
             return output;

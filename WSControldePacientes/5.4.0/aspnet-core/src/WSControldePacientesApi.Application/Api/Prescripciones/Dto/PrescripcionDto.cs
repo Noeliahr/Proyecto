@@ -21,9 +21,11 @@ namespace WSControldePacientesApi.Api.Prescripciones.Dto
         [Required]
         public DateTime Fecha_Final { get; set; }
 
-        [Required]
-        public string Como_Tomar { get; set; }
+        public bool isManana { get; set; }
 
+        public bool isTarde { get; set; }
+
+        public bool isNoche { get; set; }
 
         public int PacienteId { get; set; }
     }

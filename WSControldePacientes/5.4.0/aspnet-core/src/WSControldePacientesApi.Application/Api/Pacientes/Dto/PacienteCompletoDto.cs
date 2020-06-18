@@ -7,7 +7,6 @@ using System.Text;
 using WSControldePacientesApi.Users.Dto;
 using WSControlPacientesApi.ControlPacienteApi.Direcciones.Dto;
 using WSControlPacientesApi.ControlPacienteApi.Medicos.Dto;
-using WSControlPacientesApi.ControlPacienteApi.Termometros.Dto;
 
 namespace WSControldePacientesApi.Api.Pacientes.Dto
 {

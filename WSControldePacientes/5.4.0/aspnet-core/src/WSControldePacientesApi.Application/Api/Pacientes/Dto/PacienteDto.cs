@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using WSControldePacientesApi.Users.Dto;
-using WSControlPacientesApi.ControlPacienteApi.Termometros.Dto;
 
 namespace WSControlPacientesApi.ControlPacienteApi.Pacientes.Dto
 {

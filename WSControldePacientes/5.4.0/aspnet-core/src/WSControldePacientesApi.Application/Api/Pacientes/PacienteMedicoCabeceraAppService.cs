@@ -5,7 +5,6 @@ using Abp.Collections.Extensions;
 using Abp.Domain.Repositories;
 using Abp.IdentityFramework;
 using Abp.Runtime.Session;
-using ApiControldePacientes.ControlPacientes.Termometros;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -41,114 +40,7 @@ namespace WSControlPacientesApi.Authorization.ControlPacienteApi.Pacientes
             _userManager = userManager;
         }
 
-        public async Task<ListResultDto<PacienteDto>> GetAllPacientes()
-        {
-            var pacientes = await _pacienteRepository.GetAll()
-                .Include(pacientes => pacientes.DatosPersonales)
-                .ToListAsync();
-            return new ListResultDto<PacienteDto>(ObjectMapper.Map<List<PacienteDto>>(pacientes));
-        }
-
-        public async Task<MisResponsables> GetMisResponsables(int id)
-        {
-            var pacientes = await _pacienteRepository.GetAll()
-                .Include(pacientes => pacientes.MisResponsables)
-                    .ThenInclude(pacientes => pacientes.Responsable)
-                        .ThenInclude(pacientes => pacientes.DatosPersonales)
-                .Where(pacientes => pacientes.Id == id)
-                .FirstOrDefaultAsync();
-            return ObjectMapper.Map<MisResponsables>(pacientes);
-        }
-
-
-       
-
-        public async Task<MisResponsables> DesasociarResponsable(int id, ResponsableDto responsable)
-        {
-            var pacientes = await _pacienteRepository.GetAll()
-                .Include(pacientes => pacientes.MisResponsables)
-                    .ThenInclude(pacientes => pacientes.Responsable)
-                        .ThenInclude(pacientes => pacientes.DatosPersonales)
-                .Where(pacientes => pacientes.Id == id)
-                .FirstOrDefaultAsync();
-
-            foreach (PacienteResponsable respon in pacientes.MisResponsables)
-            {
-                if (respon.Responsable.DatosPersonales.UserName.Equals(responsable.DatosPersonalesUserName))
-                {
-                    respon.IsDeleted = true;
-                }
-            }
-
-            await _pacienteRepository.UpdateAsync(pacientes);
-
-            return ObjectMapper.Map<MisResponsables>(pacientes);
-        }
-
-
-        public async Task<ListResultDto<MisEnfermedades>> GetMisEnfermedades(int Id)
-        {
-            var medicos = await _pacienteRepository.GetAll()
-                .Include(p => p.MisEnfermedades)
-                    .ThenInclude(p => p.Enfermedad)
-                .Where(p => p.Id == Id)
-                .ToListAsync();
-
-            return new ListResultDto<MisEnfermedades>(ObjectMapper.Map<List<MisEnfermedades>>(medicos));
-        }
-
-
-
-        public async Task<ListResultDto<MiEvolucionTemperatura>> GetEvoluciondeTemperatura(int Id)
-        {
-            var temperaturas = await _pacienteRepository.GetAll()
-                .Include(p => p.ControlTemperatura)
-                .Where(p => p.Id == Id)
-                .ToListAsync();
-
-            return new ListResultDto<MiEvolucionTemperatura>(ObjectMapper.Map<List<MiEvolucionTemperatura>>(temperaturas));
-        }
-
-        public async Task<ListResultDto<MiEvolucionTemperatura>> GetEvoluciondeTemperaturaByFecha(int Id, DateTime fecha)
-        {
-            var temperaturas = await _pacienteRepository.GetAll()
-                .Include(p => p.ControlTemperatura)
-                .Where(p => p.Id == Id)
-                .FirstOrDefaultAsync();
-
-
-            for (int i = 0; i < temperaturas.ControlTemperatura.Count; i++)
-            {
-                if (!temperaturas.ControlTemperatura.ElementAt(i).Fecha.Equals(fecha))
-                {
-                    temperaturas.ControlTemperatura.Remove(temperaturas.ControlTemperatura.ElementAt(i));
-                }
-            }
-
-            return new ListResultDto<MiEvolucionTemperatura>(ObjectMapper.Map<List<MiEvolucionTemperatura>>(temperaturas));
-        }
-
-
-        public async Task<PacienteCompletoDto> GetDatosCompletosByPaciente(int Id)
-        {
-            var pacientes = await _pacienteRepository.GetAll()
-                .Include(p => p.DatosPersonales)
-                .Include(p => p.DondeVive)
-                .Include(p => p.Termometro)
-                .Include(p => p.MiMedicoCabecera)
-                    .ThenInclude(p => p.DatosPersonales)
-                .Where(p => p.Id == Id)
-                .FirstOrDefaultAsync();
-
-            return ObjectMapper.Map<PacienteCompletoDto>(pacientes);
-        }
-
-        public async Task<ListResultDto<UserNameMedicosCabecera>> GetAllMedicosCabecera()
-        {
-            var medicos = await _userManager.GetUsersInRoleAsync("MedicoCabecera");
-
-            return new ListResultDto<UserNameMedicosCabecera>(ObjectMapper.Map<List<UserNameMedicosCabecera>>(medicos));
-        }
+        
 
         protected virtual void CheckErrors(IdentityResult identityResult)
         {
@@ -223,6 +115,26 @@ namespace WSControlPacientesApi.Authorization.ControlPacienteApi.Pacientes
         {
             var paciente = _pacienteRepository.Get(id);
             await _pacienteRepository.DeleteAsync(paciente);
+        }
+
+        public async Task<ListResultDto<UserNameMedicosCabecera>> GetAllMedicosCabecera()
+        {
+            var medicos = await _userManager.GetUsersInRoleAsync("MedicoCabecera");
+
+            return new ListResultDto<UserNameMedicosCabecera>(ObjectMapper.Map<List<UserNameMedicosCabecera>>(medicos));
+        }
+
+        public async Task<PacienteCompletoDto> GetDatosCompletosByPaciente(int Id)
+        {
+            var pacientes = await _pacienteRepository.GetAll()
+                .Include(p => p.DatosPersonales)
+                .Include(p => p.DondeVive)
+                .Include(p => p.MiMedicoCabecera)
+                    .ThenInclude(p => p.DatosPersonales)
+                .Where(p => p.Id == Id)
+                .FirstOrDefaultAsync();
+
+            return ObjectMapper.Map<PacienteCompletoDto>(pacientes);
         }
     }
 

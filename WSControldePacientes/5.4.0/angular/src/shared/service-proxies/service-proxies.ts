@@ -1209,6 +1209,62 @@ export class DatosPacienteServiceProxy {
         }
         return _observableOf<MisRecordatorios>(<any>null);
     }
+
+    /**
+     * @param fecha (optional) 
+     * @return Success
+     */
+    getMisRecordatoriosByFecha(fecha: moment.Moment | undefined): Observable<MisRecordatorios> {
+        let url_ = this.baseUrl + "/api/services/app/DatosPaciente/GetMisRecordatoriosByFecha?";
+        if (fecha === null)
+            throw new Error("The parameter 'fecha' cannot be null.");
+        else if (fecha !== undefined)
+            url_ += "fecha=" + encodeURIComponent(fecha ? "" + fecha.toJSON() : "") + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMisRecordatoriosByFecha(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetMisRecordatoriosByFecha(<any>response_);
+                } catch (e) {
+                    return <Observable<MisRecordatorios>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<MisRecordatorios>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetMisRecordatoriosByFecha(response: HttpResponseBase): Observable<MisRecordatorios> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = MisRecordatorios.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<MisRecordatorios>(<any>null);
+    }
 }
 
 @Injectable()
@@ -1611,6 +1667,62 @@ export class EnfermedadServiceProxy {
         }
         return _observableOf<void>(<any>null);
     }
+
+    /**
+     * @param nombre (optional) 
+     * @return Success
+     */
+    buscarporNombre(nombre: string | undefined): Observable<EnfermedadDtoListResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/Enfermedad/BuscarporNombre?";
+        if (nombre === null)
+            throw new Error("The parameter 'nombre' cannot be null.");
+        else if (nombre !== undefined)
+            url_ += "nombre=" + encodeURIComponent("" + nombre) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processBuscarporNombre(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processBuscarporNombre(<any>response_);
+                } catch (e) {
+                    return <Observable<EnfermedadDtoListResultDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<EnfermedadDtoListResultDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processBuscarporNombre(response: HttpResponseBase): Observable<EnfermedadDtoListResultDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = EnfermedadDtoListResultDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<EnfermedadDtoListResultDto>(<any>null);
+    }
 }
 
 @Injectable()
@@ -1848,6 +1960,67 @@ export class EnfermedadPacienteServiceProxy {
             }));
         }
         return _observableOf<PacienteEnfermedadDto>(<any>null);
+    }
+
+    /**
+     * @param id (optional) 
+     * @param nombre (optional) 
+     * @return Success
+     */
+    buscarByNombre(id: number | undefined, nombre: string | undefined): Observable<EnfermedadPacienteDtoListResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/EnfermedadPaciente/BuscarByNombre?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        if (nombre === null)
+            throw new Error("The parameter 'nombre' cannot be null.");
+        else if (nombre !== undefined)
+            url_ += "nombre=" + encodeURIComponent("" + nombre) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processBuscarByNombre(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processBuscarByNombre(<any>response_);
+                } catch (e) {
+                    return <Observable<EnfermedadPacienteDtoListResultDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<EnfermedadPacienteDtoListResultDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processBuscarByNombre(response: HttpResponseBase): Observable<EnfermedadPacienteDtoListResultDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = EnfermedadPacienteDtoListResultDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<EnfermedadPacienteDtoListResultDto>(<any>null);
     }
 }
 
@@ -3242,7 +3415,7 @@ export class PacienteEnfermedadServiceProxy {
 }
 
 @Injectable()
-export class PacienteMedicoCabeceraServiceProxy {
+export class PacienteMedicoServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
@@ -3255,8 +3428,59 @@ export class PacienteMedicoCabeceraServiceProxy {
     /**
      * @return Success
      */
+    getRole(): Observable<boolean> {
+        let url_ = this.baseUrl + "/api/services/app/PacienteMedico/GetRole";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetRole(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetRole(<any>response_);
+                } catch (e) {
+                    return <Observable<boolean>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<boolean>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetRole(response: HttpResponseBase): Observable<boolean> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<boolean>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
     getAllPacientes(): Observable<PacienteDtoListResultDto> {
-        let url_ = this.baseUrl + "/api/services/app/PacienteMedicoCabecera/GetAllPacientes";
+        let url_ = this.baseUrl + "/api/services/app/PacienteMedico/GetAllPacientes";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -3304,11 +3528,179 @@ export class PacienteMedicoCabeceraServiceProxy {
     }
 
     /**
+     * @param numSS (optional) 
+     * @return Success
+     */
+    buscarPorNumSS(numSS: number | undefined): Observable<PacienteDtoListResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/PacienteMedico/BuscarPorNumSS?";
+        if (numSS === null)
+            throw new Error("The parameter 'numSS' cannot be null.");
+        else if (numSS !== undefined)
+            url_ += "numSS=" + encodeURIComponent("" + numSS) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processBuscarPorNumSS(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processBuscarPorNumSS(<any>response_);
+                } catch (e) {
+                    return <Observable<PacienteDtoListResultDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PacienteDtoListResultDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processBuscarPorNumSS(response: HttpResponseBase): Observable<PacienteDtoListResultDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PacienteDtoListResultDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PacienteDtoListResultDto>(<any>null);
+    }
+
+    /**
+     * @param nombre (optional) 
+     * @return Success
+     */
+    buscarPorNombre(nombre: string | undefined): Observable<PacienteDtoListResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/PacienteMedico/BuscarPorNombre?";
+        if (nombre === null)
+            throw new Error("The parameter 'nombre' cannot be null.");
+        else if (nombre !== undefined)
+            url_ += "nombre=" + encodeURIComponent("" + nombre) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processBuscarPorNombre(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processBuscarPorNombre(<any>response_);
+                } catch (e) {
+                    return <Observable<PacienteDtoListResultDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PacienteDtoListResultDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processBuscarPorNombre(response: HttpResponseBase): Observable<PacienteDtoListResultDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PacienteDtoListResultDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PacienteDtoListResultDto>(<any>null);
+    }
+
+    /**
+     * @param userName (optional) 
+     * @return Success
+     */
+    buscarPorLogin(userName: string | undefined): Observable<PacienteDtoListResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/PacienteMedico/BuscarPorLogin?";
+        if (userName === null)
+            throw new Error("The parameter 'userName' cannot be null.");
+        else if (userName !== undefined)
+            url_ += "userName=" + encodeURIComponent("" + userName) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processBuscarPorLogin(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processBuscarPorLogin(<any>response_);
+                } catch (e) {
+                    return <Observable<PacienteDtoListResultDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PacienteDtoListResultDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processBuscarPorLogin(response: HttpResponseBase): Observable<PacienteDtoListResultDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PacienteDtoListResultDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PacienteDtoListResultDto>(<any>null);
+    }
+
+    /**
      * @param id (optional) 
      * @return Success
      */
     getMisResponsables(id: number | undefined): Observable<MisResponsables> {
-        let url_ = this.baseUrl + "/api/services/app/PacienteMedicoCabecera/GetMisResponsables?";
+        let url_ = this.baseUrl + "/api/services/app/PacienteMedico/GetMisResponsables?";
         if (id === null)
             throw new Error("The parameter 'id' cannot be null.");
         else if (id !== undefined)
@@ -3365,7 +3757,7 @@ export class PacienteMedicoCabeceraServiceProxy {
      * @return Success
      */
     desasociarResponsable(id: number | undefined, body: ResponsableDto | undefined): Observable<MisResponsables> {
-        let url_ = this.baseUrl + "/api/services/app/PacienteMedicoCabecera/DesasociarResponsable?";
+        let url_ = this.baseUrl + "/api/services/app/PacienteMedico/DesasociarResponsable?";
         if (id === null)
             throw new Error("The parameter 'id' cannot be null.");
         else if (id !== undefined)
@@ -3425,7 +3817,7 @@ export class PacienteMedicoCabeceraServiceProxy {
      * @return Success
      */
     getMisEnfermedades(id: number | undefined): Observable<MisEnfermedadesListResultDto> {
-        let url_ = this.baseUrl + "/api/services/app/PacienteMedicoCabecera/GetMisEnfermedades?";
+        let url_ = this.baseUrl + "/api/services/app/PacienteMedico/GetMisEnfermedades?";
         if (id === null)
             throw new Error("The parameter 'id' cannot be null.");
         else if (id !== undefined)
@@ -3480,8 +3872,8 @@ export class PacienteMedicoCabeceraServiceProxy {
      * @param id (optional) 
      * @return Success
      */
-    getEvoluciondeTemperatura(id: number | undefined): Observable<MiEvolucionTemperaturaListResultDto> {
-        let url_ = this.baseUrl + "/api/services/app/PacienteMedicoCabecera/GetEvoluciondeTemperatura?";
+    getEvoluciondeTemperatura(id: number | undefined): Observable<MiEvolucionTemperatura> {
+        let url_ = this.baseUrl + "/api/services/app/PacienteMedico/GetEvoluciondeTemperatura?";
         if (id === null)
             throw new Error("The parameter 'id' cannot be null.");
         else if (id !== undefined)
@@ -3503,14 +3895,14 @@ export class PacienteMedicoCabeceraServiceProxy {
                 try {
                     return this.processGetEvoluciondeTemperatura(<any>response_);
                 } catch (e) {
-                    return <Observable<MiEvolucionTemperaturaListResultDto>><any>_observableThrow(e);
+                    return <Observable<MiEvolucionTemperatura>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<MiEvolucionTemperaturaListResultDto>><any>_observableThrow(response_);
+                return <Observable<MiEvolucionTemperatura>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetEvoluciondeTemperatura(response: HttpResponseBase): Observable<MiEvolucionTemperaturaListResultDto> {
+    protected processGetEvoluciondeTemperatura(response: HttpResponseBase): Observable<MiEvolucionTemperatura> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -3521,7 +3913,7 @@ export class PacienteMedicoCabeceraServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = MiEvolucionTemperaturaListResultDto.fromJS(resultData200);
+            result200 = MiEvolucionTemperatura.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -3529,7 +3921,7 @@ export class PacienteMedicoCabeceraServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<MiEvolucionTemperaturaListResultDto>(<any>null);
+        return _observableOf<MiEvolucionTemperatura>(<any>null);
     }
 
     /**
@@ -3537,8 +3929,8 @@ export class PacienteMedicoCabeceraServiceProxy {
      * @param fecha (optional) 
      * @return Success
      */
-    getEvoluciondeTemperaturaByFecha(id: number | undefined, fecha: moment.Moment | undefined): Observable<MiEvolucionTemperaturaListResultDto> {
-        let url_ = this.baseUrl + "/api/services/app/PacienteMedicoCabecera/GetEvoluciondeTemperaturaByFecha?";
+    getEvoluciondeTemperaturaByFecha(id: number | undefined, fecha: moment.Moment | undefined): Observable<MiEvolucionTemperatura> {
+        let url_ = this.baseUrl + "/api/services/app/PacienteMedico/GetEvoluciondeTemperaturaByFecha?";
         if (id === null)
             throw new Error("The parameter 'id' cannot be null.");
         else if (id !== undefined)
@@ -3564,14 +3956,14 @@ export class PacienteMedicoCabeceraServiceProxy {
                 try {
                     return this.processGetEvoluciondeTemperaturaByFecha(<any>response_);
                 } catch (e) {
-                    return <Observable<MiEvolucionTemperaturaListResultDto>><any>_observableThrow(e);
+                    return <Observable<MiEvolucionTemperatura>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<MiEvolucionTemperaturaListResultDto>><any>_observableThrow(response_);
+                return <Observable<MiEvolucionTemperatura>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetEvoluciondeTemperaturaByFecha(response: HttpResponseBase): Observable<MiEvolucionTemperaturaListResultDto> {
+    protected processGetEvoluciondeTemperaturaByFecha(response: HttpResponseBase): Observable<MiEvolucionTemperatura> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -3582,7 +3974,7 @@ export class PacienteMedicoCabeceraServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = MiEvolucionTemperaturaListResultDto.fromJS(resultData200);
+            result200 = MiEvolucionTemperatura.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -3590,7 +3982,7 @@ export class PacienteMedicoCabeceraServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<MiEvolucionTemperaturaListResultDto>(<any>null);
+        return _observableOf<MiEvolucionTemperatura>(<any>null);
     }
 
     /**
@@ -3598,7 +3990,7 @@ export class PacienteMedicoCabeceraServiceProxy {
      * @return Success
      */
     getDatosCompletosByPaciente(id: number | undefined): Observable<PacienteCompletoDto> {
-        let url_ = this.baseUrl + "/api/services/app/PacienteMedicoCabecera/GetDatosCompletosByPaciente?";
+        let url_ = this.baseUrl + "/api/services/app/PacienteMedico/GetDatosCompletosByPaciente?";
         if (id === null)
             throw new Error("The parameter 'id' cannot be null.");
         else if (id !== undefined)
@@ -3648,56 +4040,17 @@ export class PacienteMedicoCabeceraServiceProxy {
         }
         return _observableOf<PacienteCompletoDto>(<any>null);
     }
+}
 
-    /**
-     * @return Success
-     */
-    getAllMedicosCabecera(): Observable<UserNameMedicosCabeceraListResultDto> {
-        let url_ = this.baseUrl + "/api/services/app/PacienteMedicoCabecera/GetAllMedicosCabecera";
-        url_ = url_.replace(/[?&]$/, "");
+@Injectable()
+export class PacienteMedicoCabeceraServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetAllMedicosCabecera(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetAllMedicosCabecera(<any>response_);
-                } catch (e) {
-                    return <Observable<UserNameMedicosCabeceraListResultDto>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<UserNameMedicosCabeceraListResultDto>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processGetAllMedicosCabecera(response: HttpResponseBase): Observable<UserNameMedicosCabeceraListResultDto> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = UserNameMedicosCabeceraListResultDto.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<UserNameMedicosCabeceraListResultDto>(<any>null);
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
     }
 
     /**
@@ -3863,10 +4216,117 @@ export class PacienteMedicoCabeceraServiceProxy {
         }
         return _observableOf<void>(<any>null);
     }
+
+    /**
+     * @return Success
+     */
+    getAllMedicosCabecera(): Observable<UserNameMedicosCabeceraListResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/PacienteMedicoCabecera/GetAllMedicosCabecera";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllMedicosCabecera(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllMedicosCabecera(<any>response_);
+                } catch (e) {
+                    return <Observable<UserNameMedicosCabeceraListResultDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<UserNameMedicosCabeceraListResultDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAllMedicosCabecera(response: HttpResponseBase): Observable<UserNameMedicosCabeceraListResultDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = UserNameMedicosCabeceraListResultDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<UserNameMedicosCabeceraListResultDto>(<any>null);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getDatosCompletosByPaciente(id: number | undefined): Observable<PacienteCompletoDto> {
+        let url_ = this.baseUrl + "/api/services/app/PacienteMedicoCabecera/GetDatosCompletosByPaciente?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetDatosCompletosByPaciente(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetDatosCompletosByPaciente(<any>response_);
+                } catch (e) {
+                    return <Observable<PacienteCompletoDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PacienteCompletoDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetDatosCompletosByPaciente(response: HttpResponseBase): Observable<PacienteCompletoDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PacienteCompletoDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PacienteCompletoDto>(<any>null);
+    }
 }
 
 @Injectable()
-export class PacienteparaMedicoServiceProxy {
+export class PacienteResponsableServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
@@ -3879,8 +4339,8 @@ export class PacienteparaMedicoServiceProxy {
     /**
      * @return Success
      */
-    getAll(): Observable<PacienteDtoListResultDto> {
-        let url_ = this.baseUrl + "/api/services/app/PacienteparaMedico/GetAll";
+    getAllPacientes(): Observable<PacienteDtoListResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/PacienteResponsable/GetAllPacientes";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -3892,11 +4352,11 @@ export class PacienteparaMedicoServiceProxy {
         };
 
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetAll(response_);
+            return this.processGetAllPacientes(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processGetAll(<any>response_);
+                    return this.processGetAllPacientes(<any>response_);
                 } catch (e) {
                     return <Observable<PacienteDtoListResultDto>><any>_observableThrow(e);
                 }
@@ -3905,7 +4365,175 @@ export class PacienteparaMedicoServiceProxy {
         }));
     }
 
-    protected processGetAll(response: HttpResponseBase): Observable<PacienteDtoListResultDto> {
+    protected processGetAllPacientes(response: HttpResponseBase): Observable<PacienteDtoListResultDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PacienteDtoListResultDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PacienteDtoListResultDto>(<any>null);
+    }
+
+    /**
+     * @param numSS (optional) 
+     * @return Success
+     */
+    buscarPorNumSS(numSS: number | undefined): Observable<PacienteDtoListResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/PacienteResponsable/BuscarPorNumSS?";
+        if (numSS === null)
+            throw new Error("The parameter 'numSS' cannot be null.");
+        else if (numSS !== undefined)
+            url_ += "numSS=" + encodeURIComponent("" + numSS) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processBuscarPorNumSS(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processBuscarPorNumSS(<any>response_);
+                } catch (e) {
+                    return <Observable<PacienteDtoListResultDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PacienteDtoListResultDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processBuscarPorNumSS(response: HttpResponseBase): Observable<PacienteDtoListResultDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PacienteDtoListResultDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PacienteDtoListResultDto>(<any>null);
+    }
+
+    /**
+     * @param nombre (optional) 
+     * @return Success
+     */
+    buscarPorNombre(nombre: string | undefined): Observable<PacienteDtoListResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/PacienteResponsable/BuscarPorNombre?";
+        if (nombre === null)
+            throw new Error("The parameter 'nombre' cannot be null.");
+        else if (nombre !== undefined)
+            url_ += "nombre=" + encodeURIComponent("" + nombre) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processBuscarPorNombre(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processBuscarPorNombre(<any>response_);
+                } catch (e) {
+                    return <Observable<PacienteDtoListResultDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PacienteDtoListResultDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processBuscarPorNombre(response: HttpResponseBase): Observable<PacienteDtoListResultDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PacienteDtoListResultDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PacienteDtoListResultDto>(<any>null);
+    }
+
+    /**
+     * @param userName (optional) 
+     * @return Success
+     */
+    buscarPorLogin(userName: string | undefined): Observable<PacienteDtoListResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/PacienteResponsable/BuscarPorLogin?";
+        if (userName === null)
+            throw new Error("The parameter 'userName' cannot be null.");
+        else if (userName !== undefined)
+            url_ += "userName=" + encodeURIComponent("" + userName) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processBuscarPorLogin(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processBuscarPorLogin(<any>response_);
+                } catch (e) {
+                    return <Observable<PacienteDtoListResultDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PacienteDtoListResultDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processBuscarPorLogin(response: HttpResponseBase): Observable<PacienteDtoListResultDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -3931,8 +4559,8 @@ export class PacienteparaMedicoServiceProxy {
      * @param id (optional) 
      * @return Success
      */
-    masDetalles(id: number | undefined): Observable<PacienteCompletoDtoListResultDto> {
-        let url_ = this.baseUrl + "/api/services/app/PacienteparaMedico/MasDetalles?";
+    getMisResponsables(id: number | undefined): Observable<MisResponsables> {
+        let url_ = this.baseUrl + "/api/services/app/PacienteResponsable/GetMisResponsables?";
         if (id === null)
             throw new Error("The parameter 'id' cannot be null.");
         else if (id !== undefined)
@@ -3947,129 +4575,12 @@ export class PacienteparaMedicoServiceProxy {
             })
         };
 
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processMasDetalles(response_);
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMisResponsables(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processMasDetalles(<any>response_);
-                } catch (e) {
-                    return <Observable<PacienteCompletoDtoListResultDto>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<PacienteCompletoDtoListResultDto>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processMasDetalles(response: HttpResponseBase): Observable<PacienteCompletoDtoListResultDto> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PacienteCompletoDtoListResultDto.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<PacienteCompletoDtoListResultDto>(<any>null);
-    }
-
-    /**
-     * @param id (optional) 
-     * @return Success
-     */
-    susResponsables(id: number | undefined): Observable<MisResponsablesListResultDto> {
-        let url_ = this.baseUrl + "/api/services/app/PacienteparaMedico/SusResponsables?";
-        if (id === null)
-            throw new Error("The parameter 'id' cannot be null.");
-        else if (id !== undefined)
-            url_ += "id=" + encodeURIComponent("" + id) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processSusResponsables(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processSusResponsables(<any>response_);
-                } catch (e) {
-                    return <Observable<MisResponsablesListResultDto>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<MisResponsablesListResultDto>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processSusResponsables(response: HttpResponseBase): Observable<MisResponsablesListResultDto> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = MisResponsablesListResultDto.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<MisResponsablesListResultDto>(<any>null);
-    }
-
-    /**
-     * @param id (optional) 
-     * @param body (optional) 
-     * @return Success
-     */
-    desasociarResponsable(id: number | undefined, body: ResponsableDto | undefined): Observable<MisResponsables> {
-        let url_ = this.baseUrl + "/api/services/app/PacienteparaMedico/DesasociarResponsable?";
-        if (id === null)
-            throw new Error("The parameter 'id' cannot be null.");
-        else if (id !== undefined)
-            url_ += "id=" + encodeURIComponent("" + id) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json-patch+json",
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processDesasociarResponsable(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processDesasociarResponsable(<any>response_);
+                    return this.processGetMisResponsables(<any>response_);
                 } catch (e) {
                     return <Observable<MisResponsables>><any>_observableThrow(e);
                 }
@@ -4078,7 +4589,7 @@ export class PacienteparaMedicoServiceProxy {
         }));
     }
 
-    protected processDesasociarResponsable(response: HttpResponseBase): Observable<MisResponsables> {
+    protected processGetMisResponsables(response: HttpResponseBase): Observable<MisResponsables> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -4104,8 +4615,8 @@ export class PacienteparaMedicoServiceProxy {
      * @param id (optional) 
      * @return Success
      */
-    susEnfermedades(id: number | undefined): Observable<MisEnfermedadesListResultDto> {
-        let url_ = this.baseUrl + "/api/services/app/PacienteparaMedico/SusEnfermedades?";
+    getMisEnfermedades(id: number | undefined): Observable<MisEnfermedades> {
+        let url_ = this.baseUrl + "/api/services/app/PacienteResponsable/GetMisEnfermedades?";
         if (id === null)
             throw new Error("The parameter 'id' cannot be null.");
         else if (id !== undefined)
@@ -4120,21 +4631,21 @@ export class PacienteparaMedicoServiceProxy {
             })
         };
 
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processSusEnfermedades(response_);
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMisEnfermedades(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processSusEnfermedades(<any>response_);
+                    return this.processGetMisEnfermedades(<any>response_);
                 } catch (e) {
-                    return <Observable<MisEnfermedadesListResultDto>><any>_observableThrow(e);
+                    return <Observable<MisEnfermedades>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<MisEnfermedadesListResultDto>><any>_observableThrow(response_);
+                return <Observable<MisEnfermedades>><any>_observableThrow(response_);
         }));
     }
 
-    protected processSusEnfermedades(response: HttpResponseBase): Observable<MisEnfermedadesListResultDto> {
+    protected processGetMisEnfermedades(response: HttpResponseBase): Observable<MisEnfermedades> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -4145,7 +4656,7 @@ export class PacienteparaMedicoServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = MisEnfermedadesListResultDto.fromJS(resultData200);
+            result200 = MisEnfermedades.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -4153,15 +4664,15 @@ export class PacienteparaMedicoServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<MisEnfermedadesListResultDto>(<any>null);
+        return _observableOf<MisEnfermedades>(<any>null);
     }
 
     /**
      * @param id (optional) 
      * @return Success
      */
-    evoluciondeTemperatura(id: number | undefined): Observable<MiEvolucionTemperaturaListResultDto> {
-        let url_ = this.baseUrl + "/api/services/app/PacienteparaMedico/EvoluciondeTemperatura?";
+    getEvoluciondeTemperatura(id: number | undefined): Observable<MiEvolucionTemperatura> {
+        let url_ = this.baseUrl + "/api/services/app/PacienteResponsable/GetEvoluciondeTemperatura?";
         if (id === null)
             throw new Error("The parameter 'id' cannot be null.");
         else if (id !== undefined)
@@ -4176,21 +4687,21 @@ export class PacienteparaMedicoServiceProxy {
             })
         };
 
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processEvoluciondeTemperatura(response_);
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetEvoluciondeTemperatura(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processEvoluciondeTemperatura(<any>response_);
+                    return this.processGetEvoluciondeTemperatura(<any>response_);
                 } catch (e) {
-                    return <Observable<MiEvolucionTemperaturaListResultDto>><any>_observableThrow(e);
+                    return <Observable<MiEvolucionTemperatura>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<MiEvolucionTemperaturaListResultDto>><any>_observableThrow(response_);
+                return <Observable<MiEvolucionTemperatura>><any>_observableThrow(response_);
         }));
     }
 
-    protected processEvoluciondeTemperatura(response: HttpResponseBase): Observable<MiEvolucionTemperaturaListResultDto> {
+    protected processGetEvoluciondeTemperatura(response: HttpResponseBase): Observable<MiEvolucionTemperatura> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -4201,7 +4712,7 @@ export class PacienteparaMedicoServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = MiEvolucionTemperaturaListResultDto.fromJS(resultData200);
+            result200 = MiEvolucionTemperatura.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -4209,7 +4720,7 @@ export class PacienteparaMedicoServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<MiEvolucionTemperaturaListResultDto>(<any>null);
+        return _observableOf<MiEvolucionTemperatura>(<any>null);
     }
 
     /**
@@ -4217,8 +4728,8 @@ export class PacienteparaMedicoServiceProxy {
      * @param fecha (optional) 
      * @return Success
      */
-    evoluciondeTemperaturaByFecha(id: number | undefined, fecha: moment.Moment | undefined): Observable<MiEvolucionTemperaturaListResultDto> {
-        let url_ = this.baseUrl + "/api/services/app/PacienteparaMedico/EvoluciondeTemperaturaByFecha?";
+    getEvoluciondeTemperaturaByFecha(id: number | undefined, fecha: moment.Moment | undefined): Observable<MiEvolucionTemperatura> {
+        let url_ = this.baseUrl + "/api/services/app/PacienteResponsable/GetEvoluciondeTemperaturaByFecha?";
         if (id === null)
             throw new Error("The parameter 'id' cannot be null.");
         else if (id !== undefined)
@@ -4237,21 +4748,21 @@ export class PacienteparaMedicoServiceProxy {
             })
         };
 
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processEvoluciondeTemperaturaByFecha(response_);
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetEvoluciondeTemperaturaByFecha(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processEvoluciondeTemperaturaByFecha(<any>response_);
+                    return this.processGetEvoluciondeTemperaturaByFecha(<any>response_);
                 } catch (e) {
-                    return <Observable<MiEvolucionTemperaturaListResultDto>><any>_observableThrow(e);
+                    return <Observable<MiEvolucionTemperatura>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<MiEvolucionTemperaturaListResultDto>><any>_observableThrow(response_);
+                return <Observable<MiEvolucionTemperatura>><any>_observableThrow(response_);
         }));
     }
 
-    protected processEvoluciondeTemperaturaByFecha(response: HttpResponseBase): Observable<MiEvolucionTemperaturaListResultDto> {
+    protected processGetEvoluciondeTemperaturaByFecha(response: HttpResponseBase): Observable<MiEvolucionTemperatura> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -4262,7 +4773,7 @@ export class PacienteparaMedicoServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = MiEvolucionTemperaturaListResultDto.fromJS(resultData200);
+            result200 = MiEvolucionTemperatura.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -4270,15 +4781,15 @@ export class PacienteparaMedicoServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<MiEvolucionTemperaturaListResultDto>(<any>null);
+        return _observableOf<MiEvolucionTemperatura>(<any>null);
     }
 
     /**
      * @param id (optional) 
      * @return Success
      */
-    getDatosCompletosByPaciente(id: number | undefined): Observable<PacienteCompletoDtoListResultDto> {
-        let url_ = this.baseUrl + "/api/services/app/PacienteparaMedico/GetDatosCompletosByPaciente?";
+    getDatosCompletosByPaciente(id: number | undefined): Observable<PacienteCompletoDto> {
+        let url_ = this.baseUrl + "/api/services/app/PacienteResponsable/GetDatosCompletosByPaciente?";
         if (id === null)
             throw new Error("The parameter 'id' cannot be null.");
         else if (id !== undefined)
@@ -4300,14 +4811,14 @@ export class PacienteparaMedicoServiceProxy {
                 try {
                     return this.processGetDatosCompletosByPaciente(<any>response_);
                 } catch (e) {
-                    return <Observable<PacienteCompletoDtoListResultDto>><any>_observableThrow(e);
+                    return <Observable<PacienteCompletoDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<PacienteCompletoDtoListResultDto>><any>_observableThrow(response_);
+                return <Observable<PacienteCompletoDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetDatosCompletosByPaciente(response: HttpResponseBase): Observable<PacienteCompletoDtoListResultDto> {
+    protected processGetDatosCompletosByPaciente(response: HttpResponseBase): Observable<PacienteCompletoDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -4318,7 +4829,7 @@ export class PacienteparaMedicoServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PacienteCompletoDtoListResultDto.fromJS(resultData200);
+            result200 = PacienteCompletoDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -4326,7 +4837,63 @@ export class PacienteparaMedicoServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<PacienteCompletoDtoListResultDto>(<any>null);
+        return _observableOf<PacienteCompletoDto>(<any>null);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getPrescripciones(id: number | undefined): Observable<MisPrescripciones> {
+        let url_ = this.baseUrl + "/api/services/app/PacienteResponsable/GetPrescripciones?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPrescripciones(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPrescripciones(<any>response_);
+                } catch (e) {
+                    return <Observable<MisPrescripciones>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<MisPrescripciones>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetPrescripciones(response: HttpResponseBase): Observable<MisPrescripciones> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = MisPrescripciones.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<MisPrescripciones>(<any>null);
     }
 }
 
@@ -4345,7 +4912,7 @@ export class PrescripcionServiceProxy {
      * @param id (optional) 
      * @return Success
      */
-    getAll(id: number | undefined): Observable<PrescripcionDtoListResultDto> {
+    getAll(id: number | undefined): Observable<PrescripcionDto[]> {
         let url_ = this.baseUrl + "/api/services/app/Prescripcion/GetAll?";
         if (id === null)
             throw new Error("The parameter 'id' cannot be null.");
@@ -4368,14 +4935,14 @@ export class PrescripcionServiceProxy {
                 try {
                     return this.processGetAll(<any>response_);
                 } catch (e) {
-                    return <Observable<PrescripcionDtoListResultDto>><any>_observableThrow(e);
+                    return <Observable<PrescripcionDto[]>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<PrescripcionDtoListResultDto>><any>_observableThrow(response_);
+                return <Observable<PrescripcionDto[]>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetAll(response: HttpResponseBase): Observable<PrescripcionDtoListResultDto> {
+    protected processGetAll(response: HttpResponseBase): Observable<PrescripcionDto[]> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -4386,7 +4953,11 @@ export class PrescripcionServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PrescripcionDtoListResultDto.fromJS(resultData200);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(PrescripcionDto.fromJS(item));
+            }
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -4394,7 +4965,7 @@ export class PrescripcionServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<PrescripcionDtoListResultDto>(<any>null);
+        return _observableOf<PrescripcionDto[]>(<any>null);
     }
 
     /**
@@ -4674,6 +5245,62 @@ export class RecordatorioServiceProxy {
     }
 
     protected processGetAll(response: HttpResponseBase): Observable<RecordatorioDtoListResultDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = RecordatorioDtoListResultDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<RecordatorioDtoListResultDto>(<any>null);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getRecordatoriosToday(id: number | undefined): Observable<RecordatorioDtoListResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/Recordatorio/GetRecordatoriosToday?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetRecordatoriosToday(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetRecordatoriosToday(<any>response_);
+                } catch (e) {
+                    return <Observable<RecordatorioDtoListResultDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<RecordatorioDtoListResultDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetRecordatoriosToday(response: HttpResponseBase): Observable<RecordatorioDtoListResultDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -7950,6 +8577,7 @@ export interface IEnfermedadPacienteDto {
 
 export class MisEnfermedades implements IMisEnfermedades {
     pacienteNumSeguridadSocial: number;
+    pacienteDatosPersonalesFullName: string | undefined;
     misEnfermedades: EnfermedadPacienteDto[] | undefined;
     id: number;
 
@@ -7965,6 +8593,7 @@ export class MisEnfermedades implements IMisEnfermedades {
     init(_data?: any) {
         if (_data) {
             this.pacienteNumSeguridadSocial = _data["pacienteNumSeguridadSocial"];
+            this.pacienteDatosPersonalesFullName = _data["pacienteDatosPersonalesFullName"];
             if (Array.isArray(_data["misEnfermedades"])) {
                 this.misEnfermedades = [] as any;
                 for (let item of _data["misEnfermedades"])
@@ -7984,6 +8613,7 @@ export class MisEnfermedades implements IMisEnfermedades {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["pacienteNumSeguridadSocial"] = this.pacienteNumSeguridadSocial;
+        data["pacienteDatosPersonalesFullName"] = this.pacienteDatosPersonalesFullName;
         if (Array.isArray(this.misEnfermedades)) {
             data["misEnfermedades"] = [];
             for (let item of this.misEnfermedades)
@@ -8003,6 +8633,7 @@ export class MisEnfermedades implements IMisEnfermedades {
 
 export interface IMisEnfermedades {
     pacienteNumSeguridadSocial: number;
+    pacienteDatosPersonalesFullName: string | undefined;
     misEnfermedades: EnfermedadPacienteDto[] | undefined;
     id: number;
 }
@@ -8075,7 +8706,9 @@ export class PrescripcionDto implements IPrescripcionDto {
     dosis: string | undefined;
     fecha_Inicio: moment.Moment;
     fecha_Final: moment.Moment;
-    como_Tomar: string | undefined;
+    isManana: boolean;
+    isTarde: boolean;
+    isNoche: boolean;
     pacienteId: number;
     id: number;
 
@@ -8097,7 +8730,9 @@ export class PrescripcionDto implements IPrescripcionDto {
             this.dosis = _data["dosis"];
             this.fecha_Inicio = _data["fecha_Inicio"] ? moment(_data["fecha_Inicio"].toString()) : <any>undefined;
             this.fecha_Final = _data["fecha_Final"] ? moment(_data["fecha_Final"].toString()) : <any>undefined;
-            this.como_Tomar = _data["como_Tomar"];
+            this.isManana = _data["isManana"];
+            this.isTarde = _data["isTarde"];
+            this.isNoche = _data["isNoche"];
             this.pacienteId = _data["pacienteId"];
             this.id = _data["id"];
         }
@@ -8116,7 +8751,9 @@ export class PrescripcionDto implements IPrescripcionDto {
         data["dosis"] = this.dosis;
         data["fecha_Inicio"] = this.fecha_Inicio ? this.fecha_Inicio.toISOString() : <any>undefined;
         data["fecha_Final"] = this.fecha_Final ? this.fecha_Final.toISOString() : <any>undefined;
-        data["como_Tomar"] = this.como_Tomar;
+        data["isManana"] = this.isManana;
+        data["isTarde"] = this.isTarde;
+        data["isNoche"] = this.isNoche;
         data["pacienteId"] = this.pacienteId;
         data["id"] = this.id;
         return data; 
@@ -8135,7 +8772,9 @@ export interface IPrescripcionDto {
     dosis: string | undefined;
     fecha_Inicio: moment.Moment;
     fecha_Final: moment.Moment;
-    como_Tomar: string | undefined;
+    isManana: boolean;
+    isTarde: boolean;
+    isNoche: boolean;
     pacienteId: number;
     id: number;
 }
@@ -8226,7 +8865,7 @@ export class RecordatorioDto implements IRecordatorioDto {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["fechaHora"] = this.fechaHora ? this.fechaHora.toLocaleString() : <any>undefined;
+        data["fechaHora"] = this.fechaHora ? this.fechaHora.toISOString() : <any>undefined;
         data["texto"] = this.texto;
         data["id"] = this.id;
         return data; 
@@ -8907,7 +9546,14 @@ export interface IMedicoDtoPagedResultDto {
 }
 
 export class CreateMedicoDto implements ICreateMedicoDto {
-    datosPersonalesId: number | undefined;
+    datosPersonalesUserName: string | undefined;
+    datosPersonalesName: string | undefined;
+    datosPersonalesSurname: string | undefined;
+    datosPersonalesEmailAddress: string | undefined;
+    datosPersonalesTelefono: string | undefined;
+    datosPersonalesIsActive: boolean;
+    datosPersonalesPassword: string | undefined;
+    datosPersonalesRoleNames: string[] | undefined;
     especialidad: string | undefined;
     id: number;
 
@@ -8922,7 +9568,18 @@ export class CreateMedicoDto implements ICreateMedicoDto {
 
     init(_data?: any) {
         if (_data) {
-            this.datosPersonalesId = _data["datosPersonalesId"];
+            this.datosPersonalesUserName = _data["datosPersonalesUserName"];
+            this.datosPersonalesName = _data["datosPersonalesName"];
+            this.datosPersonalesSurname = _data["datosPersonalesSurname"];
+            this.datosPersonalesEmailAddress = _data["datosPersonalesEmailAddress"];
+            this.datosPersonalesTelefono = _data["datosPersonalesTelefono"];
+            this.datosPersonalesIsActive = _data["datosPersonalesIsActive"];
+            this.datosPersonalesPassword = _data["datosPersonalesPassword"];
+            if (Array.isArray(_data["datosPersonalesRoleNames"])) {
+                this.datosPersonalesRoleNames = [] as any;
+                for (let item of _data["datosPersonalesRoleNames"])
+                    this.datosPersonalesRoleNames.push(item);
+            }
             this.especialidad = _data["especialidad"];
             this.id = _data["id"];
         }
@@ -8937,7 +9594,18 @@ export class CreateMedicoDto implements ICreateMedicoDto {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["datosPersonalesId"] = this.datosPersonalesId;
+        data["datosPersonalesUserName"] = this.datosPersonalesUserName;
+        data["datosPersonalesName"] = this.datosPersonalesName;
+        data["datosPersonalesSurname"] = this.datosPersonalesSurname;
+        data["datosPersonalesEmailAddress"] = this.datosPersonalesEmailAddress;
+        data["datosPersonalesTelefono"] = this.datosPersonalesTelefono;
+        data["datosPersonalesIsActive"] = this.datosPersonalesIsActive;
+        data["datosPersonalesPassword"] = this.datosPersonalesPassword;
+        if (Array.isArray(this.datosPersonalesRoleNames)) {
+            data["datosPersonalesRoleNames"] = [];
+            for (let item of this.datosPersonalesRoleNames)
+                data["datosPersonalesRoleNames"].push(item);
+        }
         data["especialidad"] = this.especialidad;
         data["id"] = this.id;
         return data; 
@@ -8952,7 +9620,14 @@ export class CreateMedicoDto implements ICreateMedicoDto {
 }
 
 export interface ICreateMedicoDto {
-    datosPersonalesId: number | undefined;
+    datosPersonalesUserName: string | undefined;
+    datosPersonalesName: string | undefined;
+    datosPersonalesSurname: string | undefined;
+    datosPersonalesEmailAddress: string | undefined;
+    datosPersonalesTelefono: string | undefined;
+    datosPersonalesIsActive: boolean;
+    datosPersonalesPassword: string | undefined;
+    datosPersonalesRoleNames: string[] | undefined;
     especialidad: string | undefined;
     id: number;
 }
@@ -9495,10 +10170,36 @@ export interface IMiEvolucionTemperatura {
     id: number;
 }
 
-export class MiEvolucionTemperaturaListResultDto implements IMiEvolucionTemperaturaListResultDto {
-    items: MiEvolucionTemperatura[] | undefined;
+export class CreatePacienteDto implements ICreatePacienteDto {
+    datosPersonalesUserName: string | undefined;
+    datosPersonalesName: string | undefined;
+    datosPersonalesSurname: string | undefined;
+    datosPersonalesEmailAddress: string | undefined;
+    datosPersonalesTelefono: string | undefined;
+    datosPersonalesIsActive: boolean;
+    datosPersonalesPassword: string | undefined;
+    datosPersonalesRoleNames: string[] | undefined;
+    fechaNacimiento: moment.Moment;
+    numSeguridadSocial: number;
+    dondeViveId: number;
+    dondeViveTipo: string | undefined;
+    dondeViveNombre: string | undefined;
+    dondeViveNumero: number;
+    dondeViveLetra: string | undefined;
+    dondeViveKm_en_la_via: number;
+    dondeViveBloque: string | undefined;
+    dondeVivePortal: string | undefined;
+    dondeViveEscalera: string | undefined;
+    dondeVivePlanta: number;
+    dondeVivePuerta: string;
+    dondeViveCodigoPostal: string | undefined;
+    dondeViveEntidad_de_Poblacion: string | undefined;
+    dondeViveMunicipio: string | undefined;
+    dondeViveProvincia: string | undefined;
+    dondeVivePais: string | undefined;
+    id: number;
 
-    constructor(data?: IMiEvolucionTemperaturaListResultDto) {
+    constructor(data?: ICreatePacienteDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -9509,41 +10210,258 @@ export class MiEvolucionTemperaturaListResultDto implements IMiEvolucionTemperat
 
     init(_data?: any) {
         if (_data) {
-            if (Array.isArray(_data["items"])) {
-                this.items = [] as any;
-                for (let item of _data["items"])
-                    this.items.push(MiEvolucionTemperatura.fromJS(item));
+            this.datosPersonalesUserName = _data["datosPersonalesUserName"];
+            this.datosPersonalesName = _data["datosPersonalesName"];
+            this.datosPersonalesSurname = _data["datosPersonalesSurname"];
+            this.datosPersonalesEmailAddress = _data["datosPersonalesEmailAddress"];
+            this.datosPersonalesTelefono = _data["datosPersonalesTelefono"];
+            this.datosPersonalesIsActive = _data["datosPersonalesIsActive"];
+            this.datosPersonalesPassword = _data["datosPersonalesPassword"];
+            if (Array.isArray(_data["datosPersonalesRoleNames"])) {
+                this.datosPersonalesRoleNames = [] as any;
+                for (let item of _data["datosPersonalesRoleNames"])
+                    this.datosPersonalesRoleNames.push(item);
             }
+            this.fechaNacimiento = _data["fechaNacimiento"] ? moment(_data["fechaNacimiento"].toString()) : <any>undefined;
+            this.numSeguridadSocial = _data["numSeguridadSocial"];
+            this.dondeViveId = _data["dondeViveId"];
+            this.dondeViveTipo = _data["dondeViveTipo"];
+            this.dondeViveNombre = _data["dondeViveNombre"];
+            this.dondeViveNumero = _data["dondeViveNumero"];
+            this.dondeViveLetra = _data["dondeViveLetra"];
+            this.dondeViveKm_en_la_via = _data["dondeViveKm_en_la_via"];
+            this.dondeViveBloque = _data["dondeViveBloque"];
+            this.dondeVivePortal = _data["dondeVivePortal"];
+            this.dondeViveEscalera = _data["dondeViveEscalera"];
+            this.dondeVivePlanta = _data["dondeVivePlanta"];
+            this.dondeVivePuerta = _data["dondeVivePuerta"];
+            this.dondeViveCodigoPostal = _data["dondeViveCodigoPostal"];
+            this.dondeViveEntidad_de_Poblacion = _data["dondeViveEntidad_de_Poblacion"];
+            this.dondeViveMunicipio = _data["dondeViveMunicipio"];
+            this.dondeViveProvincia = _data["dondeViveProvincia"];
+            this.dondeVivePais = _data["dondeVivePais"];
+            this.id = _data["id"];
         }
     }
 
-    static fromJS(data: any): MiEvolucionTemperaturaListResultDto {
+    static fromJS(data: any): CreatePacienteDto {
         data = typeof data === 'object' ? data : {};
-        let result = new MiEvolucionTemperaturaListResultDto();
+        let result = new CreatePacienteDto();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        if (Array.isArray(this.items)) {
-            data["items"] = [];
-            for (let item of this.items)
-                data["items"].push(item.toJSON());
+        data["datosPersonalesUserName"] = this.datosPersonalesUserName;
+        data["datosPersonalesName"] = this.datosPersonalesName;
+        data["datosPersonalesSurname"] = this.datosPersonalesSurname;
+        data["datosPersonalesEmailAddress"] = this.datosPersonalesEmailAddress;
+        data["datosPersonalesTelefono"] = this.datosPersonalesTelefono;
+        data["datosPersonalesIsActive"] = this.datosPersonalesIsActive;
+        data["datosPersonalesPassword"] = this.datosPersonalesPassword;
+        if (Array.isArray(this.datosPersonalesRoleNames)) {
+            data["datosPersonalesRoleNames"] = [];
+            for (let item of this.datosPersonalesRoleNames)
+                data["datosPersonalesRoleNames"].push(item);
         }
+        data["fechaNacimiento"] = this.fechaNacimiento ? this.fechaNacimiento.toISOString() : <any>undefined;
+        data["numSeguridadSocial"] = this.numSeguridadSocial;
+        data["dondeViveId"] = this.dondeViveId;
+        data["dondeViveTipo"] = this.dondeViveTipo;
+        data["dondeViveNombre"] = this.dondeViveNombre;
+        data["dondeViveNumero"] = this.dondeViveNumero;
+        data["dondeViveLetra"] = this.dondeViveLetra;
+        data["dondeViveKm_en_la_via"] = this.dondeViveKm_en_la_via;
+        data["dondeViveBloque"] = this.dondeViveBloque;
+        data["dondeVivePortal"] = this.dondeVivePortal;
+        data["dondeViveEscalera"] = this.dondeViveEscalera;
+        data["dondeVivePlanta"] = this.dondeVivePlanta;
+        data["dondeVivePuerta"] = this.dondeVivePuerta;
+        data["dondeViveCodigoPostal"] = this.dondeViveCodigoPostal;
+        data["dondeViveEntidad_de_Poblacion"] = this.dondeViveEntidad_de_Poblacion;
+        data["dondeViveMunicipio"] = this.dondeViveMunicipio;
+        data["dondeViveProvincia"] = this.dondeViveProvincia;
+        data["dondeVivePais"] = this.dondeVivePais;
+        data["id"] = this.id;
         return data; 
     }
 
-    clone(): MiEvolucionTemperaturaListResultDto {
+    clone(): CreatePacienteDto {
         const json = this.toJSON();
-        let result = new MiEvolucionTemperaturaListResultDto();
+        let result = new CreatePacienteDto();
         result.init(json);
         return result;
     }
 }
 
-export interface IMiEvolucionTemperaturaListResultDto {
-    items: MiEvolucionTemperatura[] | undefined;
+export interface ICreatePacienteDto {
+    datosPersonalesUserName: string | undefined;
+    datosPersonalesName: string | undefined;
+    datosPersonalesSurname: string | undefined;
+    datosPersonalesEmailAddress: string | undefined;
+    datosPersonalesTelefono: string | undefined;
+    datosPersonalesIsActive: boolean;
+    datosPersonalesPassword: string | undefined;
+    datosPersonalesRoleNames: string[] | undefined;
+    fechaNacimiento: moment.Moment;
+    numSeguridadSocial: number;
+    dondeViveId: number;
+    dondeViveTipo: string | undefined;
+    dondeViveNombre: string | undefined;
+    dondeViveNumero: number;
+    dondeViveLetra: string | undefined;
+    dondeViveKm_en_la_via: number;
+    dondeViveBloque: string | undefined;
+    dondeVivePortal: string | undefined;
+    dondeViveEscalera: string | undefined;
+    dondeVivePlanta: number;
+    dondeVivePuerta: string;
+    dondeViveCodigoPostal: string | undefined;
+    dondeViveEntidad_de_Poblacion: string | undefined;
+    dondeViveMunicipio: string | undefined;
+    dondeViveProvincia: string | undefined;
+    dondeVivePais: string | undefined;
+    id: number;
+}
+
+export class EditPacienteDto implements IEditPacienteDto {
+    datosPersonalesUserName: string | undefined;
+    datosPersonalesName: string | undefined;
+    datosPersonalesSurname: string | undefined;
+    datosPersonalesEmailAddress: string | undefined;
+    datosPersonalesTelefono: string | undefined;
+    fechaNacimiento: moment.Moment;
+    numSeguridadSocial: number;
+    dondeViveId: number;
+    dondeViveTipo: string | undefined;
+    dondeViveNombre: string | undefined;
+    dondeViveNumero: number;
+    dondeViveLetra: string | undefined;
+    dondeViveKm_en_la_via: number;
+    dondeViveBloque: string | undefined;
+    dondeVivePortal: string | undefined;
+    dondeViveEscalera: string | undefined;
+    dondeVivePlanta: number;
+    dondeVivePuerta: string;
+    dondeViveCodigoPostal: string | undefined;
+    dondeViveEntidad_de_Poblacion: string | undefined;
+    dondeViveMunicipio: string | undefined;
+    dondeViveProvincia: string | undefined;
+    dondeVivePais: string | undefined;
+    medicoCabeceraUserName: string | undefined;
+    id: number;
+
+    constructor(data?: IEditPacienteDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.datosPersonalesUserName = _data["datosPersonalesUserName"];
+            this.datosPersonalesName = _data["datosPersonalesName"];
+            this.datosPersonalesSurname = _data["datosPersonalesSurname"];
+            this.datosPersonalesEmailAddress = _data["datosPersonalesEmailAddress"];
+            this.datosPersonalesTelefono = _data["datosPersonalesTelefono"];
+            this.fechaNacimiento = _data["fechaNacimiento"] ? moment(_data["fechaNacimiento"].toString()) : <any>undefined;
+            this.numSeguridadSocial = _data["numSeguridadSocial"];
+            this.dondeViveId = _data["dondeViveId"];
+            this.dondeViveTipo = _data["dondeViveTipo"];
+            this.dondeViveNombre = _data["dondeViveNombre"];
+            this.dondeViveNumero = _data["dondeViveNumero"];
+            this.dondeViveLetra = _data["dondeViveLetra"];
+            this.dondeViveKm_en_la_via = _data["dondeViveKm_en_la_via"];
+            this.dondeViveBloque = _data["dondeViveBloque"];
+            this.dondeVivePortal = _data["dondeVivePortal"];
+            this.dondeViveEscalera = _data["dondeViveEscalera"];
+            this.dondeVivePlanta = _data["dondeVivePlanta"];
+            this.dondeVivePuerta = _data["dondeVivePuerta"];
+            this.dondeViveCodigoPostal = _data["dondeViveCodigoPostal"];
+            this.dondeViveEntidad_de_Poblacion = _data["dondeViveEntidad_de_Poblacion"];
+            this.dondeViveMunicipio = _data["dondeViveMunicipio"];
+            this.dondeViveProvincia = _data["dondeViveProvincia"];
+            this.dondeVivePais = _data["dondeVivePais"];
+            this.medicoCabeceraUserName = _data["medicoCabeceraUserName"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): EditPacienteDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new EditPacienteDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["datosPersonalesUserName"] = this.datosPersonalesUserName;
+        data["datosPersonalesName"] = this.datosPersonalesName;
+        data["datosPersonalesSurname"] = this.datosPersonalesSurname;
+        data["datosPersonalesEmailAddress"] = this.datosPersonalesEmailAddress;
+        data["datosPersonalesTelefono"] = this.datosPersonalesTelefono;
+        data["fechaNacimiento"] = this.fechaNacimiento ? this.fechaNacimiento.toISOString() : <any>undefined;
+        data["numSeguridadSocial"] = this.numSeguridadSocial;
+        data["dondeViveId"] = this.dondeViveId;
+        data["dondeViveTipo"] = this.dondeViveTipo;
+        data["dondeViveNombre"] = this.dondeViveNombre;
+        data["dondeViveNumero"] = this.dondeViveNumero;
+        data["dondeViveLetra"] = this.dondeViveLetra;
+        data["dondeViveKm_en_la_via"] = this.dondeViveKm_en_la_via;
+        data["dondeViveBloque"] = this.dondeViveBloque;
+        data["dondeVivePortal"] = this.dondeVivePortal;
+        data["dondeViveEscalera"] = this.dondeViveEscalera;
+        data["dondeVivePlanta"] = this.dondeVivePlanta;
+        data["dondeVivePuerta"] = this.dondeVivePuerta;
+        data["dondeViveCodigoPostal"] = this.dondeViveCodigoPostal;
+        data["dondeViveEntidad_de_Poblacion"] = this.dondeViveEntidad_de_Poblacion;
+        data["dondeViveMunicipio"] = this.dondeViveMunicipio;
+        data["dondeViveProvincia"] = this.dondeViveProvincia;
+        data["dondeVivePais"] = this.dondeVivePais;
+        data["medicoCabeceraUserName"] = this.medicoCabeceraUserName;
+        data["id"] = this.id;
+        return data; 
+    }
+
+    clone(): EditPacienteDto {
+        const json = this.toJSON();
+        let result = new EditPacienteDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IEditPacienteDto {
+    datosPersonalesUserName: string | undefined;
+    datosPersonalesName: string | undefined;
+    datosPersonalesSurname: string | undefined;
+    datosPersonalesEmailAddress: string | undefined;
+    datosPersonalesTelefono: string | undefined;
+    fechaNacimiento: moment.Moment;
+    numSeguridadSocial: number;
+    dondeViveId: number;
+    dondeViveTipo: string | undefined;
+    dondeViveNombre: string | undefined;
+    dondeViveNumero: number;
+    dondeViveLetra: string | undefined;
+    dondeViveKm_en_la_via: number;
+    dondeViveBloque: string | undefined;
+    dondeVivePortal: string | undefined;
+    dondeViveEscalera: string | undefined;
+    dondeVivePlanta: number;
+    dondeVivePuerta: string;
+    dondeViveCodigoPostal: string | undefined;
+    dondeViveEntidad_de_Poblacion: string | undefined;
+    dondeViveMunicipio: string | undefined;
+    dondeViveProvincia: string | undefined;
+    dondeVivePais: string | undefined;
+    medicoCabeceraUserName: string | undefined;
+    id: number;
 }
 
 export class UserNameMedicosCabecera implements IUserNameMedicosCabecera {
@@ -9638,477 +10556,6 @@ export class UserNameMedicosCabeceraListResultDto implements IUserNameMedicosCab
 
 export interface IUserNameMedicosCabeceraListResultDto {
     items: UserNameMedicosCabecera[] | undefined;
-}
-
-export class CreatePacienteDto implements ICreatePacienteDto {
-    datosPersonalesUserName: string | undefined;
-    datosPersonalesName: string | undefined;
-    datosPersonalesSurname: string | undefined;
-    datosPersonalesEmailAddress: string | undefined;
-    datosPersonalesTelefono: string | undefined;
-    datosPersonalesIsActive: boolean;
-    datosPersonalesPassword: string | undefined;
-    datosPersonalesRoleNames: string[] | undefined;
-    fechaNacimiento: moment.Moment;
-    numSeguridadSocial: number;
-    dondeViveId: number;
-    dondeViveTipo: string | undefined;
-    dondeViveNombre: string | undefined;
-    dondeViveNumero: number;
-    dondeViveLetra: string | undefined;
-    dondeViveKm_en_la_via: number;
-    dondeViveBloque: string | undefined;
-    dondeVivePortal: string | undefined;
-    dondeViveEscalera: string | undefined;
-    dondeVivePlanta: number;
-    dondeVivePuerta: string;
-    dondeViveCodigoPostal: string | undefined;
-    dondeViveEntidad_de_Poblacion: string | undefined;
-    dondeViveMunicipio: string | undefined;
-    dondeViveProvincia: string | undefined;
-    dondeVivePais: string | undefined;
-    termometroId: number;
-    termometroFabricante: string | undefined;
-    temperatura_Media: number;
-    id: number;
-
-    constructor(data?: ICreatePacienteDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.datosPersonalesUserName = _data["datosPersonalesUserName"];
-            this.datosPersonalesName = _data["datosPersonalesName"];
-            this.datosPersonalesSurname = _data["datosPersonalesSurname"];
-            this.datosPersonalesEmailAddress = _data["datosPersonalesEmailAddress"];
-            this.datosPersonalesTelefono = _data["datosPersonalesTelefono"];
-            this.datosPersonalesIsActive = _data["datosPersonalesIsActive"];
-            this.datosPersonalesPassword = _data["datosPersonalesPassword"];
-            if (Array.isArray(_data["datosPersonalesRoleNames"])) {
-                this.datosPersonalesRoleNames = [] as any;
-                for (let item of _data["datosPersonalesRoleNames"])
-                    this.datosPersonalesRoleNames.push(item);
-            }
-            this.fechaNacimiento = _data["fechaNacimiento"] ? moment(_data["fechaNacimiento"].toString()) : <any>undefined;
-            this.numSeguridadSocial = _data["numSeguridadSocial"];
-            this.dondeViveId = _data["dondeViveId"];
-            this.dondeViveTipo = _data["dondeViveTipo"];
-            this.dondeViveNombre = _data["dondeViveNombre"];
-            this.dondeViveNumero = _data["dondeViveNumero"];
-            this.dondeViveLetra = _data["dondeViveLetra"];
-            this.dondeViveKm_en_la_via = _data["dondeViveKm_en_la_via"];
-            this.dondeViveBloque = _data["dondeViveBloque"];
-            this.dondeVivePortal = _data["dondeVivePortal"];
-            this.dondeViveEscalera = _data["dondeViveEscalera"];
-            this.dondeVivePlanta = _data["dondeVivePlanta"];
-            this.dondeVivePuerta = _data["dondeVivePuerta"];
-            this.dondeViveCodigoPostal = _data["dondeViveCodigoPostal"];
-            this.dondeViveEntidad_de_Poblacion = _data["dondeViveEntidad_de_Poblacion"];
-            this.dondeViveMunicipio = _data["dondeViveMunicipio"];
-            this.dondeViveProvincia = _data["dondeViveProvincia"];
-            this.dondeVivePais = _data["dondeVivePais"];
-            this.termometroId = _data["termometroId"];
-            this.termometroFabricante = _data["termometroFabricante"];
-            this.temperatura_Media = _data["temperatura_Media"];
-            this.id = _data["id"];
-        }
-    }
-
-    static fromJS(data: any): CreatePacienteDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new CreatePacienteDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["datosPersonalesUserName"] = this.datosPersonalesUserName;
-        data["datosPersonalesName"] = this.datosPersonalesName;
-        data["datosPersonalesSurname"] = this.datosPersonalesSurname;
-        data["datosPersonalesEmailAddress"] = this.datosPersonalesEmailAddress;
-        data["datosPersonalesTelefono"] = this.datosPersonalesTelefono;
-        data["datosPersonalesIsActive"] = this.datosPersonalesIsActive;
-        data["datosPersonalesPassword"] = this.datosPersonalesPassword;
-        if (Array.isArray(this.datosPersonalesRoleNames)) {
-            data["datosPersonalesRoleNames"] = [];
-            for (let item of this.datosPersonalesRoleNames)
-                data["datosPersonalesRoleNames"].push(item);
-        }
-        data["fechaNacimiento"] = this.fechaNacimiento ? this.fechaNacimiento.toISOString() : <any>undefined;
-        data["numSeguridadSocial"] = this.numSeguridadSocial;
-        data["dondeViveId"] = this.dondeViveId;
-        data["dondeViveTipo"] = this.dondeViveTipo;
-        data["dondeViveNombre"] = this.dondeViveNombre;
-        data["dondeViveNumero"] = this.dondeViveNumero;
-        data["dondeViveLetra"] = this.dondeViveLetra;
-        data["dondeViveKm_en_la_via"] = this.dondeViveKm_en_la_via;
-        data["dondeViveBloque"] = this.dondeViveBloque;
-        data["dondeVivePortal"] = this.dondeVivePortal;
-        data["dondeViveEscalera"] = this.dondeViveEscalera;
-        data["dondeVivePlanta"] = this.dondeVivePlanta;
-        data["dondeVivePuerta"] = this.dondeVivePuerta;
-        data["dondeViveCodigoPostal"] = this.dondeViveCodigoPostal;
-        data["dondeViveEntidad_de_Poblacion"] = this.dondeViveEntidad_de_Poblacion;
-        data["dondeViveMunicipio"] = this.dondeViveMunicipio;
-        data["dondeViveProvincia"] = this.dondeViveProvincia;
-        data["dondeVivePais"] = this.dondeVivePais;
-        data["termometroId"] = this.termometroId;
-        data["termometroFabricante"] = this.termometroFabricante;
-        data["temperatura_Media"] = this.temperatura_Media;
-        data["id"] = this.id;
-        return data; 
-    }
-
-    clone(): CreatePacienteDto {
-        const json = this.toJSON();
-        let result = new CreatePacienteDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface ICreatePacienteDto {
-    datosPersonalesUserName: string | undefined;
-    datosPersonalesName: string | undefined;
-    datosPersonalesSurname: string | undefined;
-    datosPersonalesEmailAddress: string | undefined;
-    datosPersonalesTelefono: string | undefined;
-    datosPersonalesIsActive: boolean;
-    datosPersonalesPassword: string | undefined;
-    datosPersonalesRoleNames: string[] | undefined;
-    fechaNacimiento: moment.Moment;
-    numSeguridadSocial: number;
-    dondeViveId: number;
-    dondeViveTipo: string | undefined;
-    dondeViveNombre: string | undefined;
-    dondeViveNumero: number;
-    dondeViveLetra: string | undefined;
-    dondeViveKm_en_la_via: number;
-    dondeViveBloque: string | undefined;
-    dondeVivePortal: string | undefined;
-    dondeViveEscalera: string | undefined;
-    dondeVivePlanta: number;
-    dondeVivePuerta: string;
-    dondeViveCodigoPostal: string | undefined;
-    dondeViveEntidad_de_Poblacion: string | undefined;
-    dondeViveMunicipio: string | undefined;
-    dondeViveProvincia: string | undefined;
-    dondeVivePais: string | undefined;
-    termometroId: number;
-    termometroFabricante: string | undefined;
-    temperatura_Media: number;
-    id: number;
-}
-
-export class EditPacienteDto implements IEditPacienteDto {
-    datosPersonalesUserName: string | undefined;
-    datosPersonalesName: string | undefined;
-    datosPersonalesSurname: string | undefined;
-    datosPersonalesEmailAddress: string | undefined;
-    datosPersonalesTelefono: string | undefined;
-    fechaNacimiento: moment.Moment;
-    numSeguridadSocial: number;
-    dondeViveId: number;
-    dondeViveTipo: string | undefined;
-    dondeViveNombre: string | undefined;
-    dondeViveNumero: number;
-    dondeViveLetra: string | undefined;
-    dondeViveKm_en_la_via: number;
-    dondeViveBloque: string | undefined;
-    dondeVivePortal: string | undefined;
-    dondeViveEscalera: string | undefined;
-    dondeVivePlanta: number;
-    dondeVivePuerta: string;
-    dondeViveCodigoPostal: string | undefined;
-    dondeViveEntidad_de_Poblacion: string | undefined;
-    dondeViveMunicipio: string | undefined;
-    dondeViveProvincia: string | undefined;
-    dondeVivePais: string | undefined;
-    termometroId: number;
-    termometroFabricante: string | undefined;
-    temperatura_Media: number;
-    medicoCabeceraUserName: string | undefined;
-    id: number;
-
-    constructor(data?: IEditPacienteDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.datosPersonalesUserName = _data["datosPersonalesUserName"];
-            this.datosPersonalesName = _data["datosPersonalesName"];
-            this.datosPersonalesSurname = _data["datosPersonalesSurname"];
-            this.datosPersonalesEmailAddress = _data["datosPersonalesEmailAddress"];
-            this.datosPersonalesTelefono = _data["datosPersonalesTelefono"];
-            this.fechaNacimiento = _data["fechaNacimiento"] ? moment(_data["fechaNacimiento"].toString()) : <any>undefined;
-            this.numSeguridadSocial = _data["numSeguridadSocial"];
-            this.dondeViveId = _data["dondeViveId"];
-            this.dondeViveTipo = _data["dondeViveTipo"];
-            this.dondeViveNombre = _data["dondeViveNombre"];
-            this.dondeViveNumero = _data["dondeViveNumero"];
-            this.dondeViveLetra = _data["dondeViveLetra"];
-            this.dondeViveKm_en_la_via = _data["dondeViveKm_en_la_via"];
-            this.dondeViveBloque = _data["dondeViveBloque"];
-            this.dondeVivePortal = _data["dondeVivePortal"];
-            this.dondeViveEscalera = _data["dondeViveEscalera"];
-            this.dondeVivePlanta = _data["dondeVivePlanta"];
-            this.dondeVivePuerta = _data["dondeVivePuerta"];
-            this.dondeViveCodigoPostal = _data["dondeViveCodigoPostal"];
-            this.dondeViveEntidad_de_Poblacion = _data["dondeViveEntidad_de_Poblacion"];
-            this.dondeViveMunicipio = _data["dondeViveMunicipio"];
-            this.dondeViveProvincia = _data["dondeViveProvincia"];
-            this.dondeVivePais = _data["dondeVivePais"];
-            this.termometroId = _data["termometroId"];
-            this.termometroFabricante = _data["termometroFabricante"];
-            this.temperatura_Media = _data["temperatura_Media"];
-            this.medicoCabeceraUserName = _data["medicoCabeceraUserName"];
-            this.id = _data["id"];
-        }
-    }
-
-    static fromJS(data: any): EditPacienteDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new EditPacienteDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["datosPersonalesUserName"] = this.datosPersonalesUserName;
-        data["datosPersonalesName"] = this.datosPersonalesName;
-        data["datosPersonalesSurname"] = this.datosPersonalesSurname;
-        data["datosPersonalesEmailAddress"] = this.datosPersonalesEmailAddress;
-        data["datosPersonalesTelefono"] = this.datosPersonalesTelefono;
-        data["fechaNacimiento"] = this.fechaNacimiento ? this.fechaNacimiento.toISOString() : <any>undefined;
-        data["numSeguridadSocial"] = this.numSeguridadSocial;
-        data["dondeViveId"] = this.dondeViveId;
-        data["dondeViveTipo"] = this.dondeViveTipo;
-        data["dondeViveNombre"] = this.dondeViveNombre;
-        data["dondeViveNumero"] = this.dondeViveNumero;
-        data["dondeViveLetra"] = this.dondeViveLetra;
-        data["dondeViveKm_en_la_via"] = this.dondeViveKm_en_la_via;
-        data["dondeViveBloque"] = this.dondeViveBloque;
-        data["dondeVivePortal"] = this.dondeVivePortal;
-        data["dondeViveEscalera"] = this.dondeViveEscalera;
-        data["dondeVivePlanta"] = this.dondeVivePlanta;
-        data["dondeVivePuerta"] = this.dondeVivePuerta;
-        data["dondeViveCodigoPostal"] = this.dondeViveCodigoPostal;
-        data["dondeViveEntidad_de_Poblacion"] = this.dondeViveEntidad_de_Poblacion;
-        data["dondeViveMunicipio"] = this.dondeViveMunicipio;
-        data["dondeViveProvincia"] = this.dondeViveProvincia;
-        data["dondeVivePais"] = this.dondeVivePais;
-        data["termometroId"] = this.termometroId;
-        data["termometroFabricante"] = this.termometroFabricante;
-        data["temperatura_Media"] = this.temperatura_Media;
-        data["medicoCabeceraUserName"] = this.medicoCabeceraUserName;
-        data["id"] = this.id;
-        return data; 
-    }
-
-    clone(): EditPacienteDto {
-        const json = this.toJSON();
-        let result = new EditPacienteDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IEditPacienteDto {
-    datosPersonalesUserName: string | undefined;
-    datosPersonalesName: string | undefined;
-    datosPersonalesSurname: string | undefined;
-    datosPersonalesEmailAddress: string | undefined;
-    datosPersonalesTelefono: string | undefined;
-    fechaNacimiento: moment.Moment;
-    numSeguridadSocial: number;
-    dondeViveId: number;
-    dondeViveTipo: string | undefined;
-    dondeViveNombre: string | undefined;
-    dondeViveNumero: number;
-    dondeViveLetra: string | undefined;
-    dondeViveKm_en_la_via: number;
-    dondeViveBloque: string | undefined;
-    dondeVivePortal: string | undefined;
-    dondeViveEscalera: string | undefined;
-    dondeVivePlanta: number;
-    dondeVivePuerta: string;
-    dondeViveCodigoPostal: string | undefined;
-    dondeViveEntidad_de_Poblacion: string | undefined;
-    dondeViveMunicipio: string | undefined;
-    dondeViveProvincia: string | undefined;
-    dondeVivePais: string | undefined;
-    termometroId: number;
-    termometroFabricante: string | undefined;
-    temperatura_Media: number;
-    medicoCabeceraUserName: string | undefined;
-    id: number;
-}
-
-export class PacienteCompletoDtoListResultDto implements IPacienteCompletoDtoListResultDto {
-    items: PacienteCompletoDto[] | undefined;
-
-    constructor(data?: IPacienteCompletoDtoListResultDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            if (Array.isArray(_data["items"])) {
-                this.items = [] as any;
-                for (let item of _data["items"])
-                    this.items.push(PacienteCompletoDto.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): PacienteCompletoDtoListResultDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new PacienteCompletoDtoListResultDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        if (Array.isArray(this.items)) {
-            data["items"] = [];
-            for (let item of this.items)
-                data["items"].push(item.toJSON());
-        }
-        return data; 
-    }
-
-    clone(): PacienteCompletoDtoListResultDto {
-        const json = this.toJSON();
-        let result = new PacienteCompletoDtoListResultDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IPacienteCompletoDtoListResultDto {
-    items: PacienteCompletoDto[] | undefined;
-}
-
-export class MisResponsablesListResultDto implements IMisResponsablesListResultDto {
-    items: MisResponsables[] | undefined;
-
-    constructor(data?: IMisResponsablesListResultDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            if (Array.isArray(_data["items"])) {
-                this.items = [] as any;
-                for (let item of _data["items"])
-                    this.items.push(MisResponsables.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): MisResponsablesListResultDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new MisResponsablesListResultDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        if (Array.isArray(this.items)) {
-            data["items"] = [];
-            for (let item of this.items)
-                data["items"].push(item.toJSON());
-        }
-        return data; 
-    }
-
-    clone(): MisResponsablesListResultDto {
-        const json = this.toJSON();
-        let result = new MisResponsablesListResultDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IMisResponsablesListResultDto {
-    items: MisResponsables[] | undefined;
-}
-
-export class PrescripcionDtoListResultDto implements IPrescripcionDtoListResultDto {
-    items: PrescripcionDto[] | undefined;
-
-    constructor(data?: IPrescripcionDtoListResultDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            if (Array.isArray(_data["items"])) {
-                this.items = [] as any;
-                for (let item of _data["items"])
-                    this.items.push(PrescripcionDto.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): PrescripcionDtoListResultDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new PrescripcionDtoListResultDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        if (Array.isArray(this.items)) {
-            data["items"] = [];
-            for (let item of this.items)
-                data["items"].push(item.toJSON());
-        }
-        return data; 
-    }
-
-    clone(): PrescripcionDtoListResultDto {
-        const json = this.toJSON();
-        let result = new PrescripcionDtoListResultDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IPrescripcionDtoListResultDto {
-    items: PrescripcionDto[] | undefined;
 }
 
 export class CreatePrescripcionDto implements ICreatePrescripcionDto {
@@ -11005,6 +11452,7 @@ export class UserLoginInfoDto implements IUserLoginInfoDto {
     surname: string | undefined;
     userName: string | undefined;
     emailAddress: string | undefined;
+    roles: string | undefined;
     id: number;
 
     constructor(data?: IUserLoginInfoDto) {
@@ -11022,6 +11470,7 @@ export class UserLoginInfoDto implements IUserLoginInfoDto {
             this.surname = _data["surname"];
             this.userName = _data["userName"];
             this.emailAddress = _data["emailAddress"];
+            this.roles = _data["roles"];
             this.id = _data["id"];
         }
     }
@@ -11039,6 +11488,7 @@ export class UserLoginInfoDto implements IUserLoginInfoDto {
         data["surname"] = this.surname;
         data["userName"] = this.userName;
         data["emailAddress"] = this.emailAddress;
+        data["roles"] = this.roles;
         data["id"] = this.id;
         return data; 
     }
@@ -11056,6 +11506,7 @@ export interface IUserLoginInfoDto {
     surname: string | undefined;
     userName: string | undefined;
     emailAddress: string | undefined;
+    roles: string | undefined;
     id: number;
 }
 

@@ -5,7 +5,6 @@ using WSControldePacientesApi.Authorization.Users;
 using WSControldePacientesApi.MultiTenancy;
 using WSControldePacientesApi.ControlPacientes.Medicos;
 using WSControldePacientesApi.ControlPacientes.Citas;
-using ApiControldePacientes.ControlPacientes.Termometros;
 using WSControldePacientesApi.ControlPacientes.Responsables;
 using WSControldePacientesApi.ControlPacientes.Recordatorios;
 using WSControldePacientesApi.ControlPacientes.Prescripciones;
@@ -56,7 +55,6 @@ namespace WSControldePacientesApi.EntityFrameworkCore
 
         public DbSet<ControlTemperatura> temperaturaPacientes { get; set; }
 
-        public DbSet<Termometro> termometros { get; set; }
 
 
 
@@ -89,9 +87,6 @@ namespace WSControldePacientesApi.EntityFrameworkCore
                 .WithMany(d => d.pacientes)
                 .HasForeignKey(p=> p.DondeViveId);
 
-            modelBuilder.Entity<Termometro>()
-                .HasOne<Paciente>()
-                .WithOne(p => p.Termometro);
 
             //Relacion de Cita => Direccion / Paciente / Medico
             modelBuilder.Entity<Cita>()

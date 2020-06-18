@@ -22,12 +22,12 @@
                 <div class="row clearfix">
                     <form>
                         <mat-form-field>
-                            <input matInput [placeholder]="l('Filter')" [(ngModel)]="keyword" name="keyword">
+                            <input matInput [placeholder]="l('Buscar por UserName')" [(ngModel)]="persona" name="persona">
                         </mat-form-field>
 
                         <div class="row">
                             <div class="col-md-4 text-right p-r-25">
-                                <button style="float:right;" mat-raised-button color="primary" (click)="getDataPage(1)">{{ 'Search' | localize }}</button>
+                                <button style="float:right;" mat-raised-button color="primary" (click)="abrirConversacion(persona)">{{ 'Search' | localize }}</button>
                             </div>
                         </div>
                     </form>

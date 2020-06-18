@@ -1313,43 +1313,6 @@ namespace WSControldePacientesApi.Migrations
                     b.ToTable("AbpWebhookSubscriptions");
                 });
 
-            modelBuilder.Entity("ApiControldePacientes.ControlPacientes.Termometros.Termometro", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("CreationTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("CreatorUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("DeleterUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime?>("DeletionTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Fabricante")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("LastModificationTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("LastModifierUserId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("termometros");
-                });
-
             modelBuilder.Entity("WSControldePacientesApi.Authorization.Roles.Role", b =>
                 {
                     b.Property<int>("Id")
@@ -2034,12 +1997,6 @@ namespace WSControldePacientesApi.Migrations
                     b.Property<long>("NumSeguridadSocial")
                         .HasColumnType("bigint");
 
-                    b.Property<decimal>("Temperatura_Media")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("TermometroId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("DatosPersonalesId")
@@ -2048,9 +2005,6 @@ namespace WSControldePacientesApi.Migrations
                     b.HasIndex("DondeViveId");
 
                     b.HasIndex("MiMedicoCabeceraId");
-
-                    b.HasIndex("TermometroId")
-                        .IsUnique();
 
                     b.ToTable("pacientes");
                 });
@@ -2588,12 +2542,6 @@ namespace WSControldePacientesApi.Migrations
                     b.HasOne("WSControldePacientesApi.ControlPacientes.Medicos.Medico", "MiMedicoCabecera")
                         .WithMany("MisPacientes")
                         .HasForeignKey("MiMedicoCabeceraId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ApiControldePacientes.ControlPacientes.Termometros.Termometro", "Termometro")
-                        .WithOne()
-                        .HasForeignKey("WSControldePacientesApi.ControlPacientes.Pacientes.Paciente", "TermometroId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

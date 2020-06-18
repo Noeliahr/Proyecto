@@ -11,9 +11,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WSControldePacientesApi.Api.Pacientes.Dto;
+using WSControldePacientesApi.Api.Recordatorios.Dto;
 using WSControldePacientesApi.Authorization;
 using WSControldePacientesApi.Authorization.Users;
 using WSControldePacientesApi.ControlPacientes.Pacientes;
+using WSControldePacientesApi.ControlPacientes.Recordatorios;
 using WSControlPacientesApi.ControlPacienteApi.Pacientes.Dto;
 
 namespace WSControldePacientesApi.Api.Pacientes
@@ -38,7 +40,6 @@ namespace WSControldePacientesApi.Api.Pacientes
             var paciente = await _pacienteRepository.GetAll()
                 .Include(p => p.DatosPersonales)
                 .Include(p => p.DondeVive)
-                .Include(p => p.Termometro)
                 .Include(p => p.MiMedicoCabecera)
                     .ThenInclude(p => p.DatosPersonales)
                 .Include(p=> p.MisResponsables)
@@ -84,7 +85,41 @@ namespace WSControldePacientesApi.Api.Pacientes
                 .Where(p => p.DatosPersonales == user)
                 .FirstOrDefaultAsync();
 
-            return ObjectMapper.Map<MisPrescripciones>(prescripciones);
+           var pres= ObjectMapper.Map<MisPrescripciones>(prescripciones);
+
+            for (int i = 0; i < prescripciones.MisPrescripciones.Count; i++)
+            {
+                string trocear = prescripciones.MisPrescripciones.ElementAt(i).Como_Tomar;
+                string[] cadena = trocear.Split("-");
+
+                if (cadena[0] == "1")
+                {
+                    pres.misPrescripciones.ElementAt(i).isManana = true;
+                }
+                else
+                {
+                    pres.misPrescripciones.ElementAt(i).isManana = false;
+                }
+
+                if (cadena[1] == "1")
+                {
+                    pres.misPrescripciones.ElementAt(i).isTarde = true;
+                }
+                else
+                {
+                    pres.misPrescripciones.ElementAt(i).isTarde = false;
+                }
+
+                if (cadena[2] == "1")
+                {
+                    pres.misPrescripciones.ElementAt(i).isNoche = true;
+                }
+                else
+                {
+                    pres.misPrescripciones.ElementAt(i).isNoche = false;
+                }
+            }
+            return pres;
         }
 
 
@@ -98,6 +133,28 @@ namespace WSControldePacientesApi.Api.Pacientes
                 .FirstOrDefaultAsync();
 
             return ObjectMapper.Map<MisRecordatorios>(recordatorios);
+        }
+
+        public async Task<MisRecordatorios> GetMisRecordatoriosByFecha(DateTime fecha)
+        {
+            var user = await _userManager.GetUserByIdAsync(AbpSession.GetUserId());
+            var recordatorios = await _pacienteRepository.GetAll()
+                .Include(p => p.MisRecordatorios)
+                .Where(p => p.DatosPersonales == user)
+                .FirstOrDefaultAsync();
+
+            MisRecordatorios misRecordatorios = new MisRecordatorios();
+            misRecordatorios.recordatorios = new List<RecordatorioDto>();
+
+            foreach (Recordatorio recordatorio in recordatorios.MisRecordatorios)
+            {
+                if (recordatorio.FechaHora.Date == fecha.Date)
+                {
+                    misRecordatorios.recordatorios.Add(ObjectMapper.Map<RecordatorioDto>(recordatorio));
+                }
+            }
+
+            return ObjectMapper.Map<MisRecordatorios>(misRecordatorios);
         }
 
 

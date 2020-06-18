@@ -30,6 +30,17 @@ namespace WSControldePacientesApi.Api.Recordatorios
         {
             var recordatorios = await _recordatorioRepositoy.GetAll()
                 .Where(r => r.PacienteId == id)
+                .OrderByDescending(r => r.FechaHora)
+                .ToListAsync();
+            return new ListResultDto<RecordatorioDto>(ObjectMapper.Map<List<RecordatorioDto>>(recordatorios));
+        }
+
+        public async Task<ListResultDto<RecordatorioDto>> GetRecordatoriosToday(int id)
+        {
+            DateTime today = DateTime.Now;
+            var recordatorios = await _recordatorioRepositoy.GetAll()
+                .Where(r => r.PacienteId == id && r.FechaHora.Date==today.Date)
+                .OrderByDescending(r => r.FechaHora)
                 .ToListAsync();
             return new ListResultDto<RecordatorioDto>(ObjectMapper.Map<List<RecordatorioDto>>(recordatorios));
         }
@@ -38,23 +49,23 @@ namespace WSControldePacientesApi.Api.Recordatorios
         {
             double cuantoSumar=0;
 
-            if (input.Como_Tomar.Equals("1-1-1"))
+            if (input.isManana && input.isTarde && input.isNoche)
             {
                 cuantoSumar = 8;
             }
-            else if (input.Como_Tomar.Equals("1-0-1"))
+            else if (input.isManana && input.isNoche && !input.isTarde)
             {
                 cuantoSumar = 12;
             }
-            else if (input.Como_Tomar.Equals("1-0-0"))
+            else if (input.isManana)
             {
                 cuantoSumar = 24;
             }
-            else if (input.Como_Tomar.Equals("0-1-0"))
+            else if (input.isNoche)
             {
                 cuantoSumar = 24;
             }
-            else if (input.Como_Tomar.Equals("0-0-1"))
+            else if (input.isTarde)
             {
                 cuantoSumar = 24;
             }

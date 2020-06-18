@@ -6,6 +6,7 @@ using System.Text;
 using WSControldePacientesApi.Api.Pacientes.Dto;
 using WSControldePacientesApi.Authorization.Users;
 using WSControldePacientesApi.ControlPacientes.Pacientes;
+using WSControlPacientesApi.ControlPacienteApi.ControlesTemperaturas.Dto;
 
 namespace WSControlPacientesApi.ControlPacienteApi.Pacientes.Dto
 {
@@ -40,11 +41,16 @@ namespace WSControlPacientesApi.ControlPacienteApi.Pacientes.Dto
 
 
 
-            CreateMap<Paciente, MisEnfermedades>().ReverseMap();
+            CreateMap<Paciente, MisEnfermedades>()
+                .ForMember(m=>m.PacienteDatosPersonalesFullName, opts=> opts.MapFrom(p=> p.DatosPersonales.FullName))
+                .ForMember(m=>m.PacienteNumSeguridadSocial, opts=> opts.MapFrom(p=> p.NumSeguridadSocial))
+                .ReverseMap();
             CreateMap<Paciente, MisPrescripciones>().ReverseMap();
             CreateMap<Paciente, MisRecordatorios>()
                 .ForMember(p => p.recordatorios, opts=> opts.MapFrom(p=> p.MisRecordatorios))
                 .ReverseMap();
+
+            //CreateMap<Paciente, ControlTemperaturaDto>().ForMember(c=> c.Fecha, opts=> opts.MapFrom(p=>p.ControlTemperatura.))
         }
     }
 }

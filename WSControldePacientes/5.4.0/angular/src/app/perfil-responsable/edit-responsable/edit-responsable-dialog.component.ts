@@ -49,7 +49,6 @@ export class EditResponsableDialogComponent extends AppComponentBase  {
         this.saving = true;
         const responsable_ = new EditResponsableDto();
         responsable_.init(this.responsable);
-        console.log(responsable_);
 
         
         this._responsableService

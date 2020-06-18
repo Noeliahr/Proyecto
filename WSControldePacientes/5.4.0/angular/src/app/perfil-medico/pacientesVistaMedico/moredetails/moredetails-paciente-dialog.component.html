@@ -1,0 +1,94 @@
+<style>
+    h5 {
+        width: max-content; display: inline;
+    }
+</style>
+
+
+<div class="row clearfix" [@routerTransition] style="widows: 900px;">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card main-content" >
+            <div class="header" style="background-color: #F4F3E5;">
+                <h2><mat-icon>zoom_in</mat-icon>Detalles de {{paciente.datosPersonalesUserName}}</h2>
+            </div>
+            <div class="body table-responsive" style="background-color: 	#E5F4F2;">
+                    <div style="margin-bottom: 30px;">
+                        <h3>Datos Personales</h3>
+                        <div style="margin-bottom: 15px;">
+                            <div class="col-sm-4">
+                                <h5>Nombre y Apellidos</h5> 
+                                {{ paciente.datosPersonalesName }} {{ paciente.datosPersonalesSurname }}
+                            </div>
+                            <div class="col-sm-3" style="padding-left: 125px;">
+                                <h5>Telefono</h5> {{ paciente.datosPersonalesTelefono }}
+                            </div>
+                            <div class="col-sm-4" style="margin-left: 16.8%; width: max-content;">
+                             <h5 >E-mail</h5> {{ paciente.datosPersonalesEmailAddress }}
+                            </div>
+                        </div>
+                        <div style="margin-top: 10px;">
+                            <div class="col-sm-6">
+                                <h5 >Fecha de Naciemiento</h5> {{paciente.fechaNacimiento | date:"dd-MM-yyyy" }}
+                            </div>
+                            <div class="col-sm-6" style="padding-left: 230px;">
+                                <h5 >Numero de la Seguridad Social</h5> {{paciente.numSeguridadSocial}}
+                            </div>
+                        </div>
+                    </div>
+                
+                <div style="margin-bottom: 30px;">
+                    <h3>Datos de donde vive</h3>
+                    <div>
+                       <!-- <div style="display: inline-block;"><h5>Tipo</h5> {{paciente.dondeViveTipo}} </div>
+                        <div style="display: inline-block; margin: 0% 38% 0% 36%;"><h5>Nombre</h5> {{paciente.dondeViveNombre}} </div>
+                        <div style="display: inline-block;"><h5>Numero</h5> {{ paciente.dondeViveNumero }} </div> -->
+
+                        <div class="col-sm-4"><h5>Tipo</h5> {{paciente.dondeViveTipo}} </div>
+                        <div class="col-sm-3" style="padding-left: 125px;" ><h5>Nombre</h5> {{paciente.dondeViveNombre}} </div>
+                        <div class="col-sm-4" style="margin-left: 16.8%; width: max-content;"><h5>Numero</h5> {{ paciente.dondeViveNumero }} </div>
+                    </div>
+                    <div>
+                        <!--<div style="display: inline-block;"><h5>Letra</h5> {{ paciente.dondeViveLetra }} </div> 
+                        <div style="display: inline-block; margin: 0% 38%;">
+                            <div *ngIf=" paciente.dondeViveKm_en_la_via > 0">
+                                <h5 >Km en la Via</h5> {{ paciente.dondeViveKm_en_la_via }}
+                            </div>  
+                        </div>
+                        <div style="display: inline-block;"><h5>Bloque</h5> {{ paciente.dondeViveBloque }} </div>-->
+
+                        <div class="col-sm-4"><h5>Letra</h5> {{ paciente.dondeViveLetra }} </div> 
+                        <div class="col-sm-3" style="padding-left: 125px;">
+                            <div *ngIf=" paciente.dondeViveKm_en_la_via > 0">
+                                <h5 >Km en la Via</h5> {{ paciente.dondeViveKm_en_la_via }}
+                            </div>  
+                        </div>
+                        <div class="col-sm-4" style="margin-left: 16.8%; width: max-content;"><h5>Bloque</h5> {{ paciente.dondeViveBloque }} </div>
+                    </div>
+                    <div>
+                        <div class="col-sm-3"><h5>Portal</h5> {{ paciente.dondeVivePortal }} </div>
+                        <div class="col-sm-3"><h5>Escalera</h5> {{ paciente.dondeViveEscalera }} </div>
+                        <div class="col-sm-3"><h5>Planta</h5> {{ paciente.dondeVivePlanta }} </div>
+                        <div class="col-sm-3"><h5>Puerta</h5> {{ paciente.dondeVivePuerta }} </div>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <div class="col-sm-3"><h5>Municipio</h5> {{ paciente.dondeViveMunicipio}} </div>
+                        <div class="col-sm-3"><h5>Provincia</h5> {{ paciente.dondeViveProvincia}} </div>
+                        <div class="col-sm-3"><h5>Pais</h5> {{ paciente.dondeVivePais}} </div>
+                        <div class="col-sm-3"><h5>Código Postal</h5> {{ paciente.dondeViveCodigo_Postal}} </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 120px; ">
+                    <h3> Datos de su Medico de Cabecera </h3>
+                    <div>
+                        <div class="col-sm-6"><h5>¿Como localizarlo?</h5> {{paciente.miMedicoCabeceraDatosPersonalesUserName}} </div>
+                        <div class="col-sm-6" style="padding-left: 230px;"><h5>Nombre y Apellidos</h5> {{paciente.miMedicoCabeceraDatosPersonalesName}}  {{paciente.miMedicoCabeceraDatosPersonalesSurname}} </div>
+                        <div class="col-sm-6"><h5>Telefono</h5> {{paciente.miMedicoCabeceraDatosPersonalesTelefono}} </div>
+                        <div class="col-sm-6" style="padding-left: 300px;"><h5>Email</h5> {{paciente.miMedicoCabeceraDatosPersonalesEmailAddress}} </div>
+                    </div>
+                </div>
+            </div>  
+        </div>
+    </div>
+</div>
+

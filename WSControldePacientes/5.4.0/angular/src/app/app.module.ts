@@ -42,40 +42,48 @@ import { ResetPasswordDialogComponent } from './users/reset-password/reset-passw
 
 
 // paciente
-import { PacientesComponent } from '@app/pacientes/pacientes.component';
-import { PacienteMedicoCabeceraServiceProxy, ResponsableServiceProxy, MisResponsablesServiceProxy, CitasServiceProxy, EnfermedadPacienteServiceProxy, EnfermedadServiceProxy, DatosPacienteServiceProxy, MiCitaMedicaServiceProxy, MensajeServiceProxy, ControldeTemperaturaServiceProxy, DatosMedicoServiceProxy, DatosResponsablesServiceProxy, AgendaServiceProxy, PrescripcionServiceProxy, MedicamentosServiceProxy, RecordatorioServiceProxy } from '@shared/service-proxies/service-proxies';
-import { CreatePacienteDialogComponent } from './pacientes/create-paciente/create-paciente-dialog.component';
-import {MoreDetailsDialogComponent} from './pacientes/moredetails/moredetails-paciente-dialog.component';
-import {ResponsablesDialogComponent} from './pacientes/responsables-paciente/responsables-paciente-dialog.component';
-import {AsociarResponsableDialogComponent} from './pacientes/responsables-paciente/asociar-responsable/asociar-responsables-paciente-dialog.component';
-import { EditPacienteDialogComponent } from './pacientes/edit-paciente/edit-paciente-dialog.component'; 
-import { CitaPacienteComponent } from './pacientes/citas-paciente/citas-paciente.component';
-import {CitarPacienteDialogComponent} from './pacientes/citas-paciente/citar/citarpaciente-dialog.component';
-import {EnfermedadesDialogComponent} from './pacientes/enfermedades-paciente/enfermedades-paciente-dialog.component';
-import {AgregarEnfermedadDialogComponent} from './pacientes/enfermedades-paciente/agregarEnfermedad/agregarEnfermedades-paciente-dialog.component';
-import {PerfilPacienteComponent} from './pacientes/perfil-paciente/perfil-paciente.component';
-import {MisCitasComponent} from './pacientes/miscitas/miscitas.component';
-import {MisResponsablesComponent} from './pacientes/misresponsables/misrespnsables-dialog.component';
-import { MisEnfermedadesComponent } from './pacientes/misenfermedades/misenfermedades.component';
+import { PacientesComponent } from './perfil-medico/pacientesVistaMedico/pacientes.component';
+import { PacienteMedicoCabeceraServiceProxy, ResponsableServiceProxy, MisResponsablesServiceProxy, CitasServiceProxy, EnfermedadPacienteServiceProxy, EnfermedadServiceProxy, DatosPacienteServiceProxy, MiCitaMedicaServiceProxy, MensajeServiceProxy, ControldeTemperaturaServiceProxy, DatosMedicoServiceProxy, DatosResponsablesServiceProxy, AgendaServiceProxy, PrescripcionServiceProxy, MedicamentosServiceProxy, RecordatorioServiceProxy, PacienteMedicoServiceProxy, PacienteResponsableServiceProxy } from '@shared/service-proxies/service-proxies';
+import { CreatePacienteDialogComponent } from './perfil-medico/pacientesVistaMedico/create-paciente/create-paciente-dialog.component';
+import {MoreDetailsDialogComponent} from './perfil-medico/pacientesVistaMedico/moredetails/moredetails-paciente-dialog.component';
+import {ResponsablesDialogComponent} from './perfil-medico/pacientesVistaMedico/responsables-paciente/responsables-paciente-dialog.component';
+import {AsociarResponsableDialogComponent} from './perfil-medico/pacientesVistaMedico/responsables-paciente/asociar-responsable/asociar-responsables-paciente-dialog.component';
+import { EditPacienteDialogComponent } from './perfil-medico/pacientesVistaMedico/edit-paciente/edit-paciente-dialog.component'; 
+import { CitaPacienteComponent } from './perfil-medico/pacientesVistaMedico/citas-paciente/citas-paciente.component';
+import {CitarPacienteDialogComponent} from './perfil-medico/pacientesVistaMedico/citas-paciente/citar/citarpaciente-dialog.component';
+import {EnfermedadesDialogComponent} from './perfil-medico/pacientesVistaMedico/enfermedades-paciente/enfermedades-paciente-dialog.component';
+import {AgregarEnfermedadDialogComponent} from './perfil-medico/pacientesVistaMedico/enfermedades-paciente/agregarEnfermedad/agregarEnfermedades-paciente-dialog.component';
+import {PerfilPacienteComponent} from './perfil-paciente/perfil-paciente.component';
+import {MisCitasComponent} from './perfil-paciente/miscitas/miscitas.component';
+import {MisResponsablesComponent} from './perfil-paciente/misresponsables/misrespnsables-dialog.component';
+import { MisEnfermedadesComponent } from './perfil-paciente/misenfermedades/misenfermedades.component';
 
 import { from } from 'rxjs';
-import { MisPrescripcionesComponent } from './pacientes/misprescripciones/misprescripciones.component';
-import { MisRecordatoriosComponent } from './pacientes/misrecordatorios/misrecordatorios.component';
+import { MisPrescripcionesComponent } from './perfil-paciente/misprescripciones/misprescripciones.component';
+import { MisRecordatoriosComponent } from './perfil-paciente/misrecordatorios/misrecordatorios.component';
 import { ChatsComponent } from './chats/chat.component';
 import { MostrarConversacionDialogComponent } from './chats/mostrarConversacion/mostrarConversacion-dialog.component';
 import { ControlesdeTemperaturaComponent } from './controlesdetemperatura/controlesdetemperatura.component';
 import { EvolucionTemperaturaComponent } from './controlesdeTemperatura/evolucion-temperatura/evolucion-temperatura.component';
 import { PedirTemperaturaComponent } from './controlesdeTemperatura/evolucion-temperatura/pedirTemperatura/pedir-temperatura.component';
-import { AnularCitaComponent } from './pacientes/miscitas/anularCita/anularCita.component';
+import { AnularCitaComponent } from './perfil-paciente/miscitas/anularCita/anularCita.component';
 import { PerfilMedicoComponent } from './perfil-medico/perfil-medico.component';
 import { PerfilResponsableComponent } from './perfil-responsable/perfil-responsable.component';
 import { EditMedicoDialogComponent } from './perfil-medico/edit-medico/edit-medico-dialog.component';
 import { EditResponsableDialogComponent } from './perfil-responsable/edit-responsable/edit-responsable-dialog.component';
 import { MiAgendaComponent } from './perfil-medico/agenda/miagenda.component';
-import { PrescripcionesComponent } from './pacientes/prescripciones/prescripciones.component';
-import { CreatePrescripcionDialogComponent } from './pacientes/prescripciones/create-prescripcion/create-prescripcion-dialog.component';
-import { RecordatorioComponent } from './pacientes/recordatorios/recordatorio.component';
-import { CreateRecordatorioDialogComponent } from './pacientes/recordatorios/create-recordatorios/create-recordatorio-dialog.component';
+import { PrescripcionesComponent } from './perfil-medico/pacientesVistaMedico/prescripciones/prescripciones.component';
+import { CreatePrescripcionDialogComponent } from './perfil-medico/pacientesVistaMedico/prescripciones/create-prescripcion/create-prescripcion-dialog.component';
+import { RecordatorioComponent } from './perfil-medico/pacientesVistaMedico/recordatorios/recordatorio.component';
+import { CreateRecordatorioDialogComponent } from './perfil-medico/pacientesVistaMedico/recordatorios/create-recordatorios/create-recordatorio-dialog.component';
+import { PacientesVistaResponsableComponent } from './perfil-responsable/pacientesVistaResponsable/pacientes.component';
+import { MoreDetailsDialogRComponent } from './perfil-responsable/pacientesVistaResponsable/moredetails/moredetails-paciente-dialog.component';
+import { ResponsablesDialogRComponent } from './perfil-responsable/pacientesVistaResponsable/responsables-paciente/responsables-paciente-dialog.component';
+import { EnfermedadesDialogRComponent } from './perfil-responsable/pacientesVistaResponsable/enfermedades-paciente/enfermedades-paciente-dialog.component';
+import { CitaPacienteRComponent } from './perfil-responsable/pacientesVistaResponsable/citas-paciente/citas-paciente.component';
+import { PrescripcionesRComponent } from './perfil-responsable/pacientesVistaResponsable/prescripciones/prescripciones.component';
+import { ControlpacienteVMComponent } from './controlesdetemperatura/control-pacienteVistaMedico/control-pacienteVM.component';
+import { ControlpacienteVRComponent } from './controlesdetemperatura/control-pacienteVistaResponsable/control-pacienteVR.component';
 
 
 @NgModule({
@@ -105,6 +113,20 @@ import { CreateRecordatorioDialogComponent } from './pacientes/recordatorios/cre
     ResetPasswordDialogComponent,
 
     // pacientes
+    PerfilPacienteComponent,
+    MisCitasComponent,
+    AnularCitaComponent,
+    MisResponsablesComponent,
+    MisEnfermedadesComponent,
+    MisPrescripcionesComponent,
+    MisRecordatoriosComponent,
+    ControlesdeTemperaturaComponent,
+    EvolucionTemperaturaComponent,
+    PedirTemperaturaComponent,
+
+
+
+    //medicos
     PacientesComponent,
     CreatePacienteDialogComponent,
     MoreDetailsDialogComponent,
@@ -115,27 +137,33 @@ import { CreateRecordatorioDialogComponent } from './pacientes/recordatorios/cre
     CitarPacienteDialogComponent,
     EnfermedadesDialogComponent,
     AgregarEnfermedadDialogComponent,
-    PerfilPacienteComponent,
-    MisCitasComponent,
-    AnularCitaComponent,
-    MisResponsablesComponent,
-    MisEnfermedadesComponent,
-    MisPrescripcionesComponent,
-    MisRecordatoriosComponent,
-    ChatsComponent,
-    MostrarConversacionDialogComponent,
-    ControlesdeTemperaturaComponent,
-    EvolucionTemperaturaComponent,
-    PedirTemperaturaComponent,
     PerfilMedicoComponent,
     EditMedicoDialogComponent, 
-    PerfilResponsableComponent,
-    EditResponsableDialogComponent, 
-    MiAgendaComponent, 
+    MiAgendaComponent,
     PrescripcionesComponent,
     CreatePrescripcionDialogComponent,
+    ControlpacienteVMComponent,
+
+    //responsables
+    PerfilResponsableComponent,
+    EditResponsableDialogComponent,
+    PacientesVistaResponsableComponent,
+    MoreDetailsDialogRComponent,
+    ResponsablesDialogRComponent,
+    EnfermedadesDialogRComponent,
+    CitaPacienteRComponent,
+    PrescripcionesRComponent,
+    ControlpacienteVRComponent,
+
+
+
+    ChatsComponent,
+    MostrarConversacionDialogComponent,
+    
+
     RecordatorioComponent,
-    CreateRecordatorioDialogComponent
+    CreateRecordatorioDialogComponent,
+    
   ],
   imports: [
     CommonModule,
@@ -154,7 +182,8 @@ import { CreateRecordatorioDialogComponent } from './pacientes/recordatorios/cre
   providers: [PacienteMedicoCabeceraServiceProxy, ResponsableServiceProxy, MisResponsablesServiceProxy,
     CitasServiceProxy,EnfermedadPacienteServiceProxy, EnfermedadServiceProxy, DatosPacienteServiceProxy, 
     MiCitaMedicaServiceProxy,MensajeServiceProxy, ControldeTemperaturaServiceProxy,DatosMedicoServiceProxy,
-    DatosResponsablesServiceProxy, AgendaServiceProxy, PrescripcionServiceProxy, MedicamentosServiceProxy, RecordatorioServiceProxy],
+    DatosResponsablesServiceProxy, AgendaServiceProxy, PrescripcionServiceProxy, MedicamentosServiceProxy, 
+    RecordatorioServiceProxy, PacienteMedicoServiceProxy, PacienteResponsableServiceProxy],
   entryComponents: [
     // tenants
     CreateTenantDialogComponent,
@@ -167,26 +196,56 @@ import { CreateRecordatorioDialogComponent } from './pacientes/recordatorios/cre
     EditUserDialogComponent,
     ResetPasswordDialogComponent,
 
-    //Pacientes
+    // pacientes
+    PerfilPacienteComponent,
+    MisCitasComponent,
+    AnularCitaComponent,
+    MisResponsablesComponent,
+    MisEnfermedadesComponent,
+    MisPrescripcionesComponent,
+    MisRecordatoriosComponent,
+    ControlesdeTemperaturaComponent,
+    EvolucionTemperaturaComponent,
+    PedirTemperaturaComponent,
+
+
+
+    //medicos
+    PacientesComponent,
     CreatePacienteDialogComponent,
     MoreDetailsDialogComponent,
     ResponsablesDialogComponent,
     EditPacienteDialogComponent,
     AsociarResponsableDialogComponent,
+    CitaPacienteComponent,
     CitarPacienteDialogComponent,
     EnfermedadesDialogComponent,
     AgregarEnfermedadDialogComponent,
-    MostrarConversacionDialogComponent,
-    PedirTemperaturaComponent,
-    
-    AnularCitaComponent,
-
-    EditMedicoDialogComponent,
-    EditResponsableDialogComponent,
+    PerfilMedicoComponent,
+    EditMedicoDialogComponent, 
+    MiAgendaComponent,
     PrescripcionesComponent,
     CreatePrescripcionDialogComponent,
+    
+
+    //responsables
+    PerfilResponsableComponent,
+    EditResponsableDialogComponent,
+    PacientesVistaResponsableComponent,
+    MoreDetailsDialogRComponent,
+    ResponsablesDialogRComponent,
+    EnfermedadesDialogRComponent,
+    CitaPacienteRComponent,
+    PrescripcionesRComponent,
+
+
+
+    ChatsComponent,
+    MostrarConversacionDialogComponent,
+    
+
     RecordatorioComponent,
-    CreateRecordatorioDialogComponent
+    CreateRecordatorioDialogComponent,
 
   ]
 })
