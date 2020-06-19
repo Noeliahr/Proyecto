@@ -21,11 +21,26 @@ namespace WSControldePacientesApi.Api.Enfermedades
             _enfermedadrepository = repository;
         }
 
-        public async Task<ListResultDto<EnfermedadDto>> GetAll()
+        public async Task<ListResultDto<EnfermedadDto>> GetAll(int [] ids)
         {
             var enfermedades = await _enfermedadrepository.GetAll().ToListAsync();
 
-            return new ListResultDto<EnfermedadDto>(ObjectMapper.Map<List<EnfermedadDto>>(enfermedades));
+            List<Enfermedad> enfers = new List<Enfermedad>();
+            enfers = enfermedades;
+
+            for(int i=1; i<ids.Length; i++)
+            {
+                for(int j=0; j<enfermedades.Count; j++)
+                {
+                    if (enfermedades.ElementAt(j).Id== ids[i])
+                    {
+                        enfers.RemoveAt(j);
+                        j--;
+                    }
+                }
+            }
+
+            return new ListResultDto<EnfermedadDto>(ObjectMapper.Map<List<EnfermedadDto>>(enfers));
         }
 
         public async Task<EnfermedadDto> Create(EnfermedadDto enfermedad)

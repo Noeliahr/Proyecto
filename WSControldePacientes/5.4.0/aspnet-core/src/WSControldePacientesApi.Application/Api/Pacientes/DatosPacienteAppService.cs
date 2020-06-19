@@ -12,11 +12,17 @@ using System.Text;
 using System.Threading.Tasks;
 using WSControldePacientesApi.Api.Pacientes.Dto;
 using WSControldePacientesApi.Api.Recordatorios.Dto;
+using WSControldePacientesApi.Api.Responsables.Dto;
 using WSControldePacientesApi.Authorization;
 using WSControldePacientesApi.Authorization.Users;
+using WSControldePacientesApi.ControlPacientes.EnfermadesPacientes;
 using WSControldePacientesApi.ControlPacientes.Pacientes;
+using WSControldePacientesApi.ControlPacientes.PacientesResponsables;
 using WSControldePacientesApi.ControlPacientes.Recordatorios;
+using WSControldePacientesApi.ControlPacientes.Responsables;
+using WSControlPacientesApi.ControlPacienteApi.EnfermedadesPacientes.Dto;
 using WSControlPacientesApi.ControlPacienteApi.Pacientes.Dto;
+using WSControlPacientesApi.ControlPacienteApi.PacientesResponsables.Dto;
 
 namespace WSControldePacientesApi.Api.Pacientes
 {
@@ -50,39 +56,102 @@ namespace WSControldePacientesApi.Api.Pacientes
         }
 
 
-        public async Task<MisResponsables> GetMisResponsables()
+        public async Task<MisResponsables> GetMisResponsables(int user)
         {
-            var user = await _userManager.GetUserByIdAsync(AbpSession.GetUserId());
+            //var user = await _userManager.GetUserByIdAsync(AbpSession.GetUserId());
 
             var pacientes = await _pacienteRepository.GetAll()
+                .Include(p => p.DatosPersonales)
                 .Include(pacientes => pacientes.MisResponsables)
                     .ThenInclude(pacientes => pacientes.Responsable)
                         .ThenInclude(pacientes => pacientes.DatosPersonales)
-                .Where(pacientes => pacientes.DatosPersonales == user)
+                .Where(pacientes => pacientes.DatosPersonalesId == user)
                 .FirstOrDefaultAsync();
             return ObjectMapper.Map<MisResponsables>(pacientes);
         }
 
-        public async Task<MisEnfermedades> GetMisEnfermedades()
+        public async Task<MisResponsables> BuscarResponsableByUserName(int user, string userName)
         {
-            var user = await _userManager.GetUserByIdAsync(AbpSession.GetUserId());
+            //var user = await _userManager.GetUserByIdAsync(AbpSession.GetUserId());
+
+            var pacientes = await _pacienteRepository.GetAll()
+                .Include(p => p.DatosPersonales)
+                .Include(pacientes => pacientes.MisResponsables)
+                    .ThenInclude(pacientes => pacientes.Responsable)
+                        .ThenInclude(pacientes => pacientes.DatosPersonales)
+                .Where(pacientes => pacientes.DatosPersonalesId == user)
+                .FirstOrDefaultAsync();
+
+            List<PacienteResponsable> misResponsables = new List<PacienteResponsable>();
+
+            foreach(PacienteResponsable miResponsableDto in pacientes.MisResponsables)
+            {
+                if (miResponsableDto.Responsable.DatosPersonales.UserName == userName)
+                {
+                    misResponsables.Add(miResponsableDto);
+                }
+            }
+
+            MisResponsables responsables = new MisResponsables();
+            responsables.Responsables = ObjectMapper.Map<List<PacienteMiResponsableDto>>(misResponsables);
+            responsables.NumSeguridadSocial = pacientes.NumSeguridadSocial;
+            responsables.PacienteDatosPersonalesFullName = pacientes.DatosPersonales.FullName;
+
+
+            return responsables;
+        }
+
+        public async Task<MisEnfermedades> GetMisEnfermedades(int user)
+        {
+           // var user = await _userManager.GetUserByIdAsync(AbpSession.GetUserId());
             var medicos = await _pacienteRepository.GetAll()
+                .Include(p => p.DatosPersonales)
                 .Include(p => p.MisEnfermedades)
                     .ThenInclude(p => p.Enfermedad)
-                .Where(p => p.DatosPersonales== user)
+                .Where(p => p.DatosPersonalesId== user)
                 .FirstOrDefaultAsync();
+
 
             return ObjectMapper.Map<MisEnfermedades>(medicos);
         }
 
 
-        public async Task<MisPrescripciones> GetMisPrescripciones()
+        public async Task<MisEnfermedades> BuscarEnfermedadesByNombre(int user, string nombre)
         {
-            var user = await _userManager.GetUserByIdAsync(AbpSession.GetUserId());
+            // var user = await _userManager.GetUserByIdAsync(AbpSession.GetUserId());
+            var medicos = await _pacienteRepository.GetAll()
+                .Include(p=>p.DatosPersonales)
+                .Include(p => p.MisEnfermedades)
+                    .ThenInclude(p => p.Enfermedad)
+                .Where(p => p.DatosPersonalesId == user)
+                .FirstOrDefaultAsync();
+
+            List<EnfermedadPaciente> enfermedadPacientes = new List<EnfermedadPaciente>();
+
+            foreach (EnfermedadPaciente enfermedadPaciente in medicos.MisEnfermedades)
+            {
+                if (enfermedadPaciente.Enfermedad.Nombre == nombre)
+                {
+                    enfermedadPacientes.Add(enfermedadPaciente);
+                }
+            }
+
+            MisEnfermedades misEnfermedades = new MisEnfermedades();
+            misEnfermedades.misEnfermedades = ObjectMapper.Map<List<EnfermedadPacienteDto>>(enfermedadPacientes);
+            misEnfermedades.PacienteDatosPersonalesFullName = medicos.DatosPersonales.FullName;
+            misEnfermedades.PacienteNumSeguridadSocial = medicos.NumSeguridadSocial;
+
+            return misEnfermedades;
+        }
+
+
+        public async Task<MisPrescripciones> GetMisPrescripciones(int user)
+        {
+           // var user = await _userManager.GetUserByIdAsync(AbpSession.GetUserId());
             var prescripciones = await _pacienteRepository.GetAll()
                 .Include(p => p.MisPrescripciones)
                     .ThenInclude(p => p.Medicamento)
-                .Where(p => p.DatosPersonales == user)
+                .Where(p => p.DatosPersonalesId == user)
                 .FirstOrDefaultAsync();
 
            var pres= ObjectMapper.Map<MisPrescripciones>(prescripciones);
@@ -124,23 +193,23 @@ namespace WSControldePacientesApi.Api.Pacientes
 
 
 
-        public async Task<MisRecordatorios> GetMisRecordatorios()
+        public async Task<MisRecordatorios> GetMisRecordatorios(int user)
         {
-            var user = await _userManager.GetUserByIdAsync(AbpSession.GetUserId());
+           // var user = await _userManager.GetUserByIdAsync(AbpSession.GetUserId());
             var recordatorios = await _pacienteRepository.GetAll()
                 .Include(p => p.MisRecordatorios)
-                .Where(p => p.DatosPersonales == user)
+                .Where(p => p.DatosPersonalesId == user)
                 .FirstOrDefaultAsync();
 
             return ObjectMapper.Map<MisRecordatorios>(recordatorios);
         }
 
-        public async Task<MisRecordatorios> GetMisRecordatoriosByFecha(DateTime fecha)
+        public async Task<MisRecordatorios> GetMisRecordatoriosByFecha(int user,DateTime fecha)
         {
-            var user = await _userManager.GetUserByIdAsync(AbpSession.GetUserId());
+           // var user = await _userManager.GetUserByIdAsync(AbpSession.GetUserId());
             var recordatorios = await _pacienteRepository.GetAll()
                 .Include(p => p.MisRecordatorios)
-                .Where(p => p.DatosPersonales == user)
+                .Where(p => p.DatosPersonalesId == user)
                 .FirstOrDefaultAsync();
 
             MisRecordatorios misRecordatorios = new MisRecordatorios();

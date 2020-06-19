@@ -10,16 +10,16 @@ import { MenuItem } from '@shared/layout/menu-item';
 export class SideBarNavComponent extends AppComponentBase {
 
     menuItems: MenuItem[] = [
-        new MenuItem(this.l('Datos Personales'), 'Pages.DatosPersonalesPaciente', 'person_pin', '/app/DatosPersonales'),
+        new MenuItem(this.l('Datos Personales'), 'Pages.MisResponsables', 'person_pin', '/app/DatosPersonales'),
         new MenuItem(this.l('Datos Personales'), 'Pages.DatosPersonalesMedico', 'person_pin', '/app/DatosPersonales*'),
         new MenuItem(this.l('Datos Personales'), 'Pages.DatosPersonalesResponsable', 'person_pin', '/app/DatosPersonales**'),
-        new MenuItem(this.l('Responsables'), 'Pages.DatosPersonalesPaciente','supervisor_account', '/app/misresponsables'),
-        new MenuItem(this.l('Citas'), 'Pages.DatosPersonalesPaciente','today', '/app/miscitas'),
+        new MenuItem(this.l('Responsables'), 'Pages.MisResponsables','supervisor_account', '/app/misresponsables/0'),
+        new MenuItem(this.l('Citas'), 'Pages.MisCitas','today', '/app/miscitas'),
         new MenuItem(this.l('Agenda'), 'Pages.Agenda','today', '/app/miagenda'),
-        new MenuItem(this.l('Enfermedades'), 'Pages.DatosPersonalesPaciente','announcement', '/app/misenfermedades'),
-        new MenuItem(this.l('Control de Temperatura'), 'Pages.MiControldeTemperatura','perm_contact_calendar', '/app/evolucion'),
-        new MenuItem(this.l('Prescripciones'), 'Pages.DatosPersonalesPaciente','assignment', '/app/misprescripciones'),
-        new MenuItem(this.l('Recordatorios'), 'Pages.DatosPersonalesPaciente','event_note', '/app/misrecordatorios'),
+        new MenuItem(this.l('Enfermedades'), 'Pages.MisEnfermedades','announcement', '/app/misenfermedades/0'),
+        new MenuItem(this.l('Control de Temperatura'), 'Pages.MiControldeTemperatura','perm_contact_calendar', '/app/evolucion/0'),
+        new MenuItem(this.l('Prescripciones'), 'Pages.MisResponsables','assignment', '/app/misprescripciones/0'),
+        new MenuItem(this.l('Recordatorios'), 'Pages.MisResponsables','event_note', '/app/misrecordatorios/0'),
         new MenuItem(this.l('Chat'), 'Pages.Chat','chat', '/app/chat'),
 
         new MenuItem(this.l('Tenants'), 'Pages.Tenants', 'business', '/app/tenants'),

@@ -25,15 +25,10 @@ import { PacientesComponent } from './perfil-medico/pacientesVistaMedico/pacient
 import { CitaPacienteComponent } from './perfil-medico/pacientesVistaMedico/citas-paciente/citas-paciente.component';
 import { MisCitasComponent } from './perfil-paciente/miscitas/miscitas.component';
 import { PacientesVistaResponsableComponent } from './perfil-responsable/pacientesVistaResponsable/pacientes.component';
-import { ControlpacienteVMComponent } from './controlesdetemperatura/control-pacienteVistaMedico/control-pacienteVM.component';
-import { ControlpacienteVRComponent } from './controlesdetemperatura/control-pacienteVistaResponsable/control-pacienteVR.component';
-import { EnfermedadesDialogRComponent } from './perfil-responsable/pacientesVistaResponsable/enfermedades-paciente/enfermedades-paciente-dialog.component';
 import { EnfermedadesDialogComponent } from './perfil-medico/pacientesVistaMedico/enfermedades-paciente/enfermedades-paciente-dialog.component';
-import { PrescripcionesRComponent } from './perfil-responsable/pacientesVistaResponsable/prescripciones/prescripciones.component';
 import { PrescripcionesComponent } from './perfil-medico/pacientesVistaMedico/prescripciones/prescripciones.component';
 import { RecordatorioComponent } from './perfil-medico/pacientesVistaMedico/recordatorios/recordatorio.component';
 import { ResponsablesDialogComponent } from './perfil-medico/pacientesVistaMedico/responsables-paciente/responsables-paciente-dialog.component';
-import { ResponsablesDialogRComponent } from './perfil-responsable/pacientesVistaResponsable/responsables-paciente/responsables-paciente-dialog.component';
 import { MoreDetailsDialogRComponent } from './perfil-responsable/pacientesVistaResponsable/moredetails/moredetails-paciente-dialog.component';
 import { MoreDetailsDialogComponent } from './perfil-medico/pacientesVistaMedico/moredetails/moredetails-paciente-dialog.component';
 
@@ -59,15 +54,10 @@ import { MoreDetailsDialogComponent } from './perfil-medico/pacientesVistaMedico
 
 
                     { path: 'citas/:id', component: CitaPacienteComponent, data: { permission: 'Pages.Citas'},},
-                    { path: 'controlTemp/:id', component: ControlpacienteVMComponent, data: { permission: 'Pages.PacienteMedico'},},
-                    { path: 'controlTemperatura/:id', component: ControlpacienteVRComponent, data: { permission: 'Pages.PacienteMedico'},},
                     { path: 'suscita/:id', component: CitaPacienteRComponent, data: { permission: 'Pages.SusCitas'},},
-                    { path: 'susenfermedades/:id', component: EnfermedadesDialogRComponent, data: { permission: 'Pages.SusEnfermedades'},},
-                    { path: 'susprescripciones/:id', component: PrescripcionesRComponent, data: { permission: 'Pages.SusPrescripciones'},},
                     { path: 'prescripciones/:id', component: PrescripcionesComponent, data: { permission: 'Pages.Prescripciones'},},
                     { path: 'recordatorios/:id', component: RecordatorioComponent, data: { permission: 'Pages.Recordatorios'},},
                     { path: 'responsables/:id', component: ResponsablesDialogComponent, data: { permission: 'Pages.Responsabes'},},
-                    { path: 'susresponsables/:id', component: ResponsablesDialogRComponent, data: { permission: 'Pages.Responsabes'},},
                     
                     { path: 'susdatos/:id', component: MoreDetailsDialogRComponent, data: { permission: 'Pages.MisPacientes'},},
                     { path: 'detalles/:id', component: MoreDetailsDialogComponent, data: { permission: 'Pages.PacienteMedico'},},
@@ -78,16 +68,16 @@ import { MoreDetailsDialogComponent } from './perfil-medico/pacientesVistaMedico
                     { path: 'miscitas', component: MisCitasComponent, data: { permission: 'Pages.PacienteCita'},},
                     { path: 'miagenda', component: MiAgendaComponent, data: { permission: 'Pages.Agenda'},},
 
-                    { path: 'misresponsables', component: MisResponsablesComponent, data: { permission: 'Pages.MisResponsables'},},
+                    { path: 'misresponsables/:id', component: MisResponsablesComponent, data: { permission: 'Pages.MisResponsables'},},
 
-                    { path: 'misenfermedades', component: MisEnfermedadesComponent, data: { permission: 'Pages.MisEnfermedades'},},
+                    { path: 'misenfermedades/:id', component: MisEnfermedadesComponent, data: { permission: 'Pages.MisEnfermedades'},},
 
-                    { path: 'misprescripciones', component: MisPrescripcionesComponent, data: { permission: 'Pages.MisPrescripciones'},},
-                    { path: 'misrecordatorios', component: MisRecordatoriosComponent, data: { permission: 'Pages.MisRecordatorios'},},
+                    { path: 'misprescripciones/:id', component: MisPrescripcionesComponent, data: { permission: 'Pages.MisPrescripciones'},},
+                    { path: 'misrecordatorios/:id', component: MisRecordatoriosComponent, data: { permission: 'Pages.MisRecordatorios'},},
 
                     { path: 'chat', component: ChatsComponent, data: { permission: 'Pages.Chat'},},
 
-                    {path: 'evolucion', component: EvolucionTemperaturaComponent, data: {permission: 'MiControldeTemperatura'},}
+                    {path: 'evolucion/:id', component: EvolucionTemperaturaComponent, data: {permission: 'Pages.MiControldeTemperatura'},}
                 ]
             }
         ])

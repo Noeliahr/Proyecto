@@ -33,6 +33,7 @@ export class ResponsablesDialogComponent extends AppComponentBase  {
     saving = false;
     responsables: MisResponsables = new MisResponsables();
     idPaciente:number;
+    filter='';
       
     constructor(
         injector: Injector,
@@ -51,6 +52,17 @@ export class ResponsablesDialogComponent extends AppComponentBase  {
             .subscribe(result =>
         this.responsables = result);
     }   
+
+    buscar(){
+
+        if (this.filter==""){
+            this.ngOnInit()
+        }else {
+            this._pacienteService.buscarResponsableByUserName(this.idPaciente, this.filter)
+            .subscribe(result =>this.responsables = result);
+        }
+       
+    }
 
     desasociar( responsable : ResponsableDto){
         abp.message.confirm(
@@ -73,8 +85,15 @@ export class ResponsablesDialogComponent extends AppComponentBase  {
     }
 
     asociar(){
+        const enfer= [];
+        enfer[0]= this.idPaciente;
+
+        for (let enf of this.responsables.responsables){
+            enfer[enfer.length]=enf.responsable.id;
+        }
+
         this._dialog.open(AsociarResponsableDialogComponent, {
-            data: this.idPaciente
+            data: enfer
         });
     }
 

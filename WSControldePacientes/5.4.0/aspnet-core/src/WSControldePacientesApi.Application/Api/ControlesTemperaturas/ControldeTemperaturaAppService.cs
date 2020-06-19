@@ -26,41 +26,41 @@ namespace WSControldePacientesApi.Api.ControlesTemperaturas
             _userManager = userManager;
         }
 
-        public async Task<ListResultDto<ControlTemperaturaDto>> Get()
+        public async Task<ListResultDto<ControlTemperaturaDto>> Get(int user)
         {
-            var user = await _userManager.GetUserByIdAsync(AbpSession.GetUserId());
+            //var user = await _userManager.GetUserByIdAsync(AbpSession.GetUserId());
 
             var evolucion = await _controlTemperaturaRepository.GetAll()
                 .Include(c => c.Paciente)
-                .Where(c => c.Paciente.DatosPersonales == user)
+                .Where(c => c.Paciente.DatosPersonalesId == user)
                 .OrderBy(c=> c.Fecha)
                 .ToListAsync();
 
             return new ListResultDto<ControlTemperaturaDto>(ObjectMapper.Map<List<ControlTemperaturaDto>>(evolucion));
         }
 
-        public async Task<ListResultDto<ControlTemperaturaDto>> GetByToday()
+        public async Task<ListResultDto<ControlTemperaturaDto>> GetByToday(int user)
         {
-            var user = await _userManager.GetUserByIdAsync(AbpSession.GetUserId());
+            //var user = await _userManager.GetUserByIdAsync(AbpSession.GetUserId());
 
             DateTime today = DateTime.Now;
 
             var evolucion = await _controlTemperaturaRepository.GetAll()
                 .Include(c => c.Paciente)
-                .Where(c => c.Paciente.DatosPersonales == user && c.Fecha.Date==today.Date)
+                .Where(c => c.Paciente.DatosPersonalesId == user && c.Fecha.Date==today.Date)
                 .OrderBy(c => c.Fecha)
                 .ToListAsync();
 
             return new ListResultDto<ControlTemperaturaDto>(ObjectMapper.Map<List<ControlTemperaturaDto>>(evolucion));
         }
 
-        public async Task<ListResultDto<ControlTemperaturaDto>> GetByFecha(DateTime fecha)
+        public async Task<ListResultDto<ControlTemperaturaDto>> GetByFecha(int user, DateTime fecha)
         {
-            var user = await _userManager.GetUserByIdAsync(AbpSession.GetUserId());
+            //var user = await _userManager.GetUserByIdAsync(AbpSession.GetUserId());
 
             var evolucion = await _controlTemperaturaRepository.GetAll()
                 .Include(c => c.Paciente)
-                .Where(c => c.Paciente.DatosPersonales == user && c.Fecha.Date == fecha.Date)
+                .Where(c => c.Paciente.DatosPersonalesId == user && c.Fecha.Date == fecha.Date)
                 .OrderBy(c => c.Fecha)
                 .ToListAsync();
 

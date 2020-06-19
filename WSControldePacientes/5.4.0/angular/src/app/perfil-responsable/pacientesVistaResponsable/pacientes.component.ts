@@ -5,11 +5,8 @@ import { appModuleAnimation } from '@shared/animations/routerTransition';
 import {PagedListingComponentBase,PagedRequestDto} from '@shared/paged-listing-component-base';
 import { MatDialog } from '@angular/material';
 import {MoreDetailsDialogRComponent} from './moredetails/moredetails-paciente-dialog.component'; 
-import {ResponsablesDialogRComponent} from './responsables-paciente/responsables-paciente-dialog.component';
-import { EnfermedadesDialogRComponent } from './enfermedades-paciente/enfermedades-paciente-dialog.component';
 import { style } from '@angular/animations';
 import { MostrarConversacionDialogComponent } from '@app/chats/mostrarConversacion/mostrarConversacion-dialog.component';
-import { PrescripcionesRComponent } from './prescripciones/prescripciones.component';
 import { RecordatorioComponent } from 'app/perfil-medico/pacientesVistaMedico/recordatorios/recordatorio.component';
 
 class PagedPacientesRequestDto extends PagedRequestDto {
@@ -53,30 +50,10 @@ export class PacientesVistaResponsableComponent extends PagedListingComponentBas
 
 
     delete(){}
-
-
-    masDetalles (paciente: PacienteDto){
-        this._dialog.open(MoreDetailsDialogRComponent, {data : paciente.id});
-    }
-
-    misResponsables (paciente: PacienteDto){
-        this._dialog.open(ResponsablesDialogRComponent, {data : paciente});
-    }
-
-    misEnfermedades (paciente: PacienteDto){
-        this._dialog.open(EnfermedadesDialogRComponent, {data : paciente});
-    }
+    
 
     contactar(paciente:PacienteDto){
         this._dialog.open(MostrarConversacionDialogComponent, {data:paciente.datosPersonalesUserName});
-    }
-
-    misPrescripciones(paciente:PacienteDto){
-        this._dialog.open(PrescripcionesRComponent, {data: paciente.id});
-    }
-
-    misRecordatorios(paciente:PacienteDto){
-        this._dialog.open(RecordatorioComponent, {data: paciente.id});
     }
 
     search(){

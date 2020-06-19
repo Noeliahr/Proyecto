@@ -61,11 +61,11 @@ export class EnfermedadesDialogComponent extends AppComponentBase  {
     
     buscar(){
 
-        if (this.filter!= ' '){
+        if (this.filter!=''){
             this._enfermedadService.buscarByNombre(this.idPaciente,this.filter)
-        .subscribe(result  => {
-            this.enfermedades = result.items;
-        });
+            .subscribe(result  => {this.enfermedades = result.items;});
+        }else {
+            this.ngOnInit();
         }
         
     }
@@ -91,8 +91,15 @@ export class EnfermedadesDialogComponent extends AppComponentBase  {
     }
 
     asociar(){
+        const enfer= [];
+        enfer[0]= this.idPaciente;
+
+        for (let enf of this.enfermedades){
+            enfer[enfer.length]=enf.enfermedad.id;
+        }
+
         this._dialog.open(AgregarEnfermedadDialogComponent, {
-            data: this.idPaciente
+            data: enfer
         }).afterClosed().subscribe(result => {
             if (result) {
                 this.ngOnInit();

@@ -78,12 +78,7 @@ import { RecordatorioComponent } from './perfil-medico/pacientesVistaMedico/reco
 import { CreateRecordatorioDialogComponent } from './perfil-medico/pacientesVistaMedico/recordatorios/create-recordatorios/create-recordatorio-dialog.component';
 import { PacientesVistaResponsableComponent } from './perfil-responsable/pacientesVistaResponsable/pacientes.component';
 import { MoreDetailsDialogRComponent } from './perfil-responsable/pacientesVistaResponsable/moredetails/moredetails-paciente-dialog.component';
-import { ResponsablesDialogRComponent } from './perfil-responsable/pacientesVistaResponsable/responsables-paciente/responsables-paciente-dialog.component';
-import { EnfermedadesDialogRComponent } from './perfil-responsable/pacientesVistaResponsable/enfermedades-paciente/enfermedades-paciente-dialog.component';
 import { CitaPacienteRComponent } from './perfil-responsable/pacientesVistaResponsable/citas-paciente/citas-paciente.component';
-import { PrescripcionesRComponent } from './perfil-responsable/pacientesVistaResponsable/prescripciones/prescripciones.component';
-import { ControlpacienteVMComponent } from './controlesdetemperatura/control-pacienteVistaMedico/control-pacienteVM.component';
-import { ControlpacienteVRComponent } from './controlesdetemperatura/control-pacienteVistaResponsable/control-pacienteVR.component';
 
 
 @NgModule({
@@ -142,19 +137,15 @@ import { ControlpacienteVRComponent } from './controlesdetemperatura/control-pac
     MiAgendaComponent,
     PrescripcionesComponent,
     CreatePrescripcionDialogComponent,
-    ControlpacienteVMComponent,
+    
 
     //responsables
     PerfilResponsableComponent,
     EditResponsableDialogComponent,
     PacientesVistaResponsableComponent,
     MoreDetailsDialogRComponent,
-    ResponsablesDialogRComponent,
-    EnfermedadesDialogRComponent,
     CitaPacienteRComponent,
-    PrescripcionesRComponent,
-    ControlpacienteVRComponent,
-
+    
 
 
     ChatsComponent,
@@ -233,11 +224,8 @@ import { ControlpacienteVRComponent } from './controlesdetemperatura/control-pac
     EditResponsableDialogComponent,
     PacientesVistaResponsableComponent,
     MoreDetailsDialogRComponent,
-    ResponsablesDialogRComponent,
-    EnfermedadesDialogRComponent,
     CitaPacienteRComponent,
-    PrescripcionesRComponent,
-
+    
 
 
     ChatsComponent,

@@ -15,6 +15,8 @@ namespace WSControlPacientesApi.ControlPacienteApi.Pacientes.Dto
         [MaxLength(13)]
         public long NumSeguridadSocial { get; set; }
 
+        public string PacienteDatosPersonalesFullName { get; set; }
+
         public ICollection<PacienteMiResponsableDto> Responsables { get; set; }
     }
 }

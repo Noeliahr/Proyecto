@@ -8,7 +8,6 @@
                 <mat-dialog-content>
                     <mat-tab-group>
                         <mat-tab [label]="'Elegir Responsable' | localize">
-                            
                                 <form>
                                     <div class="row">
                                         <div class="col-md-6">
@@ -22,7 +21,7 @@
                                     </div>
                                 </form>
                             
-                            <table class="table table-hover table-striped" [busy]="isTableLoading">
+                            <table class="table table-striped">
                                 <thead>
                                     <tr>
                                         <th>{{"Login" | localize}}</th>
@@ -30,16 +29,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="
-                            let respon of (responsables
-                            | paginate
-                                : {
-                                    id: 'server',
-                                    itemsPerPage: pageSize,
-                                    currentPage: pageNumber,
-                                    totalItems: totalItems
-                                })
-                        ">
+                                    <tr *ngFor="let respon of (responsables)">
                                         <td>{{ respon.datosPersonalesUserName }} </td>
                                         <td>{{ respon.datosPersonalesName }} {{ respon.datosPersonalesSurname }}</td>
                                         <td>
@@ -158,7 +148,6 @@
                                     {{ "Cancel" | localize }}
                                 </button>
                                 <button mat-flat-button
-                                        type="submit"
                                         flex="15"
                                         color="primary"
                                         (click)="saveyguardar()">

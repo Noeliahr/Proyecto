@@ -85,7 +85,7 @@ export class MiAgendaComponent extends PagedListingComponentBase<CitaDto> {
     cancelar(cita: CitaDto){
         this.parametros[0]= cita.fechaHora.toLocaleString();
         this.parametros[1]= "Medico";
-        this.parametros[2]= cita.medicoDatosPersonalesUserName;
+        this.parametros[2]= cita.pacienteDatosPersonalesUserName;
 
 
         this._agendaService.anularCita(cita.id)

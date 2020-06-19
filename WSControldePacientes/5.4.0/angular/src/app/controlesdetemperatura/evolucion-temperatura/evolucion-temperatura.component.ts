@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material';
 import { finalize } from 'rxjs/operators';
 import { Moment } from 'moment';
 import { PedirTemperaturaComponent } from './pedirTemperatura/pedir-temperatura.component';
+import { ActivatedRoute } from '@angular/router';
 
 
 class PagedPacientesRequestDto extends PagedRequestDto {
@@ -29,21 +30,21 @@ export class EvolucionTemperaturaComponent extends PagedListingComponentBase<Con
     injector: Injector,
     private _controlService:ControldeTemperaturaServiceProxy,
     private _dialog: MatDialog,
+    private rutaActiva: ActivatedRoute,
     ) {
       super(injector);
      }
 
 
 
-  list(request: PagedPacientesRequestDto,
-    pageNumber: number,
-    finishedCallback: Function
-    ): void{
-      this._controlService.get().pipe(
-        finalize(() => {
-            finishedCallback();
-        })
-    )
+  list(): void{
+      this.idPaciente=this.rutaActiva.snapshot.params.id;
+
+      if (this.idPaciente==0 || this.idPaciente== null){
+        this.idPaciente= this.appSession.userId;
+    }
+
+      this._controlService.get(this.idPaciente)
       .subscribe(result  => {
           this.controles = result.items;
           this.fechaInicio= this.controles[0].fecha;
@@ -51,21 +52,13 @@ export class EvolucionTemperaturaComponent extends PagedListingComponentBase<Con
           this.fechaFinal= this.controles[this.controles.length-1].fecha;
       });
 
-      this._controlService.getByToday().pipe(
-        finalize(() => {
-            finishedCallback();
-        })
-    )
+      this._controlService.getByToday(this.idPaciente)
       .subscribe(result  => {
           this.evolucion = result.items;
       });
 
 
-      this._controlService.getByFecha(this.fecha).pipe(
-        finalize(() => {
-            finishedCallback();
-        })
-    )
+      this._controlService.getByFecha(this.idPaciente, this.fecha)
       .subscribe(result  => {
           this.evoluciondeDia = result.items;
       });
@@ -74,7 +67,7 @@ export class EvolucionTemperaturaComponent extends PagedListingComponentBase<Con
 
 
     search(){
-      this._controlService.getByFecha(this.fecha)
+      this._controlService.getByFecha(this.idPaciente, this.fecha)
       .subscribe(result  => {
           this.evoluciondeDia = result.items;
       });

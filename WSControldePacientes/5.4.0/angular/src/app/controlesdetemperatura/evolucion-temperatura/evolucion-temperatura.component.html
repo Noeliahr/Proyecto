@@ -2,9 +2,6 @@
     <div class="flex-row-item uno">
         <div class="row">
             <h4 style="display: inline;">Control de temperatura desde {{fechaInicio|date:'short'}}  hasta  {{fechaFinal| date:'short'}} </h4>
-            <div style="display: inline;">
-                <button style="float:right; margin-bottom: 15px;" mat-raised-button color="primary" (click)="create()"><i class="fa fa-plus" aria-hidden="true"></i> {{ 'Añadir Nueva Temperatura' | localize }}</button>
-            </div>
         </div>    
         <mat-card>
             <app-controlesde-temperatura [evolucion]="controles">

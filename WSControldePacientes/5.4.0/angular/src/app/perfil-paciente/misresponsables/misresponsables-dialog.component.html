@@ -5,6 +5,18 @@
                 <h2><mat-icon>supervisor_account</mat-icon>{{ "Responsables" | localize }}</h2>
             </div>
             <div class="body table-responsive">
+                <form>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <mat-form-field>
+                                <input matInput [placeholder]="l('UserName')" [(ngModel)]="filter" name="filter">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-6 text-right p-r-25">
+                            <button mat-raised-button color="primary" (click)="buscar()">{{ 'Search' | localize }}</button>
+                        </div>
+                    </div>
+                </form>
                 <div *ngFor="  let respon of (responsables.responsables)">
                     <div style="background-color:#E8F6F1; padding: 10px;">
                         <button style="float:right; margin-top: 30px; margin-right: 40px;" class="action-button" mat-icon-button (click)="contactar(respon.responsable)">

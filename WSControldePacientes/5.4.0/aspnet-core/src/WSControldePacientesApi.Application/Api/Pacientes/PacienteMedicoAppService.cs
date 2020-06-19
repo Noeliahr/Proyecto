@@ -21,6 +21,8 @@ using WSControldePacientesApi.ControlPacientes.Pacientes;
 using WSControldePacientesApi.ControlPacientes.PacientesResponsables;
 using WSControlPacientesApi.ControlPacienteApi.ControlesTemperaturas.Dto;
 using WSControlPacientesApi.ControlPacienteApi.Pacientes.Dto;
+using WSControlPacientesApi.ControlPacienteApi.PacientesResponsables.Dto;
+
 namespace WSControldePacientesApi.Api.Pacientes
 {
     [AbpAuthorize(PermissionNames.Pages_PacienteMedico)]
@@ -133,6 +135,36 @@ namespace WSControldePacientesApi.Api.Pacientes
             await _pacienteRepository.UpdateAsync(pacientes);
 
             return ObjectMapper.Map<MisResponsables>(pacientes);
+        }
+
+        public async Task<MisResponsables> BuscarResponsableByUserName(int user, string userName)
+        {
+
+            var pacientes = await _pacienteRepository.GetAll()
+                .Include(p => p.DatosPersonales)
+                .Include(pacientes => pacientes.MisResponsables)
+                    .ThenInclude(pacientes => pacientes.Responsable)
+                        .ThenInclude(pacientes => pacientes.DatosPersonales)
+                .Where(pacientes => pacientes.Id == user)
+                .FirstOrDefaultAsync();
+
+            List<PacienteResponsable> misResponsables = new List<PacienteResponsable>();
+
+            foreach (PacienteResponsable miResponsableDto in pacientes.MisResponsables)
+            {
+                if (miResponsableDto.Responsable.DatosPersonales.UserName == userName)
+                {
+                    misResponsables.Add(miResponsableDto);
+                }
+            }
+
+            MisResponsables responsables = new MisResponsables();
+            responsables.Responsables = ObjectMapper.Map<List<PacienteMiResponsableDto>>(misResponsables);
+            responsables.NumSeguridadSocial = pacientes.NumSeguridadSocial;
+            responsables.PacienteDatosPersonalesFullName = pacientes.DatosPersonales.FullName;
+
+
+            return responsables;
         }
 
 

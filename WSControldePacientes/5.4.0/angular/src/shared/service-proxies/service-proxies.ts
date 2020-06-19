@@ -610,10 +610,15 @@ export class ControldeTemperaturaServiceProxy {
     }
 
     /**
+     * @param user (optional) 
      * @return Success
      */
-    get(): Observable<ControlTemperaturaDtoListResultDto> {
-        let url_ = this.baseUrl + "/api/services/app/ControldeTemperatura/Get";
+    get(user: number | undefined): Observable<ControlTemperaturaDtoListResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/ControldeTemperatura/Get?";
+        if (user === null)
+            throw new Error("The parameter 'user' cannot be null.");
+        else if (user !== undefined)
+            url_ += "user=" + encodeURIComponent("" + user) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -661,10 +666,15 @@ export class ControldeTemperaturaServiceProxy {
     }
 
     /**
+     * @param user (optional) 
      * @return Success
      */
-    getByToday(): Observable<ControlTemperaturaDtoListResultDto> {
-        let url_ = this.baseUrl + "/api/services/app/ControldeTemperatura/GetByToday";
+    getByToday(user: number | undefined): Observable<ControlTemperaturaDtoListResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/ControldeTemperatura/GetByToday?";
+        if (user === null)
+            throw new Error("The parameter 'user' cannot be null.");
+        else if (user !== undefined)
+            url_ += "user=" + encodeURIComponent("" + user) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -712,11 +722,16 @@ export class ControldeTemperaturaServiceProxy {
     }
 
     /**
+     * @param user (optional) 
      * @param fecha (optional) 
      * @return Success
      */
-    getByFecha(fecha: moment.Moment | undefined): Observable<ControlTemperaturaDtoListResultDto> {
+    getByFecha(user: number | undefined, fecha: moment.Moment | undefined): Observable<ControlTemperaturaDtoListResultDto> {
         let url_ = this.baseUrl + "/api/services/app/ControldeTemperatura/GetByFecha?";
+        if (user === null)
+            throw new Error("The parameter 'user' cannot be null.");
+        else if (user !== undefined)
+            url_ += "user=" + encodeURIComponent("" + user) + "&";
         if (fecha === null)
             throw new Error("The parameter 'fecha' cannot be null.");
         else if (fecha !== undefined)
@@ -1007,10 +1022,15 @@ export class DatosPacienteServiceProxy {
     }
 
     /**
+     * @param user (optional) 
      * @return Success
      */
-    getMisResponsables(): Observable<MisResponsables> {
-        let url_ = this.baseUrl + "/api/services/app/DatosPaciente/GetMisResponsables";
+    getMisResponsables(user: number | undefined): Observable<MisResponsables> {
+        let url_ = this.baseUrl + "/api/services/app/DatosPaciente/GetMisResponsables?";
+        if (user === null)
+            throw new Error("The parameter 'user' cannot be null.");
+        else if (user !== undefined)
+            url_ += "user=" + encodeURIComponent("" + user) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -1058,10 +1078,76 @@ export class DatosPacienteServiceProxy {
     }
 
     /**
+     * @param user (optional) 
+     * @param userName (optional) 
      * @return Success
      */
-    getMisEnfermedades(): Observable<MisEnfermedades> {
-        let url_ = this.baseUrl + "/api/services/app/DatosPaciente/GetMisEnfermedades";
+    buscarResponsableByUserName(user: number | undefined, userName: string | undefined): Observable<MisResponsables> {
+        let url_ = this.baseUrl + "/api/services/app/DatosPaciente/BuscarResponsableByUserName?";
+        if (user === null)
+            throw new Error("The parameter 'user' cannot be null.");
+        else if (user !== undefined)
+            url_ += "user=" + encodeURIComponent("" + user) + "&";
+        if (userName === null)
+            throw new Error("The parameter 'userName' cannot be null.");
+        else if (userName !== undefined)
+            url_ += "userName=" + encodeURIComponent("" + userName) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processBuscarResponsableByUserName(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processBuscarResponsableByUserName(<any>response_);
+                } catch (e) {
+                    return <Observable<MisResponsables>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<MisResponsables>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processBuscarResponsableByUserName(response: HttpResponseBase): Observable<MisResponsables> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = MisResponsables.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<MisResponsables>(<any>null);
+    }
+
+    /**
+     * @param user (optional) 
+     * @return Success
+     */
+    getMisEnfermedades(user: number | undefined): Observable<MisEnfermedades> {
+        let url_ = this.baseUrl + "/api/services/app/DatosPaciente/GetMisEnfermedades?";
+        if (user === null)
+            throw new Error("The parameter 'user' cannot be null.");
+        else if (user !== undefined)
+            url_ += "user=" + encodeURIComponent("" + user) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -1109,10 +1195,76 @@ export class DatosPacienteServiceProxy {
     }
 
     /**
+     * @param user (optional) 
+     * @param nombre (optional) 
      * @return Success
      */
-    getMisPrescripciones(): Observable<MisPrescripciones> {
-        let url_ = this.baseUrl + "/api/services/app/DatosPaciente/GetMisPrescripciones";
+    buscarEnfermedadesByNombre(user: number | undefined, nombre: string | undefined): Observable<MisEnfermedades> {
+        let url_ = this.baseUrl + "/api/services/app/DatosPaciente/BuscarEnfermedadesByNombre?";
+        if (user === null)
+            throw new Error("The parameter 'user' cannot be null.");
+        else if (user !== undefined)
+            url_ += "user=" + encodeURIComponent("" + user) + "&";
+        if (nombre === null)
+            throw new Error("The parameter 'nombre' cannot be null.");
+        else if (nombre !== undefined)
+            url_ += "nombre=" + encodeURIComponent("" + nombre) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processBuscarEnfermedadesByNombre(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processBuscarEnfermedadesByNombre(<any>response_);
+                } catch (e) {
+                    return <Observable<MisEnfermedades>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<MisEnfermedades>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processBuscarEnfermedadesByNombre(response: HttpResponseBase): Observable<MisEnfermedades> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = MisEnfermedades.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<MisEnfermedades>(<any>null);
+    }
+
+    /**
+     * @param user (optional) 
+     * @return Success
+     */
+    getMisPrescripciones(user: number | undefined): Observable<MisPrescripciones> {
+        let url_ = this.baseUrl + "/api/services/app/DatosPaciente/GetMisPrescripciones?";
+        if (user === null)
+            throw new Error("The parameter 'user' cannot be null.");
+        else if (user !== undefined)
+            url_ += "user=" + encodeURIComponent("" + user) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -1160,10 +1312,15 @@ export class DatosPacienteServiceProxy {
     }
 
     /**
+     * @param user (optional) 
      * @return Success
      */
-    getMisRecordatorios(): Observable<MisRecordatorios> {
-        let url_ = this.baseUrl + "/api/services/app/DatosPaciente/GetMisRecordatorios";
+    getMisRecordatorios(user: number | undefined): Observable<MisRecordatorios> {
+        let url_ = this.baseUrl + "/api/services/app/DatosPaciente/GetMisRecordatorios?";
+        if (user === null)
+            throw new Error("The parameter 'user' cannot be null.");
+        else if (user !== undefined)
+            url_ += "user=" + encodeURIComponent("" + user) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -1211,11 +1368,16 @@ export class DatosPacienteServiceProxy {
     }
 
     /**
+     * @param user (optional) 
      * @param fecha (optional) 
      * @return Success
      */
-    getMisRecordatoriosByFecha(fecha: moment.Moment | undefined): Observable<MisRecordatorios> {
+    getMisRecordatoriosByFecha(user: number | undefined, fecha: moment.Moment | undefined): Observable<MisRecordatorios> {
         let url_ = this.baseUrl + "/api/services/app/DatosPaciente/GetMisRecordatoriosByFecha?";
+        if (user === null)
+            throw new Error("The parameter 'user' cannot be null.");
+        else if (user !== undefined)
+            url_ += "user=" + encodeURIComponent("" + user) + "&";
         if (fecha === null)
             throw new Error("The parameter 'fecha' cannot be null.");
         else if (fecha !== undefined)
@@ -1398,10 +1560,15 @@ export class EnfermedadServiceProxy {
     }
 
     /**
+     * @param ids (optional) 
      * @return Success
      */
-    getAll(): Observable<EnfermedadDtoListResultDto> {
-        let url_ = this.baseUrl + "/api/services/app/Enfermedad/GetAll";
+    getAll(ids: number[] | undefined): Observable<EnfermedadDtoListResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/Enfermedad/GetAll?";
+        if (ids === null)
+            throw new Error("The parameter 'ids' cannot be null.");
+        else if (ids !== undefined)
+            ids && ids.forEach(item => { url_ += "ids=" + encodeURIComponent("" + item) + "&"; });
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -3813,6 +3980,67 @@ export class PacienteMedicoServiceProxy {
     }
 
     /**
+     * @param user (optional) 
+     * @param userName (optional) 
+     * @return Success
+     */
+    buscarResponsableByUserName(user: number | undefined, userName: string | undefined): Observable<MisResponsables> {
+        let url_ = this.baseUrl + "/api/services/app/PacienteMedico/BuscarResponsableByUserName?";
+        if (user === null)
+            throw new Error("The parameter 'user' cannot be null.");
+        else if (user !== undefined)
+            url_ += "user=" + encodeURIComponent("" + user) + "&";
+        if (userName === null)
+            throw new Error("The parameter 'userName' cannot be null.");
+        else if (userName !== undefined)
+            url_ += "userName=" + encodeURIComponent("" + userName) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processBuscarResponsableByUserName(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processBuscarResponsableByUserName(<any>response_);
+                } catch (e) {
+                    return <Observable<MisResponsables>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<MisResponsables>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processBuscarResponsableByUserName(response: HttpResponseBase): Observable<MisResponsables> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = MisResponsables.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<MisResponsables>(<any>null);
+    }
+
+    /**
      * @param id (optional) 
      * @return Success
      */
@@ -5660,10 +5888,15 @@ export class ResponsableServiceProxy {
     }
 
     /**
+     * @param ids (optional) 
      * @return Success
      */
-    getAll(): Observable<ResponsableDtoListResultDto> {
-        let url_ = this.baseUrl + "/api/services/app/Responsable/GetAll";
+    getAll(ids: number[] | undefined): Observable<ResponsableDtoListResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/Responsable/GetAll?";
+        if (ids === null)
+            throw new Error("The parameter 'ids' cannot be null.");
+        else if (ids !== undefined)
+            ids && ids.forEach(item => { url_ += "ids=" + encodeURIComponent("" + item) + "&"; });
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -8416,6 +8649,7 @@ export interface IPacienteMiResponsableDto {
 
 export class MisResponsables implements IMisResponsables {
     numSeguridadSocial: number;
+    pacienteDatosPersonalesFullName: string | undefined;
     responsables: PacienteMiResponsableDto[] | undefined;
     id: number;
 
@@ -8431,6 +8665,7 @@ export class MisResponsables implements IMisResponsables {
     init(_data?: any) {
         if (_data) {
             this.numSeguridadSocial = _data["numSeguridadSocial"];
+            this.pacienteDatosPersonalesFullName = _data["pacienteDatosPersonalesFullName"];
             if (Array.isArray(_data["responsables"])) {
                 this.responsables = [] as any;
                 for (let item of _data["responsables"])
@@ -8450,6 +8685,7 @@ export class MisResponsables implements IMisResponsables {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["numSeguridadSocial"] = this.numSeguridadSocial;
+        data["pacienteDatosPersonalesFullName"] = this.pacienteDatosPersonalesFullName;
         if (Array.isArray(this.responsables)) {
             data["responsables"] = [];
             for (let item of this.responsables)
@@ -8469,6 +8705,7 @@ export class MisResponsables implements IMisResponsables {
 
 export interface IMisResponsables {
     numSeguridadSocial: number;
+    pacienteDatosPersonalesFullName: string | undefined;
     responsables: PacienteMiResponsableDto[] | undefined;
     id: number;
 }
@@ -9174,6 +9411,7 @@ export interface IEnfermedadPacienteDtoListResultDto {
 
 export class PacienteDto implements IPacienteDto {
     numSeguridadSocial: number;
+    datosPersonalesId: number;
     datosPersonalesUserName: string | undefined;
     datosPersonalesName: string | undefined;
     datosPersonalesSurname: string | undefined;
@@ -9194,6 +9432,7 @@ export class PacienteDto implements IPacienteDto {
     init(_data?: any) {
         if (_data) {
             this.numSeguridadSocial = _data["numSeguridadSocial"];
+            this.datosPersonalesId = _data["datosPersonalesId"];
             this.datosPersonalesUserName = _data["datosPersonalesUserName"];
             this.datosPersonalesName = _data["datosPersonalesName"];
             this.datosPersonalesSurname = _data["datosPersonalesSurname"];
@@ -9214,6 +9453,7 @@ export class PacienteDto implements IPacienteDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["numSeguridadSocial"] = this.numSeguridadSocial;
+        data["datosPersonalesId"] = this.datosPersonalesId;
         data["datosPersonalesUserName"] = this.datosPersonalesUserName;
         data["datosPersonalesName"] = this.datosPersonalesName;
         data["datosPersonalesSurname"] = this.datosPersonalesSurname;
@@ -9234,6 +9474,7 @@ export class PacienteDto implements IPacienteDto {
 
 export interface IPacienteDto {
     numSeguridadSocial: number;
+    datosPersonalesId: number;
     datosPersonalesUserName: string | undefined;
     datosPersonalesName: string | undefined;
     datosPersonalesSurname: string | undefined;

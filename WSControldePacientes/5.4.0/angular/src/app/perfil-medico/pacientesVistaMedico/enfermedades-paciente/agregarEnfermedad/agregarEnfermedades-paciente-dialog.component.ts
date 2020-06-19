@@ -43,19 +43,13 @@ export class AgregarEnfermedadDialogComponent extends PagedListingComponentBase<
         //private _misresponService: MisResponsablesServiceProxy,
         private _dialogRef: MatDialogRef<AgregarEnfermedadDialogComponent>,
         private _dialog: MatDialog,
-        @Optional() @Inject(MAT_DIALOG_DATA) private _paciente: number
+        @Optional() @Inject(MAT_DIALOG_DATA) private _paciente: number[]
     ) {
         super(injector);
     }
 
-    list(
-        request: PagedResponsablesRequestDto,
-        pageNumber: number,
-        finishedCallback: Function
-    ): void {
-
-        request.filter = this.filter;
-        this._enfermedadesService.getAll()
+    list(): void {
+        this._enfermedadesService.getAll(this._paciente)
             .subscribe(result  => {
                 this.enfermedades = result.items;
             });
@@ -80,7 +74,7 @@ export class AgregarEnfermedadDialogComponent extends PagedListingComponentBase<
             (result: boolean) => {
                 if (result) {
                     this._enfermedadesPacienteService
-                        .addEnfermedad(this._paciente, enfermedad)
+                        .addEnfermedad(this._paciente[0], enfermedad)
                         .pipe(
                             finalize(() => {
                                 abp.notify.success(this.l('Enfermedad Añadida al Paciente'));

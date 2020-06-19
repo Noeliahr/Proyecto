@@ -40,26 +40,15 @@ export class AsociarResponsableDialogComponent extends PagedListingComponentBase
         private _misresponService: MisResponsablesServiceProxy,
         private _dialogRef: MatDialogRef<AsociarResponsableDialogComponent>,
         private _dialog: MatDialog,
-        @Optional() @Inject(MAT_DIALOG_DATA) private _paciente: number
+        @Optional() @Inject(MAT_DIALOG_DATA) private _paciente: number[]
     ) {
         super(injector);
     }
 
-    list(
-        request: PagedResponsablesRequestDto,
-        pageNumber: number,
-        finishedCallback: Function
-    ): void {
-
-        request.filter = this.filter;
+    list(): void {
 
         this._responsableService
-            .getAll()
-            .pipe(
-                finalize(() => {
-                    finishedCallback();
-                })
-            )
+            .getAll(this._paciente)
             .subscribe(result  => {
                 this.responsables = result.items;
             });
@@ -85,7 +74,7 @@ export class AsociarResponsableDialogComponent extends PagedListingComponentBase
             (result: boolean) => {
                 if (result) {
                     this._misresponService
-                        .asociarResponsables(this._paciente, responsable.id)
+                        .asociarResponsables(this._paciente[0], responsable.id)
                         .pipe(
                             finalize(() => {
                                 abp.notify.success(this.l('Responsable Asociado'));

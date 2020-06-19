@@ -12,6 +12,8 @@ namespace WSControlPacientesApi.ControlPacienteApi.Pacientes.Dto
     {
         public long NumSeguridadSocial { get; set; }
 
+        public long DatosPersonalesId { get; set; }
+
         [StringLength(AbpUserBase.MaxUserNameLength)]
         public string DatosPersonalesUserName { get; set; }
 

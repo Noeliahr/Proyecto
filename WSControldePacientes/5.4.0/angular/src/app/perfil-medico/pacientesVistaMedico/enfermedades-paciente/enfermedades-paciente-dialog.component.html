@@ -9,9 +9,6 @@
                 </button>
             
             </div>
-            <button style="display:scroll; position:fixed; bottom:20px; right:10px; margin-bottom: 15px;" mat-raised-button color="primary" (click)="asociar()">
-                <i class="fa fa-plus" aria-hidden="true"></i>  Añadir nueva enfermedad
-            </button>
             <div class="body table-responsive">
                 <form>
                     <div class="row">
@@ -52,7 +49,9 @@
                         <h5> No tiene ninguna enfermedad</h5>
                     </div>
                 </ng-template>
-                
+                <button style="display:inline-block; float:right;" mat-raised-button color="primary" (click)="asociar()">
+                    <i class="fa fa-plus" aria-hidden="true"></i>  Añadir nueva enfermedad
+                </button>
             </div>
         </div>
     </div>

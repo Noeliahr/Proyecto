@@ -69,13 +69,28 @@ namespace WSControldePacientesApi.Api.Responsables
         }
 
 
-        public async Task<ListResultDto<ResponsableDto>> GetAll()
+        public async Task<ListResultDto<ResponsableDto>> GetAll(int [] ids)
         {
             var responsables = await _responsableRepository.GetAll()
                 .Include(r=> r.DatosPersonales)
                 .ToListAsync();
 
-            return new ListResultDto<ResponsableDto>(ObjectMapper.Map<List<ResponsableDto>>(responsables));
+            List<Responsable> enfers = new List<Responsable>();
+            enfers = responsables;
+
+            for (int i = 1; i < ids.Length; i++)
+            {
+                for (int j = 0; j < responsables.Count; j++)
+                {
+                    if (responsables.ElementAt(j).Id == ids[i])
+                    {
+                        enfers.RemoveAt(j);
+                        j--;
+                    }
+                }
+            }
+
+            return new ListResultDto<ResponsableDto>(ObjectMapper.Map<List<ResponsableDto>>(enfers));
         }
 
 
