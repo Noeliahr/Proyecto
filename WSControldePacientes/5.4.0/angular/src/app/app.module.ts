@@ -43,7 +43,7 @@ import { ResetPasswordDialogComponent } from './users/reset-password/reset-passw
 
 // paciente
 import { PacientesComponent } from './perfil-medico/pacientesVistaMedico/pacientes.component';
-import { PacienteMedicoCabeceraServiceProxy, ResponsableServiceProxy, MisResponsablesServiceProxy, CitasServiceProxy, EnfermedadPacienteServiceProxy, EnfermedadServiceProxy, DatosPacienteServiceProxy, MiCitaMedicaServiceProxy, MensajeServiceProxy, ControldeTemperaturaServiceProxy, DatosMedicoServiceProxy, DatosResponsablesServiceProxy, AgendaServiceProxy, PrescripcionServiceProxy, MedicamentosServiceProxy, RecordatorioServiceProxy, PacienteMedicoServiceProxy, PacienteResponsableServiceProxy } from '@shared/service-proxies/service-proxies';
+import { PacienteMedicoCabeceraServiceProxy, ResponsableServiceProxy, MisResponsablesServiceProxy, CitasServiceProxy, EnfermedadPacienteServiceProxy, EnfermedadServiceProxy, DatosPacienteServiceProxy, MiCitaMedicaServiceProxy, MensajeServiceProxy, ControldeTemperaturaServiceProxy, DatosMedicoServiceProxy, DatosResponsablesServiceProxy, AgendaServiceProxy, PrescripcionServiceProxy, MedicamentosServiceProxy, RecordatorioServiceProxy, PacienteMedicoServiceProxy, PacienteResponsableServiceProxy, CreateMedicoServiceProxy, MedicosServiceProxy } from '@shared/service-proxies/service-proxies';
 import { CreatePacienteDialogComponent } from './perfil-medico/pacientesVistaMedico/create-paciente/create-paciente-dialog.component';
 import {MoreDetailsDialogComponent} from './perfil-medico/pacientesVistaMedico/moredetails/moredetails-paciente-dialog.component';
 import {ResponsablesDialogComponent} from './perfil-medico/pacientesVistaMedico/responsables-paciente/responsables-paciente-dialog.component';
@@ -79,6 +79,8 @@ import { CreateRecordatorioDialogComponent } from './perfil-medico/pacientesVist
 import { PacientesVistaResponsableComponent } from './perfil-responsable/pacientesVistaResponsable/pacientes.component';
 import { MoreDetailsDialogRComponent } from './perfil-responsable/pacientesVistaResponsable/moredetails/moredetails-paciente-dialog.component';
 import { CitaPacienteRComponent } from './perfil-responsable/pacientesVistaResponsable/citas-paciente/citas-paciente.component';
+import { CreateMedicoDialogComponent } from './medico/create-medico/create-medico-dialog.component';
+import { MedicosComponent } from './medico/medico.component';
 
 
 @NgModule({
@@ -154,6 +156,9 @@ import { CitaPacienteRComponent } from './perfil-responsable/pacientesVistaRespo
 
     RecordatorioComponent,
     CreateRecordatorioDialogComponent,
+
+    MedicosComponent,
+    CreateMedicoDialogComponent
     
   ],
   imports: [
@@ -174,7 +179,7 @@ import { CitaPacienteRComponent } from './perfil-responsable/pacientesVistaRespo
     CitasServiceProxy,EnfermedadPacienteServiceProxy, EnfermedadServiceProxy, DatosPacienteServiceProxy, 
     MiCitaMedicaServiceProxy,MensajeServiceProxy, ControldeTemperaturaServiceProxy,DatosMedicoServiceProxy,
     DatosResponsablesServiceProxy, AgendaServiceProxy, PrescripcionServiceProxy, MedicamentosServiceProxy, 
-    RecordatorioServiceProxy, PacienteMedicoServiceProxy, PacienteResponsableServiceProxy],
+    RecordatorioServiceProxy, PacienteMedicoServiceProxy, PacienteResponsableServiceProxy,CreateMedicoServiceProxy, MedicosServiceProxy],
   entryComponents: [
     // tenants
     CreateTenantDialogComponent,
@@ -234,6 +239,9 @@ import { CitaPacienteRComponent } from './perfil-responsable/pacientesVistaRespo
 
     RecordatorioComponent,
     CreateRecordatorioDialogComponent,
+
+    MedicosComponent,
+    CreateMedicoDialogComponent
 
   ]
 })

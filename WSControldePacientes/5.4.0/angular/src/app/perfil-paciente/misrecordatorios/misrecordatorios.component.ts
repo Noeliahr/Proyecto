@@ -34,7 +34,13 @@ export class MisRecordatoriosComponent extends AppComponentBase  {
     paciente: PacienteDto= new PacienteDto();
     idPaciente : number;
 
+    isRecordatoriosHoy : number;
+
     hoy:any = new Date();
+    hoy_mas_10m: Date = new Date();
+    hoy_menos_10m: Date = new Date();
+
+    notificacion : string;
       
     constructor(
         injector: Injector,
@@ -48,15 +54,28 @@ export class MisRecordatoriosComponent extends AppComponentBase  {
 
   
     ngOnInit() {
+        this.hoy_mas_10m.setMinutes(this.hoy.getMinutes() + 30);
+        this.hoy_menos_10m.setMinutes(this.hoy.getMinutes() - 30);
+
         this.idPaciente=this.rutaActiva.snapshot.params.id;
         if (this.idPaciente==0 || this.idPaciente== null){
             this.idPaciente= this.appSession.userId;
         }
         this._pacienteService.getMisRecordatoriosByFecha(this.idPaciente, this.hoy)
-                .subscribe(result=> this.recordatoriosHoy= result);
+                .subscribe((result)=>{ 
+                    this.recordatoriosHoy= result;
+                    this.isRecordatoriosHoy=this.recordatoriosHoy.recordatorios.length;
+
+                });
 
         this._pacienteService.getMisRecordatorios(this.idPaciente)
-                .subscribe(result=> this.recordatorios= result);
+                .subscribe((result)=> {
+                    this.recordatorios= result;
+                    this.notificacion= result.notificacion;
+                    if (this.notificacion!=null){
+                        abp.message.info(this.l(this.notificacion));
+                   }
+                });        
     }   
 
     

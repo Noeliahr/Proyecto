@@ -195,13 +195,24 @@ namespace WSControldePacientesApi.Api.Pacientes
 
         public async Task<MisRecordatorios> GetMisRecordatorios(int user)
         {
-           // var user = await _userManager.GetUserByIdAsync(AbpSession.GetUserId());
+            // var user = await _userManager.GetUserByIdAsync(AbpSession.GetUserId());
+            DateTime today = DateTime.Now;
             var recordatorios = await _pacienteRepository.GetAll()
                 .Include(p => p.MisRecordatorios)
                 .Where(p => p.DatosPersonalesId == user)
                 .FirstOrDefaultAsync();
 
-            return ObjectMapper.Map<MisRecordatorios>(recordatorios);
+            MisRecordatorios misRecordatorios = ObjectMapper.Map<MisRecordatorios>(recordatorios);
+
+            foreach (Recordatorio recordatorio in recordatorios.MisRecordatorios)
+            {
+                if (recordatorio.FechaHora <= today.AddHours(1) && recordatorio.FechaHora >= today.AddHours(-1))
+                {
+                    misRecordatorios.Notificacion = recordatorio.Texto;
+                }
+            }
+
+           return misRecordatorios;
         }
 
         public async Task<MisRecordatorios> GetMisRecordatoriosByFecha(int user,DateTime fecha)

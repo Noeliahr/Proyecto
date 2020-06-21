@@ -9,5 +9,7 @@ namespace WSControldePacientesApi.Api.Pacientes.Dto
     public class MisRecordatorios : EntityDto
     {
         public ICollection<RecordatorioDto> recordatorios { get; set; }
+
+        public string Notificacion { get; set; }
     }
 }

@@ -31,6 +31,7 @@ import { RecordatorioComponent } from './perfil-medico/pacientesVistaMedico/reco
 import { ResponsablesDialogComponent } from './perfil-medico/pacientesVistaMedico/responsables-paciente/responsables-paciente-dialog.component';
 import { MoreDetailsDialogRComponent } from './perfil-responsable/pacientesVistaResponsable/moredetails/moredetails-paciente-dialog.component';
 import { MoreDetailsDialogComponent } from './perfil-medico/pacientesVistaMedico/moredetails/moredetails-paciente-dialog.component';
+import { MedicosComponent } from './medico/medico.component';
 
 @NgModule({
     imports: [
@@ -76,6 +77,7 @@ import { MoreDetailsDialogComponent } from './perfil-medico/pacientesVistaMedico
                     { path: 'misrecordatorios/:id', component: MisRecordatoriosComponent, data: { permission: 'Pages.MisRecordatorios'},},
 
                     { path: 'chat', component: ChatsComponent, data: { permission: 'Pages.Chat'},},
+                    { path: 'medicos', component: MedicosComponent, data: { permission: 'Pages.Medicos'},},
 
                     {path: 'evolucion/:id', component: EvolucionTemperaturaComponent, data: {permission: 'Pages.MiControldeTemperatura'},}
                 ]

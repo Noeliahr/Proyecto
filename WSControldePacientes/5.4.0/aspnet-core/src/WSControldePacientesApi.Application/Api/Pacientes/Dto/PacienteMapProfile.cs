@@ -49,6 +49,7 @@ namespace WSControlPacientesApi.ControlPacienteApi.Pacientes.Dto
                 .ReverseMap();
             CreateMap<Paciente, MisPrescripciones>().ReverseMap();
             CreateMap<Paciente, MisRecordatorios>()
+                .ForMember(p=> p.Notificacion, opts=> opts.Ignore())
                 .ForMember(p => p.recordatorios, opts=> opts.MapFrom(p=> p.MisRecordatorios))
                 .ReverseMap();
 

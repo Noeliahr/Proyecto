@@ -141,6 +141,75 @@ export class AccountServiceProxy {
 }
 
 @Injectable()
+export class AddTemperaturaServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @param idPaciente (optional) 
+     * @param temperatura (optional) 
+     * @return Success
+     */
+    add(idPaciente: number | undefined, temperatura: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/AddTemperatura/Add?";
+        if (idPaciente === null)
+            throw new Error("The parameter 'idPaciente' cannot be null.");
+        else if (idPaciente !== undefined)
+            url_ += "idPaciente=" + encodeURIComponent("" + idPaciente) + "&";
+        if (temperatura === null)
+            throw new Error("The parameter 'temperatura' cannot be null.");
+        else if (temperatura !== undefined)
+            url_ += "temperatura=" + encodeURIComponent("" + temperatura) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAdd(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAdd(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processAdd(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+}
+
+@Injectable()
 export class AgendaServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -821,6 +890,70 @@ export class ControldeTemperaturaServiceProxy {
     }
 
     protected processAddNuevaTemperatura(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+}
+
+@Injectable()
+export class CreateMedicoServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    create(body: CreateMedicoDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/CreateMedico/Create";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreate(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreate(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -2188,6 +2321,79 @@ export class EnfermedadPacienteServiceProxy {
             }));
         }
         return _observableOf<EnfermedadPacienteDtoListResultDto>(<any>null);
+    }
+}
+
+@Injectable()
+export class MandarFiebreServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @param personaDestino (optional) 
+     * @param texto (optional) 
+     * @return Success
+     */
+    notificar(personaDestino: string | undefined, texto: string | undefined): Observable<boolean> {
+        let url_ = this.baseUrl + "/api/services/app/MandarFiebre/Notificar?";
+        if (personaDestino === null)
+            throw new Error("The parameter 'personaDestino' cannot be null.");
+        else if (personaDestino !== undefined)
+            url_ += "personaDestino=" + encodeURIComponent("" + personaDestino) + "&";
+        if (texto === null)
+            throw new Error("The parameter 'texto' cannot be null.");
+        else if (texto !== undefined)
+            url_ += "texto=" + encodeURIComponent("" + texto) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processNotificar(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processNotificar(<any>response_);
+                } catch (e) {
+                    return <Observable<boolean>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<boolean>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processNotificar(response: HttpResponseBase): Observable<boolean> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<boolean>(<any>null);
     }
 }
 
@@ -5126,6 +5332,78 @@ export class PacienteResponsableServiceProxy {
 }
 
 @Injectable()
+export class PersonasRelacionadasServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getResponsables(id: number | undefined): Observable<string[]> {
+        let url_ = this.baseUrl + "/api/services/app/PersonasRelacionadas/getResponsables?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetResponsables(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetResponsables(<any>response_);
+                } catch (e) {
+                    return <Observable<string[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<string[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetResponsables(response: HttpResponseBase): Observable<string[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(item);
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<string[]>(<any>null);
+    }
+}
+
+@Injectable()
 export class PrescripcionServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -5424,6 +5702,73 @@ export class PrescripcionServiceProxy {
             }));
         }
         return _observableOf<void>(<any>null);
+    }
+}
+
+@Injectable()
+export class RecorServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @return Success
+     */
+    getisRecordatorio(): Observable<string[]> {
+        let url_ = this.baseUrl + "/api/services/app/Recor/GetisRecordatorio";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetisRecordatorio(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetisRecordatorio(<any>response_);
+                } catch (e) {
+                    return <Observable<string[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<string[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetisRecordatorio(response: HttpResponseBase): Observable<string[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(item);
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<string[]>(<any>null);
     }
 }
 
@@ -8196,6 +8541,93 @@ export interface IControlTemperaturaDtoListResultDto {
     items: ControlTemperaturaDto[] | undefined;
 }
 
+export class CreateMedicoDto implements ICreateMedicoDto {
+    datosPersonalesUserName: string | undefined;
+    datosPersonalesName: string | undefined;
+    datosPersonalesSurname: string | undefined;
+    datosPersonalesEmailAddress: string | undefined;
+    datosPersonalesTelefono: string | undefined;
+    datosPersonalesIsActive: boolean;
+    datosPersonalesPassword: string | undefined;
+    datosPersonalesRoleNames: string[] | undefined;
+    especialidad: string | undefined;
+    id: number;
+
+    constructor(data?: ICreateMedicoDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.datosPersonalesUserName = _data["datosPersonalesUserName"];
+            this.datosPersonalesName = _data["datosPersonalesName"];
+            this.datosPersonalesSurname = _data["datosPersonalesSurname"];
+            this.datosPersonalesEmailAddress = _data["datosPersonalesEmailAddress"];
+            this.datosPersonalesTelefono = _data["datosPersonalesTelefono"];
+            this.datosPersonalesIsActive = _data["datosPersonalesIsActive"];
+            this.datosPersonalesPassword = _data["datosPersonalesPassword"];
+            if (Array.isArray(_data["datosPersonalesRoleNames"])) {
+                this.datosPersonalesRoleNames = [] as any;
+                for (let item of _data["datosPersonalesRoleNames"])
+                    this.datosPersonalesRoleNames.push(item);
+            }
+            this.especialidad = _data["especialidad"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): CreateMedicoDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateMedicoDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["datosPersonalesUserName"] = this.datosPersonalesUserName;
+        data["datosPersonalesName"] = this.datosPersonalesName;
+        data["datosPersonalesSurname"] = this.datosPersonalesSurname;
+        data["datosPersonalesEmailAddress"] = this.datosPersonalesEmailAddress;
+        data["datosPersonalesTelefono"] = this.datosPersonalesTelefono;
+        data["datosPersonalesIsActive"] = this.datosPersonalesIsActive;
+        data["datosPersonalesPassword"] = this.datosPersonalesPassword;
+        if (Array.isArray(this.datosPersonalesRoleNames)) {
+            data["datosPersonalesRoleNames"] = [];
+            for (let item of this.datosPersonalesRoleNames)
+                data["datosPersonalesRoleNames"].push(item);
+        }
+        data["especialidad"] = this.especialidad;
+        data["id"] = this.id;
+        return data; 
+    }
+
+    clone(): CreateMedicoDto {
+        const json = this.toJSON();
+        let result = new CreateMedicoDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICreateMedicoDto {
+    datosPersonalesUserName: string | undefined;
+    datosPersonalesName: string | undefined;
+    datosPersonalesSurname: string | undefined;
+    datosPersonalesEmailAddress: string | undefined;
+    datosPersonalesTelefono: string | undefined;
+    datosPersonalesIsActive: boolean;
+    datosPersonalesPassword: string | undefined;
+    datosPersonalesRoleNames: string[] | undefined;
+    especialidad: string | undefined;
+    id: number;
+}
+
 export class MedicoDto implements IMedicoDto {
     datosPersonalesId: number | undefined;
     datosPersonalesUserName: string | undefined;
@@ -9124,6 +9556,7 @@ export interface IRecordatorioDto {
 
 export class MisRecordatorios implements IMisRecordatorios {
     recordatorios: RecordatorioDto[] | undefined;
+    notificacion: string | undefined;
     id: number;
 
     constructor(data?: IMisRecordatorios) {
@@ -9142,6 +9575,7 @@ export class MisRecordatorios implements IMisRecordatorios {
                 for (let item of _data["recordatorios"])
                     this.recordatorios.push(RecordatorioDto.fromJS(item));
             }
+            this.notificacion = _data["notificacion"];
             this.id = _data["id"];
         }
     }
@@ -9160,6 +9594,7 @@ export class MisRecordatorios implements IMisRecordatorios {
             for (let item of this.recordatorios)
                 data["recordatorios"].push(item.toJSON());
         }
+        data["notificacion"] = this.notificacion;
         data["id"] = this.id;
         return data; 
     }
@@ -9174,6 +9609,7 @@ export class MisRecordatorios implements IMisRecordatorios {
 
 export interface IMisRecordatorios {
     recordatorios: RecordatorioDto[] | undefined;
+    notificacion: string | undefined;
     id: number;
 }
 
@@ -9784,93 +10220,6 @@ export class MedicoDtoPagedResultDto implements IMedicoDtoPagedResultDto {
 export interface IMedicoDtoPagedResultDto {
     totalCount: number;
     items: MedicoDto[] | undefined;
-}
-
-export class CreateMedicoDto implements ICreateMedicoDto {
-    datosPersonalesUserName: string | undefined;
-    datosPersonalesName: string | undefined;
-    datosPersonalesSurname: string | undefined;
-    datosPersonalesEmailAddress: string | undefined;
-    datosPersonalesTelefono: string | undefined;
-    datosPersonalesIsActive: boolean;
-    datosPersonalesPassword: string | undefined;
-    datosPersonalesRoleNames: string[] | undefined;
-    especialidad: string | undefined;
-    id: number;
-
-    constructor(data?: ICreateMedicoDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.datosPersonalesUserName = _data["datosPersonalesUserName"];
-            this.datosPersonalesName = _data["datosPersonalesName"];
-            this.datosPersonalesSurname = _data["datosPersonalesSurname"];
-            this.datosPersonalesEmailAddress = _data["datosPersonalesEmailAddress"];
-            this.datosPersonalesTelefono = _data["datosPersonalesTelefono"];
-            this.datosPersonalesIsActive = _data["datosPersonalesIsActive"];
-            this.datosPersonalesPassword = _data["datosPersonalesPassword"];
-            if (Array.isArray(_data["datosPersonalesRoleNames"])) {
-                this.datosPersonalesRoleNames = [] as any;
-                for (let item of _data["datosPersonalesRoleNames"])
-                    this.datosPersonalesRoleNames.push(item);
-            }
-            this.especialidad = _data["especialidad"];
-            this.id = _data["id"];
-        }
-    }
-
-    static fromJS(data: any): CreateMedicoDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new CreateMedicoDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["datosPersonalesUserName"] = this.datosPersonalesUserName;
-        data["datosPersonalesName"] = this.datosPersonalesName;
-        data["datosPersonalesSurname"] = this.datosPersonalesSurname;
-        data["datosPersonalesEmailAddress"] = this.datosPersonalesEmailAddress;
-        data["datosPersonalesTelefono"] = this.datosPersonalesTelefono;
-        data["datosPersonalesIsActive"] = this.datosPersonalesIsActive;
-        data["datosPersonalesPassword"] = this.datosPersonalesPassword;
-        if (Array.isArray(this.datosPersonalesRoleNames)) {
-            data["datosPersonalesRoleNames"] = [];
-            for (let item of this.datosPersonalesRoleNames)
-                data["datosPersonalesRoleNames"].push(item);
-        }
-        data["especialidad"] = this.especialidad;
-        data["id"] = this.id;
-        return data; 
-    }
-
-    clone(): CreateMedicoDto {
-        const json = this.toJSON();
-        let result = new CreateMedicoDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface ICreateMedicoDto {
-    datosPersonalesUserName: string | undefined;
-    datosPersonalesName: string | undefined;
-    datosPersonalesSurname: string | undefined;
-    datosPersonalesEmailAddress: string | undefined;
-    datosPersonalesTelefono: string | undefined;
-    datosPersonalesIsActive: boolean;
-    datosPersonalesPassword: string | undefined;
-    datosPersonalesRoleNames: string[] | undefined;
-    especialidad: string | undefined;
-    id: number;
 }
 
 export class CreateMensajeDto implements ICreateMensajeDto {

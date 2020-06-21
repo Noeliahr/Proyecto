@@ -10,7 +10,7 @@
             
             </div>
             <div class="body table-responsive">
-                <h3>Recordar Hoy</h3>
+                <h3 *ngIf="recordatoriosHoy.length>0">Recordar Hoy</h3>
                 <div *ngFor=" let recordatorio of (recordatoriosHoy)">
                     <div style="background-color:#F6F1E8; padding: 10px;">
                         <button style="float:right;" class="action-button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
@@ -23,7 +23,7 @@
                             </button>
                         </mat-menu>
                         <div style="width: 30%; display: inline;"><h5 style="width: max-content; display: inline;">Fecha</h5>   {{recordatorio.fechaHora | date:'short'}} </div>
-                        <div style="width: 30%; float:right; display: inline-block;"> <i class="fa fa-file-text-o" aria-hidden="true"></i>  {{ recordatorio.texto }} </div>
+                        <div style="width: 30%; margin-left: 30%; display: inline-block;"> <i class="fa fa-file-text-o" aria-hidden="true"></i>  {{ recordatorio.texto }} </div>
                     </div>
                     <hr>
                 </div>
@@ -44,7 +44,7 @@
                             </button>
                         </mat-menu>
                         <div style="width: 30%; display: inline;"><h5 style="width: max-content; display: inline;">Fecha</h5>   {{recordatorio.fechaHora | date:'short'}} </div>
-                        <div style="width: 30%; float:right; display: inline-block;"> <i class="fa fa-file-text-o" aria-hidden="true"></i>  {{ recordatorio.texto }} </div>
+                        <div style="width: 30%; margin-left: 30%; display: inline-block;"> <i class="fa fa-file-text-o" aria-hidden="true"></i>  {{ recordatorio.texto }} </div>
                     </div>
                     <ng-template #igual>
                         <div *ngIf=" recordatorio.fechaHora >= hoy_menos_10m && recordatorio.fechaHora < hoy_mas_10m; else menor" style="background-color:#E8F6F1; padding: 10px;">
@@ -58,7 +58,7 @@
                                 </button>
                             </mat-menu>
                             <div style="width: 30%; display: inline;"><h5 style="width: max-content; display: inline;">Fecha</h5>   {{recordatorio.fechaHora | date:'short'}} </div>
-                            <div style="width: 30%; float:right; display: inline-block;"> <i class="fa fa-file-text-o" aria-hidden="true"></i>  {{ recordatorio.texto }} </div>
+                            <div style="width: 30%; margin-left: 30%; display: inline-block;"> <i class="fa fa-file-text-o" aria-hidden="true"></i>  {{ recordatorio.texto }} </div>
                         </div>
                     </ng-template>
                     <ng-template #menor>
@@ -73,7 +73,7 @@
                                 </button>
                             </mat-menu>
                             <div style="width: 30%; display: inline;"><h5 style="width: max-content; display: inline;">Fecha</h5>   {{recordatorio.fechaHora | date:'short'}} </div>
-                            <div style="width: 30%; float:right; display: inline-block;"> <i class="fa fa-file-text-o" aria-hidden="true"></i>  {{ recordatorio.texto }} </div>
+                            <div style="width: 30%; margin-left: 30%; display: inline-block;"> <i class="fa fa-file-text-o" aria-hidden="true"></i>  {{ recordatorio.texto }} </div>
                         </div>
                     </ng-template>
                     

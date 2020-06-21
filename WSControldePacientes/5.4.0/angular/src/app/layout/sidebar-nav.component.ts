@@ -27,6 +27,7 @@ export class SideBarNavComponent extends AppComponentBase {
         new MenuItem(this.l('Pacientes'), 'Pages.PacienteMedico', 'assignment_ind', '/app/pacientes'),
         new MenuItem(this.l('Mis Pacientes'), 'Pages.MisPacientes', 'assignment_ind', '/app/mispacientes'),
         new MenuItem(this.l('Roles'), 'Pages.Roles', 'local_offer', '/app/roles'),
+        new MenuItem(this.l('Medicos'), 'Pages.Medicos', 'local_offer', '/app/medicos'),
         //new MenuItem(this.l('About'), '', 'info', '/app/about'),
 
         /*new MenuItem(this.l('MultiLevelMenu'), '', 'menu', '', [
